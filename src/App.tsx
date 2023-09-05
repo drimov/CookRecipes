@@ -4,7 +4,7 @@ import Home from "./pages/Home"
 import { ThemeProvider } from "./context/ThemeContext"
 
 type AppProps = {
-  children: React.ReactNode
+  children?: React.ReactNode
 }
 const App = ({ children }: AppProps) => {
   return (
