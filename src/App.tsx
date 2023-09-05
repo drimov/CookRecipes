@@ -1,17 +1,17 @@
-import './context/Items'
-import './App.css'
-import Items from './context/Items'
+import "./App.css"
 
-function App() {
-  //const [count, setCount] = useState(0)
+import Home from "./pages/Home"
+import { ThemeProvider } from "./context/ThemeContext"
 
+type AppProps = {
+  children?: React.ReactNode
+}
+const App = ({ children }: AppProps) => {
   return (
-    <>
-      <div>
-        <h1>Test-implémentatation React-Query</h1>
-        <Items />
-      </div>
-    </>
+    <ThemeProvider defaultTheme="dark">
+      <Home />
+      {children}
+    </ThemeProvider>
   )
 }
 
