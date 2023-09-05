@@ -6,7 +6,7 @@ import reactLogo from "../assets/react.svg"
 import { useState } from "react"
 import viteLogo from "/vite.svg"
 
-export const Home = () => {
+const Home = () => {
   const [count, setCount] = useState(0)
 
   return (
@@ -42,3 +42,4 @@ export const Home = () => {
     </div>
   )
 }
+export default Home
