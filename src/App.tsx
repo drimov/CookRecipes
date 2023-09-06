@@ -8,22 +8,26 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <Home />,
-  },
-  {
-    path: "/search",
-    element: <Search />,
-  },
-  {
-    path: "/profil",
-    element: <Profil />,
-  },
-  {
-    path: "/produit",
-    element: <Produit />,
-  },
-  {
-    path: "/auth",
-    element: <Authentification />,
+    // nested pages
+    children: [
+      {
+        index: true,
+        path: "search",
+        element: <Search />,
+      },
+      {
+        path: "profil",
+        element: <Profil />,
+      },
+      {
+        path: "produit",
+        element: <Produit />,
+      },
+      {
+        path: "auth",
+        element: <Authentification />,
+      },
+    ],
   },
 ])
 
@@ -34,11 +38,6 @@ const App = ({ children }: AppProps) => {
   return (
     <ThemeProvider defaultTheme="dark">
       <RouterProvider router={router} /> {/* Appel router */}
-      <Home />
-      <Search />
-      <Profil />
-      <Produit />
-      <Authentification />
       {children}
     </ThemeProvider>
   )
