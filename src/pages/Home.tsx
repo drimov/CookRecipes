@@ -6,7 +6,7 @@ import { ModeToggle } from "@/components/mode-toggle"
 
 const Home = () => {
   return (
-    <div className="h-screen w-screen grid grid-cols-1 mx-0 bg-primary-foreground">
+    <div className="mx-0 grid h-screen w-screen grid-cols-1 bg-primary-foreground">
       <Outlet />
       <div className="flex flex-col items-center justify-center">
         <Card>
