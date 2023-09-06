@@ -4,11 +4,13 @@ import { Authentification, Home, Produit, Profil, Search } from "./pages"
 import { RouterProvider, createBrowserRouter } from "react-router-dom"
 
 import { ThemeProvider } from "./context/ThemeContext"
+import Error404 from "./pages/Error404";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Home />,
+    errorElement: <Error404 />,
     children: [
       {
         index: true,
