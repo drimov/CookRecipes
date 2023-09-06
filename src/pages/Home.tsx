@@ -1,45 +1,37 @@
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
-import { ModeToggle } from "@/components/mode-toggle"
-// import { MenubarDemo } from "@/components/nav-bar"
-import { NavigationMenuDemo } from "@/components/nav-bar"
+import { Link, Outlet } from "react-router-dom"
 
-import { Outlet } from "react-router-dom"
+import { Button } from "@/components/ui/button"
+import { ModeToggle } from "@/components/mode-toggle"
 
 const Home = () => {
   return (
     <div className="h-screen w-screen grid grid-cols-1 mx-0 bg-primary-foreground">
-      <nav>
-        {/* <MenubarDemo /> */}
-        <NavigationMenuDemo />
-      </nav>
       <Outlet />
       <div className="flex flex-col items-center justify-center">
-        {/* <div className="p-4">
-          <a href="https://vitejs.dev" target="_blank">
-            <img src={viteLogo} className="logo" alt="Vite logo" />
-          </a>
-          <a href="https://react.dev" target="_blank">
-            <img src={reactLogo} className="logo react" alt="React logo" />
-          </a>
-        </div> */}
-        <h1>Vite + React</h1>
         <Card>
           <CardHeader>
             <ModeToggle />
           </CardHeader>
+          <CardContent>
+            <Link to={"/produit"}>
+              <Button className="mx-4">produit</Button>
+            </Link>
 
-          {/* <CardContent className="p-6 text-center">
-            <Button onClick={() => setCount((count) => count + 1)}>
-              count is {count}
-            </Button>
-            <p>
-              Edit <code>src/App.tsx</code> and save to test HMR
-            </p>
-          </CardContent> */}
+            <Link to={"/profil"} className="no-underline">
+              <Button className="mx-4">profil</Button>
+            </Link>
+            <Link to={"/search"}>
+              <Button className="mx-4">search</Button>
+            </Link>
+            <Link to={"/signup"}>
+              <Button className="mx-4">signup</Button>
+            </Link>
+            <Link to={"/login"}>
+              <Button className="mx-4">login</Button>
+            </Link>
+          </CardContent>
         </Card>
-        {/* <p className="read-the-docs">
-          Click on the Vite and React logos to learn more
-        </p> */}
       </div>
     </div>
   )

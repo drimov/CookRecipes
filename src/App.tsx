@@ -1,14 +1,14 @@
 import "./App.css"
-import { Home, Search, Profil, Produit, Authentification } from "./pages"
-import { ThemeProvider } from "./context/ThemeContext"
 
-import { createBrowserRouter, RouterProvider } from "react-router-dom"
+import { Authentification, Home, Produit, Profil, Search } from "./pages"
+import { RouterProvider, createBrowserRouter } from "react-router-dom"
+
+import { ThemeProvider } from "./context/ThemeContext"
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Home />,
-    // nested pages
     children: [
       {
         index: true,
@@ -24,21 +24,21 @@ const router = createBrowserRouter([
         element: <Produit />,
       },
       {
-        path: "auth",
-        element: <Authentification />,
+        path: "login",
+        element: <Authentification type="login" />,
+      },
+      {
+        path: "signup",
+        element: <Authentification type="signup" />,
       },
     ],
   },
 ])
 
-type AppProps = {
-  children?: React.ReactNode
-}
-const App = ({ children }: AppProps) => {
+const App = () => {
   return (
     <ThemeProvider defaultTheme="dark">
-      <RouterProvider router={router} /> {/* Appel router */}
-      {children}
+      <RouterProvider router={router} />
     </ThemeProvider>
   )
 }

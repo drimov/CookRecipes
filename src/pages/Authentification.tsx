@@ -1,14 +1,12 @@
-import { Link } from "react-router-dom"
+type AuthentificationProps = {
+  type: "login" | "signup"
+}
 
-// type Props = {
-//   test?: React.ReactNode
-// }
-
-const Authentification = () => {
+const Authentification = ({ type }: AuthentificationProps) => {
+  console.log(type)
   return (
     <div>
-      <h1>Authentification Page</h1>
-      {/* <Link to="/">Home</Link> */}
+      <h1>Authentification Page: {type}</h1>
     </div>
   )
 }
