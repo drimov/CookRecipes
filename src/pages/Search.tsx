@@ -1,11 +1,29 @@
-import React from "react"
+import React, { useState } from "react"
 
-// type Props = {
-//   test?: React.ReactNode
-// }
-
-const Search = () => {
-  return <h1>Search Page</h1>
+type SearchPageProps = {
+  onSearch: (query: string) => void
 }
 
-export default Search
+const SearchPage: React.FC<SearchPageProps> = ({ onSearch }) => {
+  const [searchQuery, setSearchQuery] = useState("")
+
+  const handleSearch = () => {
+    // Perform search logic here using the searchQuery state
+    onSearch(searchQuery)
+  }
+
+  return (
+    <div>
+      <h1>Mise en place search page</h1>
+      <input
+        type="text"
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
+        placeholder="Search here ..."
+      />
+      <button onClick={handleSearch}>Search</button>
+    </div>
+  )
+}
+
+export default SearchPage
