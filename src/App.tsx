@@ -5,6 +5,8 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom"
 
 import { ThemeProvider } from "./context/ThemeContext"
 
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools"
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -39,6 +41,7 @@ const App = () => {
   return (
     <ThemeProvider defaultTheme="dark">
       <RouterProvider router={router} />
+      <ReactQueryDevtools initialIsOpen={false} />
     </ThemeProvider>
   )
 }
