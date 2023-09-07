@@ -12,7 +12,8 @@
     "cy:run": "cypress run",
     "cy:open": "cypress open",
     "e2e:run": "start-server-and-test 'pnpm dev:cli' 5173 'pnpm cy:run'",
-    "e2e:open": "start-server-and-test 'pnpm dev:cli' 5173 'pnpm cy:open'"
+    "e2e:open": "start-server-and-test 'pnpm dev:cli' 5173 'pnpm cy:open'",
+    "prepare": "husky install"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.3.1",
@@ -61,6 +62,7 @@
     "eslint-plugin-react": "^7.33.2",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.3",
+    "husky": "^8.0.3",
     "postcss": "^8.4.29",
     "prettier": "^3.0.3",
     "prettier-plugin-tailwindcss": "^0.5.4",
