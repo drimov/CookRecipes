@@ -1,48 +1,45 @@
-import { Link } from "react-router-dom"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
+import { Link } from "./ui/link"
+
+import { Menu } from "lucide-react"
 import { ModeToggle } from "@/components/mode-toggle"
-import {
-  NavigationMenu,
-  NavigationMenuItem,
-} from "@/components/ui/navigation-menu"
 
-// type Props = {}
-
-const Navbar = () => {
+const Navbar = ({ isNavLogin }: { isNavLogin: boolean }) => {
   return (
-    <div className="max-w-max">
-      <NavigationMenu>
-        <span className="w-1/3 items-center justify-center text-3xl font-bold tracking-wider text-slate-500 hover:text-orange-600 sm:text-lg md:text-2xl">
-          Logo
-        </span>
-        <NavigationMenuItem className="flex-lg flex w-2/3 items-center justify-center ">
-          <Link to={"/"}>
-            <Button className="mx-4">Home</Button>
-          </Link>
-          <Link to={"/produit"}>
-            <Button className="mx-4">Produit</Button>
-          </Link>
+    <div className="container ">
+      <div className="container">
+        <div className="mx-auto w-full border-4 bg-inherit px-8">
+          <div className="my4 my-2 box-border flex  h-16 flex-row items-center justify-between px-4">
+            <h1 className="flex items-center">LOGO</h1>
+            <Menu className="flex dark:hidden md:hidden" color="#b62525" />
+            <Menu className="hidden dark:flex dark:md:hidden" />
 
-          <Link to={"/profil"} className="no-underline">
-            <Button className="mx-4">Profil</Button>
-          </Link>
-          <Link to={"/search"}>
-            <Button className="mx-4">Search</Button>
-          </Link>
-          <Card>
-            <CardContent className="flex-lg mx-4 my-4 flex items-center justify-center ">
-              <Link to={"/signup"}>
-                <Button className="mx-4 ">Signup</Button>
+            <div className=" hidden w-auto justify-evenly md:flex">
+              <Link to={"/"}>
+                <Button className="mx-4">Home</Button>
               </Link>
-              <Link to={"/login"}>
-                <Button className="mx-4">Login</Button>
+              <Link to={"/produit"}>
+                <Button className="mx-4">Produit</Button>
               </Link>
+
+              <Link to={"/profil"} className="no-underline">
+                <Button className="mx-4">Profil</Button>
+              </Link>
+              <Link to={"/search"}>
+                <Button className="mx-4">Search</Button>
+              </Link>
+              {!isNavLogin ? (
+                <>
+                  <Button className="mx-2">Sign up</Button>
+                  <Button className="mx-2">Login</Button>
+                </>
+              ) : null}
+
               <ModeToggle />
-            </CardContent>
-          </Card>
-        </NavigationMenuItem>
-      </NavigationMenu>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   )
 }
