@@ -1,8 +1,9 @@
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
-import { Link, Outlet } from "react-router-dom"
 
 import { Button } from "@/components/ui/button"
+import { Link } from "@/components/ui/link"
 import { ModeToggle } from "@/components/mode-toggle"
+import { Outlet } from "react-router-dom"
 
 const Home = () => {
   return (
