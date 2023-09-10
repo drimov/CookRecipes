@@ -1,3 +1,4 @@
+import { COLOR_ACCENT, links } from "@/commons/constants"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -7,9 +8,7 @@ import {
 import { Menu, Moon, Sun } from "lucide-react"
 
 import { Button } from "../ui/button"
-import { COLOR_ACCENT } from "@/commons/constants"
 import { NavLink } from "../ui/navlink"
-import { links } from "@/types/app"
 import { useTheme } from "@/hooks/useTheme"
 
 export function NavbarToggle() {
