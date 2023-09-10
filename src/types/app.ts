@@ -1,4 +1,9 @@
-export const links = ["produit", "profil", "search", "signup", "login"] as const
+import { authLinks, links } from "@/commons/constants"
 
 type GenericLinks<T extends string> = `/${T}`
-export type Links = GenericLinks<(typeof links)[number]> | "/"
+export type Links =
+  | GenericLinks<(typeof links)[number]>
+  | GenericLinks<(typeof authLinks)[number]>
+  | "/"
+export type AuthLinks = GenericLinks<(typeof authLinks)[number]>
+export type AuthPath = (typeof authLinks)[number]
