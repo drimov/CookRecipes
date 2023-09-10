@@ -8,7 +8,7 @@ import { Menu, Moon, Sun } from "lucide-react"
 
 import { Button } from "../ui/button"
 import { COLOR_ACCENT } from "@/commons/constants"
-import { Link } from "../ui/link"
+import { NavLink } from "../ui/navlink"
 import { links } from "@/types/app"
 import { useTheme } from "@/hooks/useTheme"
 
@@ -37,15 +37,17 @@ export function NavbarToggle() {
             </DropdownMenuItem>
           )}
           <DropdownMenuItem>
-            <Link to={"/"} className="w-full">
-              Home
-            </Link>
+            <NavLink to={"/"} className={"w-full"} border="left">
+              <p className="px-2">Home</p>
+            </NavLink>
           </DropdownMenuItem>
           {links.map((link, index) => (
             <DropdownMenuItem key={index}>
-              <Link to={`/${link}`} className="w-full">
-                {link.charAt(0).toUpperCase() + link.slice(1)}
-              </Link>
+              <NavLink to={`/${link}`} className={"w-full"} border="left">
+                <p className="px-2">
+                  {link.charAt(0).toUpperCase() + link.slice(1)}
+                </p>
+              </NavLink>
             </DropdownMenuItem>
           ))}
         </DropdownMenuContent>
