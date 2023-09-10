@@ -26,7 +26,7 @@ const Navbar = () => {
           <Button variant={"ghost"}>Login</Button>
         </Link>
         <Link to="/signup">
-          <Button variant={"destructive"}>Signup</Button>
+          <Button>Signup</Button>
         </Link>
       </div>
       <NavbarToggle />
