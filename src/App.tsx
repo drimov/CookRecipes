@@ -3,15 +3,19 @@ import "./App.css"
 import { Authentification, Home, Produit, Profil, Search } from "./pages"
 import { RouterProvider, createBrowserRouter } from "react-router-dom"
 
-import { ThemeProvider } from "./context/ThemeContext"
+import { AppWrapper } from "./context"
+import RootLayout from "./pages/RootLayout"
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Home />,
+    element: <RootLayout />,
     children: [
       {
         index: true,
+        element: <Home />,
+      },
+      {
         path: "search",
         element: <Search />,
       },
@@ -37,9 +41,9 @@ const router = createBrowserRouter([
 
 const App = () => {
   return (
-    <ThemeProvider defaultTheme="dark">
+    <AppWrapper>
       <RouterProvider router={router} />
-    </ThemeProvider>
+    </AppWrapper>
   )
 }
 
