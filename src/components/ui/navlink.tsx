@@ -7,7 +7,7 @@ import { Links } from "@/types/app"
 import { cn } from "@/lib/utils"
 import { cva } from "class-variance-authority"
 
-const navlinkVariants = cva("lg:text-xl md:text-lg")
+const navlinkVariants = cva("lg:text-xl")
 
 type NavLinkProps = Omit<NavLinkPropsRouter, "to"> & {
   to: Links

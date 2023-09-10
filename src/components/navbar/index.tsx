@@ -23,10 +23,12 @@ const Navbar = () => {
       <div className="hidden gap-2 md:flex">
         <ModeToggle />
         <NavLink to="/login">
-          <Button variant={"ghost"}>Login</Button>
+          <Button variant={"ghost"} className="lg:text-lg">
+            Login
+          </Button>
         </NavLink>
         <NavLink to="/signup">
-          <Button>Signup</Button>
+          <Button className="lg:text-lg">Signup</Button>
         </NavLink>
       </div>
       <NavbarToggle />
