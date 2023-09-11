@@ -7,9 +7,9 @@ import { links } from "@/commons/constants"
 
 const Footer = () => {
   return (
-    <div className="flex flex-col items-center px-4">
+    <div className=" flex flex-col items-center px-4">
       <img src="/logo.svg" alt="logo" width={"100px"} />
-      <div className="my-2 grid grid-cols-1 items-baseline md:grid-cols-2">
+      <div className=" my-2 grid grid-cols-1 items-baseline md:grid-cols-2">
         <div className="flex flex-col items-center md:items-start md:px-8">
           {/* about */}
           <div className="text-center md:text-left">
