@@ -1,0 +1,8 @@
+# Ignore artifacts:
+node_modules
+build
+coverage
+public
+package.json
+pnpm-lock.yaml
+# tsconfig.json
