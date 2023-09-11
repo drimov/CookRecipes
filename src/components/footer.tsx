@@ -1,5 +1,6 @@
 import { Facebook, Instagram, Twitter } from "lucide-react"
 
+import { Button } from "./ui/button"
 import { LinksPath } from "@/types/app"
 import { NavLink } from "./ui/navlink"
 import { links } from "@/commons/constants"
@@ -21,9 +22,15 @@ const Footer = () => {
           </div>
           {/* social */}
           <div className="my-4 flex flex-row gap-4 ">
-            <Twitter />
-            <Facebook />
-            <Instagram />
+            <Button variant={"ghost"}>
+              <Twitter />
+            </Button>
+            <Button variant={"ghost"}>
+              <Facebook />
+            </Button>
+            <Button variant={"ghost"}>
+              <Instagram />
+            </Button>
           </div>
         </div>
         {/* site map */}
