@@ -9,8 +9,8 @@ const Footer = () => {
   return (
     <div className="flex flex-col items-center px-4">
       <img src="/logo.svg" alt="logo" width={"100px"} />
-      <div className="my-2 grid grid-cols-1 items-baseline md:grid-cols-2">
-        <div className="flex flex-col items-center md:items-start md:px-8">
+      <div className="my-2 grid grid-cols-1 items-baseline md:grid-cols-3">
+        <div className="flex flex-col items-center md:col-span-2 md:items-start md:px-8">
           {/* about */}
           <div className="text-center md:text-left">
             <h1 className="mb-2 mt-4 text-lg md:text-2xl">About</h1>
@@ -34,7 +34,7 @@ const Footer = () => {
           </div>
         </div>
         {/* site map */}
-        <div className="flex w-full flex-col items-center md:items-center md:text-lg">
+        <div className="flex w-full flex-col items-center md:col-span-1 md:items-center md:text-lg">
           <h1 className="my-2 text-lg md:text-2xl">Site map</h1>
           <div className=" my-2 flex flex-row md:leading-9">
             <ul>
