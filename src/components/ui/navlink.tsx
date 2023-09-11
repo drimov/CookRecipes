@@ -37,7 +37,7 @@ function NavLink({ className, to, border, ...props }: NavLinkProps) {
         cn(
           navlinkVariants(),
           `${
-            isActive ? "border-primary" : "border-none"
+            isActive ? "border-primary" : "border-transparent"
           }  ${borderValue} ${className}`
         )
       }
