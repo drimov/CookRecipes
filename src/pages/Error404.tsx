@@ -1,28 +1,30 @@
-import { Link } from "react-router-dom"
 import { Button } from "@/components/ui/button"
+import { Link } from "@/components/ui/link"
+import Navbar from "@/components/navbar"
 
 export default function Error404() {
   return (
-    <div className="mx-auto flex min-h-screen max-w-7xl flex-col items-center justify-center sm:px-6 md:flex-row lg:px-8">
-      <div className="mb-8 w-full text-center md:mb-0 md:pr-4 md:text-left">
-        <h1 className="mb-4 text-4xl font-semibold md:text-6xl lg:text-8xl">
-          Erreur 404
-        </h1>
-        <p className="pl-1 text-2xl lg:text-3xl">
-          La page que vous recherchez n&apos;existe pas.
-        </p>
-        <div className="mt-6 flex justify-center pr-4">
-          <Link to={"/"} className="no-underline">
-            <Button className="mx-4">Revenir à la page d&apos;accueil</Button>
-          </Link>
+    <div className="container flex h-screen flex-col px-4 md:px-8 lg:px-16">
+      <Navbar />
+      <div className="flex flex-grow items-center">
+        <div className="mx-auto grid grid-cols-1 px-4 md:grid-cols-2 md:gap-2">
+          <div className="mx-auto py-2 md:my-auto">
+            <h1 className="mx-auto py-2 text-center text-5xl md:py-4 md:text-6xl">
+              Error 404
+            </h1>
+            <p className="py-2 text-center text-lg md:py-4 md:text-xl">
+              The page you are looking for does not exist.
+            </p>
+            <Link to={"/"} className="flex">
+              <Button className="mx-auto" size={"lg"}>
+                Back to home
+              </Button>
+            </Link>
+          </div>
+          <div className="w-full py-2">
+            <img src="/error-404.jpeg" alt="Error 404" className="mx-auto" />
+          </div>
         </div>
-      </div>
-      <div className="w-full">
-        <img
-          src="/error-404.jpeg"
-          alt="Erreur 404"
-          className="h-full w-full lg:w-auto"
-        />
       </div>
     </div>
   )
