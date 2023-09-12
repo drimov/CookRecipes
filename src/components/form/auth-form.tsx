@@ -7,9 +7,9 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 
-import { AuthPath } from "@/types/app"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import { RouteAuthKeys } from "@/types/app"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -26,7 +26,7 @@ const authSchema = z.object({
 type ValidationAuthSchema = z.infer<typeof authSchema>
 
 type AuthFormProps = {
-  typeForm: AuthPath
+  typeForm: RouteAuthKeys
 }
 const AuthForm = ({ typeForm }: AuthFormProps) => {
   function onSubmit(values: ValidationAuthSchema) {
