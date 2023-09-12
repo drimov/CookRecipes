@@ -1,11 +1,14 @@
 import { Facebook, Instagram, Twitter } from "lucide-react"
 
 import { Button } from "./ui/button"
-import { LinksPath } from "@/types/app"
 import { NavLink } from "./ui/navlink"
-import { links } from "@/commons/constants"
+import { RouteKeys } from "@/types/app"
+import { getTitle } from "@/helpers"
 
 const Footer = () => {
+  const routesRight: RouteKeys[] = ["home", "produit", "search"]
+  const routesleft: RouteKeys[] = ["profile", "login", "signup"]
+
   return (
     <div className="flex flex-col items-center px-4">
       <img src="/logo.svg" alt="logo" width={"100px"} />
@@ -37,17 +40,8 @@ const Footer = () => {
         <div className="flex w-full flex-col items-center md:col-span-1 md:items-center md:text-lg">
           <h1 className="my-2 text-lg md:text-2xl">Site map</h1>
           <div className=" my-2 flex flex-row md:leading-9">
-            <ul>
-              <li className=" border-2 border-transparent font-semibold text-muted-foreground">
-                <NavLink to="/" border="left" className="px-2">
-                  Home
-                </NavLink>
-              </li>
-              <SiteMap pathArray={links.slice(0, 2)} />
-            </ul>
-            <ul>
-              <SiteMap pathArray={links.slice(2, 5)} />
-            </ul>
+            <SiteMap routesArray={routesRight} />
+            <SiteMap routesArray={routesleft} />
           </div>
         </div>
       </div>
@@ -67,22 +61,22 @@ const Footer = () => {
 }
 
 type SiteMapProps = {
-  pathArray: LinksPath[] | readonly LinksPath[]
+  routesArray: RouteKeys[]
 }
-const SiteMap = ({ pathArray }: SiteMapProps) => {
+const SiteMap = ({ routesArray }: SiteMapProps) => {
   return (
-    <>
-      {pathArray.map((pathLink, index) => (
+    <ul>
+      {routesArray.map((route, index) => (
         <li
           key={index}
           className="border-2 border-transparent font-semibold text-muted-foreground"
         >
-          <NavLink to={`/${pathLink}`} border="left" className=" px-2">
-            {pathLink.charAt(0).toUpperCase() + pathLink.slice(1)}
+          <NavLink to={route} border="left" className=" px-2">
+            {getTitle(route)}
           </NavLink>
         </li>
       ))}
-    </>
+    </ul>
   )
 }
 export default Footer

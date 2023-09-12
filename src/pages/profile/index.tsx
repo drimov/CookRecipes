@@ -1,18 +1,18 @@
+import { Outlet } from "react-router-dom"
+import { RouteProfileKeys } from "@/types/app"
 import { Separator } from "@/components/ui/separator"
 import { SidebarNav } from "@/pages/profile/SidebarNav"
-import { ProfileLinks } from "@/types/app"
-import { Outlet } from "react-router-dom"
 
-type SidebarNavItemProps = { title: string; href: ProfileLinks }[]
+type SidebarNavItemProps = { title: string; href: RouteProfileKeys }[]
 
 const sidebarNavItems: SidebarNavItemProps = [
   {
     title: "Profile",
-    href: "/profile",
+    href: "profile",
   },
   {
     title: "Favorite",
-    href: "/profile/favorite",
+    href: "favorite",
   },
 ]
 
