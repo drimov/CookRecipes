@@ -50,7 +50,7 @@ type AuthProps = {
 }
 const AuthPage = ({ template, type }: AuthProps) => {
   return (
-    <div className="mx-auto py-4">
+    <div className="mx-auto w-[300px] py-4 md:w-[400px]">
       <h1 className="text-lg font-semibold md:text-lg lg:text-2xl">
         {template.title}
       </h1>
@@ -85,42 +85,5 @@ const AuthPage = ({ template, type }: AuthProps) => {
     </div>
   )
 }
-// const Signup = () => {
-//   return (
-//     <div className="mx-auto py-4">
-//       <h1 className="text-lg font-semibold md:text-lg lg:text-2xl">
-//         Create an account
-//       </h1>
-//       <p className="py-2 text-muted-foreground lg:text-lg">
-//         Enter your email below to create your account.
-//       </p>
-//       <div className="flex flex-row justify-evenly">
-//         <Button variant="outline" size={"lg"} className="m-2 md:m-4">
-//           <GithubIcon className="mx-2" /> <p>Github</p>
-//         </Button>
-//       </div>
-//       <div className="relative">
-//         <div className="absolute inset-0 flex items-center">
-//           <span className="w-full border-t" />
-//         </div>
-//         <div className="relative flex justify-center text-xs uppercase">
-//           <span className="bg-background px-2 text-muted-foreground">
-//             Or continue with
-//           </span>
-//         </div>
-//       </div>
-//       <AuthForm typeForm={"signup"} />
-//       <p className="mt-4 text-muted-foreground">
-//         Already have an account?{" "}
-//         <Link
-//           to="/login"
-//           className="text-primary hover:border-b-2 hover:border-primary"
-//         >
-//           Log in
-//         </Link>
-//       </p>
-//     </div>
-//   )
-// }
 
 export default Authentification
