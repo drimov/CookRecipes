@@ -1,15 +1,14 @@
 import AuthForm from "../components/form/auth-form"
-import { AuthPath } from "@/types/app"
 import { Button } from "@/components/ui/button"
 import { GithubIcon } from "lucide-react"
 import { Link } from "@/components/ui/link"
+import { RouteAuthKeys } from "@/types/app"
 
 type AuthentificationProps = {
-  type: AuthPath
+  type: RouteAuthKeys
 }
 
 const Authentification = ({ type }: AuthentificationProps) => {
-  console.log(type)
   return (
     <div className="flex h-screen flex-col items-center justify-around py-16 md:py-28">
       <img src="/logo.svg" alt="logo" className="mx-auto my-4 w-60 md:w-72" />
@@ -46,7 +45,7 @@ const SignupText: AuthText = {
 
 type AuthProps = {
   template: AuthText
-  type: AuthPath
+  type: RouteAuthKeys
 }
 const AuthPage = ({ template, type }: AuthProps) => {
   return (
@@ -76,7 +75,7 @@ const AuthPage = ({ template, type }: AuthProps) => {
       <p className="mt-4 text-muted-foreground">
         {template.access}{" "}
         <Link
-          to={`/${type}`}
+          to={type}
           className="text-primary hover:border-b-2 hover:border-primary"
         >
           {template.otherAuth}
