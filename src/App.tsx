@@ -4,11 +4,11 @@ import { Authentification, Home, Produit, Search } from "./pages"
 import { RouterProvider, createBrowserRouter } from "react-router-dom"
 
 import { AppWrapper } from "./context"
-import RootLayout from "./pages/RootLayout"
 import Error404 from "./pages/Error404"
-import ProfileLayout from "./pages/profile"
 import Favorite from "./pages/profile/Favorite"
 import Profile from "./pages/profile/Profile"
+import ProfileLayout from "./pages/profile"
+import RootLayout from "./pages/RootLayout"
 
 const router = createBrowserRouter([
   {

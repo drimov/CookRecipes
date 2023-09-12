@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button"
+import Footer from "@/components/footer"
 import { Link } from "@/components/ui/link"
 import Navbar from "@/components/navbar"
 
@@ -22,10 +23,11 @@ export default function Error404() {
             </Link>
           </div>
           <div className="w-full py-2">
-            <img src="/error-404.jpeg" alt="Error 404" className="mx-auto" />
+            <img src="/error_404.svg" alt="Error 404" className="mx-auto" />
           </div>
         </div>
       </div>
+      <Footer />
     </div>
   )
 }

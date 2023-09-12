@@ -1,13 +1,13 @@
-import { cn } from "@/lib/utils"
-import { buttonVariants } from "@/components/ui/button/variants"
-import { useState } from "react"
 import { Link } from "@/components/ui/link"
-import { ProfileLinks } from "@/types/app"
+import { RouteProfileKeys } from "@/types/app"
+import { buttonVariants } from "@/components/ui/button/variants"
+import { cn } from "@/lib/utils"
+import { useState } from "react"
 
 type SidebarNavProps = {
   className?: string
   items: {
-    href: ProfileLinks
+    href: RouteProfileKeys
     title: string
   }[]
 }

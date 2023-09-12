@@ -1,53 +1,53 @@
 import { Facebook, Instagram, Twitter } from "lucide-react"
 
 import { Button } from "./ui/button"
-import { LinksPath } from "@/types/app"
 import { NavLink } from "./ui/navlink"
-import { links } from "@/commons/constants"
+import { RouteKeys } from "@/types/app"
+import { getTitle } from "@/helpers"
 
 const Footer = () => {
+  const routesRight: RouteKeys[] = ["home", "produit", "search"]
+  const routesleft: RouteKeys[] = ["profile", "login", "signup"]
+
   return (
-    <div className="flex flex-col items-center px-4">
-      <img src="/logo.svg" alt="logo" width={"100px"} />
-      <div className="my-2 grid grid-cols-1 items-baseline md:grid-cols-3">
-        <div className="flex flex-col items-center md:col-span-2 md:items-start md:px-8">
-          {/* about */}
-          <div className="text-center md:text-left">
-            <h1 className="mb-2 mt-4 text-lg md:text-2xl">About</h1>
-            <p className="my-1 text-muted-foreground md:text-lg">
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-              enim ad minim veniamquis.
-            </p>
-          </div>
-          {/* social */}
-          <div className="my-4 flex flex-row gap-4 ">
-            <Button variant={"ghost"}>
-              <Twitter />
-            </Button>
-            <Button variant={"ghost"}>
-              <Facebook />
-            </Button>
-            <Button variant={"ghost"}>
-              <Instagram />
-            </Button>
-          </div>
+    <div className="flex flex-col items-center bg-primary-foreground px-4 py-2">
+      <div className="grid grid-cols-1 p-4 lg:grid-cols-3 lg:items-center">
+        <div className="mx-auto lg:col-span-1">
+          <img src="/logo.svg" alt="logo" width={"100px"} />
         </div>
-        {/* site map */}
-        <div className="flex w-full flex-col items-center md:col-span-1 md:items-center md:text-lg">
-          <h1 className="my-2 text-lg md:text-2xl">Site map</h1>
-          <div className=" my-2 flex flex-row md:leading-9">
-            <ul>
-              <li className=" border-2 border-transparent font-semibold text-muted-foreground">
-                <NavLink to="/" border="left" className="px-2">
-                  Home
-                </NavLink>
-              </li>
-              <SiteMap pathArray={links.slice(0, 2)} />
-            </ul>
-            <ul>
-              <SiteMap pathArray={links.slice(2, 5)} />
-            </ul>
+        <div className="grid items-end md:grid-cols-2 lg:col-span-2">
+          <div className="flex flex-col items-center md:col-span-1 md:items-start md:px-8">
+            {/* about */}
+            <div className="text-center md:text-left">
+              <h1 className="mb-2 mt-4 text-lg text-primary md:text-2xl">
+                About
+              </h1>
+              <p className="my-1 text-muted-foreground md:text-lg">
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
+                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
+                enim ad minim veniamquis.
+              </p>
+            </div>
+            {/* social */}
+            <div className="my-4 flex flex-row gap-4 text-primary">
+              <Button variant={"ghost"}>
+                <Twitter />
+              </Button>
+              <Button variant={"ghost"}>
+                <Facebook />
+              </Button>
+              <Button variant={"ghost"}>
+                <Instagram />
+              </Button>
+            </div>
+          </div>
+          {/* site map */}
+          <div className="flex h-full flex-col items-center md:col-span-1 md:text-lg">
+            <h1 className="my-2 text-lg text-primary md:text-2xl">Site map</h1>
+            <div className="my-2 flex flex-row md:leading-8 lg:my-4">
+              <SiteMap routesArray={routesRight} />
+              <SiteMap routesArray={routesleft} />
+            </div>
           </div>
         </div>
       </div>
@@ -67,22 +67,22 @@ const Footer = () => {
 }
 
 type SiteMapProps = {
-  pathArray: LinksPath[] | readonly LinksPath[]
+  routesArray: RouteKeys[]
 }
-const SiteMap = ({ pathArray }: SiteMapProps) => {
+const SiteMap = ({ routesArray }: SiteMapProps) => {
   return (
-    <>
-      {pathArray.map((pathLink, index) => (
+    <ul>
+      {routesArray.map((route, index) => (
         <li
           key={index}
           className="border-2 border-transparent font-semibold text-muted-foreground"
         >
-          <NavLink to={`/${pathLink}`} border="left" className=" px-2">
-            {pathLink.charAt(0).toUpperCase() + pathLink.slice(1)}
+          <NavLink to={route} border="left" className=" px-2">
+            {getTitle(route)}
           </NavLink>
         </li>
       ))}
-    </>
+    </ul>
   )
 }
 export default Footer

@@ -1,4 +1,4 @@
-export { default as Home } from "./Home"
+export { default as Home } from "./home"
 export { default as Search } from "./Search"
 export { default as Profile } from "./profile"
 export { default as Produit } from "./Produit"
