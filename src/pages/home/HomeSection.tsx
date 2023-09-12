@@ -7,7 +7,7 @@ type Item = {
 }
 const item1: Item = {
   title: "Tell us what you like (and what not)",
-  url: "app-screen-1.png",
+  url: "app_screen_1.png",
   description: `Never again waste time thinking about what to eat! Omnifood AI will
     create a 100% personalized weekly meal plan just for you. It makes
     sure you get all the nutrients and vitamins you need, no matter what
@@ -15,14 +15,14 @@ const item1: Item = {
 }
 const item2: Item = {
   title: "Approve your weekly meal plan",
-  url: "app-screen-2.png",
+  url: "app_screen_2.png",
   description: `Once per week, approve the meal plan generated for you by Omnifood AI.
   You can change ingredients, swap entire meals, or even add your own
   recipes.`,
 }
 const item3: Item = {
   title: "Receive meals at convenient time",
-  url: "app-screen-3.png",
+  url: "app_screen_3.png",
   description: `Best chefs in town will cook your selected meal every day, and we will
   deliver it to your door whenever works best for you. You can change
   delivery schedule and address daily!`,
