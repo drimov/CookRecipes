@@ -36,7 +36,7 @@ const AuthForm = ({ typeForm }: AuthFormProps) => {
   const { toast } = useToast()
   const navigate = useNavigate()
   async function onSubmit(values: ValidationAuthSchema) {
-    if (typeForm !== "signup") {
+    if (typeForm === "signup") {
       await signUp(values.email, values.password).then((data) => {
         toast({
           action: (
@@ -111,7 +111,7 @@ const AuthForm = ({ typeForm }: AuthFormProps) => {
           )}
         />
         <Button type="submit" className="w-full">
-          {typeForm !== "login" ? "Log in" : "Create account"}
+          {typeForm === "login" ? "Log in" : "Create account"}
         </Button>
       </form>
     </Form>
