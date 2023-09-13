@@ -8,9 +8,13 @@ import {
 } from "@/components/ui/form"
 
 import { Button } from "@/components/ui/button"
+import { CheckIcon } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { RouteAuthKeys } from "@/types/app"
+import { signUp } from "@/lib/supabase/auth"
 import { useForm } from "react-hook-form"
+import { useNavigate } from "react-router-dom"
+import { useToast } from "../ui/use-toast"
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 
@@ -29,9 +33,32 @@ type AuthFormProps = {
   typeForm: RouteAuthKeys
 }
 const AuthForm = ({ typeForm }: AuthFormProps) => {
-  function onSubmit(values: ValidationAuthSchema) {
-    // do something
-    console.log(values)
+  const { toast } = useToast()
+  const navigate = useNavigate()
+  async function onSubmit(values: ValidationAuthSchema) {
+    if (typeForm === "signup") {
+      await signUp(values.email, values.password).then((data) => {
+        toast({
+          action: (
+            <div className="flex w-full items-center justify-start gap-2">
+              <CheckIcon />
+              <div className="flex flex-col">
+                <span className="font-semibold first-letter:capitalize">
+                  your account has been created
+                </span>
+                <span className="first-letter:capitalize">
+                  confirm your email address
+                </span>
+              </div>
+            </div>
+          ),
+          className: "bg-green-500 text-primary-foreground",
+        })
+        if (data.user) {
+          navigate("/profile")
+        }
+      })
+    }
   }
 
   const form = useForm<z.infer<typeof authSchema>>({
@@ -59,6 +86,7 @@ const AuthForm = ({ typeForm }: AuthFormProps) => {
                   placeholder="johnDoe@example.com"
                   {...field}
                   className="text-muted-foreground"
+                  autoComplete="email"
                 />
               </FormControl>
               <FormMessage />
@@ -72,14 +100,18 @@ const AuthForm = ({ typeForm }: AuthFormProps) => {
             <FormItem>
               <FormLabel>Password</FormLabel>
               <FormControl>
-                <Input {...field} />
+                <Input
+                  {...field}
+                  type="password"
+                  autoComplete="current-password"
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
         <Button type="submit" className="w-full">
-          {typeForm !== "login" ? "Log in" : "Create account"}
+          {typeForm === "login" ? "Log in" : "Create account"}
         </Button>
       </form>
     </Form>
