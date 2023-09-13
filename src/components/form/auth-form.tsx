@@ -10,7 +10,9 @@ import {
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { RouteAuthKeys } from "@/types/app"
+import { signUp } from "@/lib/supabase/auth"
 import { useForm } from "react-hook-form"
+import { useNavigate } from "react-router-dom"
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 
@@ -29,9 +31,15 @@ type AuthFormProps = {
   typeForm: RouteAuthKeys
 }
 const AuthForm = ({ typeForm }: AuthFormProps) => {
-  function onSubmit(values: ValidationAuthSchema) {
-    // do something
-    console.log(values)
+  const navigate = useNavigate()
+  async function onSubmit(values: ValidationAuthSchema) {
+    if (typeForm !== "signup") {
+      await signUp(values.email, values.password).then((data) => {
+        if (data.user) {
+          navigate("/profile")
+        }
+      })
+    }
   }
 
   const form = useForm<z.infer<typeof authSchema>>({
@@ -59,6 +67,7 @@ const AuthForm = ({ typeForm }: AuthFormProps) => {
                   placeholder="johnDoe@example.com"
                   {...field}
                   className="text-muted-foreground"
+                  autoComplete="email"
                 />
               </FormControl>
               <FormMessage />
@@ -72,7 +81,11 @@ const AuthForm = ({ typeForm }: AuthFormProps) => {
             <FormItem>
               <FormLabel>Password</FormLabel>
               <FormControl>
-                <Input {...field} />
+                <Input
+                  {...field}
+                  type="password"
+                  autoComplete="current-password"
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
