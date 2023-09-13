@@ -37,23 +37,23 @@ const AuthForm = ({ typeForm }: AuthFormProps) => {
   const navigate = useNavigate()
   async function onSubmit(values: ValidationAuthSchema) {
     if (typeForm !== "signup") {
-      toast({
-        action: (
-          <div className="flex w-full items-center justify-start gap-2">
-            <CheckIcon />
-            <div className="flex flex-col">
-              <span className="font-semibold first-letter:capitalize">
-                your account has been created
-              </span>
-              <span className="first-letter:capitalize">
-                confirm your email address
-              </span>
-            </div>
-          </div>
-        ),
-        className: "bg-green-500 text-primary-foreground",
-      })
       await signUp(values.email, values.password).then((data) => {
+        toast({
+          action: (
+            <div className="flex w-full items-center justify-start gap-2">
+              <CheckIcon />
+              <div className="flex flex-col">
+                <span className="font-semibold first-letter:capitalize">
+                  your account has been created
+                </span>
+                <span className="first-letter:capitalize">
+                  confirm your email address
+                </span>
+              </div>
+            </div>
+          ),
+          className: "bg-green-500 text-primary-foreground",
+        })
         if (data.user) {
           navigate("/profile")
         }
