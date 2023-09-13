@@ -1,86 +1,54 @@
-import AuthForm from "../components/form/auth-form"
-import { Button } from "@/components/ui/button"
-import { GithubIcon } from "lucide-react"
+import AuthForm from "@/components/form/auth-form"
+import AuthHeader from "./AuthHeader"
 import { Link } from "@/components/ui/link"
 import { RouteAuthKeys } from "@/types/app"
+
+type AuthTemplate = {
+  title: string
+  subheading: string
+  text: string
+  linkText: string
+  route: RouteAuthKeys
+}
+
+const LoginText: AuthTemplate = {
+  title: "Welcome back,",
+  subheading: "Sign in to continue",
+  text: "New User?",
+  linkText: "Sign up",
+  route: "signup",
+}
+const SignupText: AuthTemplate = {
+  title: "Create an account",
+  subheading: "Enter your email below to create your account.",
+  text: "Already have an account?",
+  linkText: "Log in",
+  route: "login",
+}
 
 type AuthentificationProps = {
   type: RouteAuthKeys
 }
-
 const Authentification = ({ type }: AuthentificationProps) => {
+  const template = type === "login" ? LoginText : SignupText
   return (
     <div className="flex h-screen flex-col items-center justify-around py-16 md:py-28">
       <img src="/logo.svg" alt="logo" className="mx-auto my-4 w-60 md:w-72" />
       <div className="w-auto px-4 py-2 md:w-[500px] md:px-8">
-        {type === "login" ? (
-          <AuthPage template={LoginText} type="signup" />
-        ) : (
-          <AuthPage template={SignupText} type="login" />
-        )}
-      </div>
-    </div>
-  )
-}
-
-type AuthText = {
-  title: string
-  subtitle: string
-  access: string
-  otherAuth: string
-}
-
-const LoginText: AuthText = {
-  title: "Welcome back,",
-  subtitle: "Sign in to continue",
-  access: "New User?",
-  otherAuth: "Sign up",
-}
-const SignupText: AuthText = {
-  title: "Create an account",
-  subtitle: "Enter your email below to create your account.",
-  access: "Already have an account?",
-  otherAuth: "Log in",
-}
-
-type AuthProps = {
-  template: AuthText
-  type: RouteAuthKeys
-}
-const AuthPage = ({ template, type }: AuthProps) => {
-  return (
-    <div className="mx-auto w-[300px] py-4 md:w-[400px]">
-      <h1 className="text-lg font-semibold md:text-lg lg:text-2xl">
-        {template.title}
-      </h1>
-      <p className="py-2 text-muted-foreground lg:text-lg">
-        {template.subtitle}
-      </p>
-      <div className="flex flex-row justify-evenly">
-        <Button variant="outline" size={"lg"} className="m-2 md:m-4">
-          <GithubIcon className="mx-2" /> <p>Github</p>
-        </Button>
-      </div>
-      <div className="relative">
-        <div className="absolute inset-0 flex items-center">
-          <span className="w-full border-t" />
-        </div>
-        <div className="relative flex justify-center text-xs uppercase">
-          <span className="bg-background px-2 text-muted-foreground">
-            Or continue with
-          </span>
+        <div className="mx-auto w-[300px] py-4 md:w-[400px]">
+          <AuthHeader subheading={template.subheading} title={template.title} />
+          <AuthForm typeForm={type} />
+          <p className="mt-4 px-4 text-muted-foreground">
+            {template.text}{" "}
+            <Link
+              to={template.route}
+              className="text-primary hover:border-b-2 hover:border-primary"
+            >
+              {template.linkText}
+            </Link>
+          </p>
         </div>
       </div>
-      <AuthForm typeForm={type} />
-      <p className="mt-4 text-muted-foreground">
-        {template.access}{" "}
-        <Link
-          to={type}
-          className="text-primary hover:border-b-2 hover:border-primary"
-        >
-          {template.otherAuth}
-        </Link>
-      </p>
     </div>
   )
 }
