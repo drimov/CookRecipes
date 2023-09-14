@@ -50,7 +50,7 @@ const SearchPage: React.FC<SearchPageProps> = ({ onSearch }) => {
           </div>
           <div className="">
             <img
-              src="../public/gallery-3.jpg"
+              src="./gallery-3.jpg"
               alt="photo"
               className="w-80 rounded-full"
             />
