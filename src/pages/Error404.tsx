@@ -16,7 +16,7 @@ export default function Error404() {
             <p className="py-2 text-center text-lg md:py-4 md:text-xl">
               The page you are looking for does not exist.
             </p>
-            <Link to={"/"} className="flex">
+            <Link to={"home"} className="flex">
               <Button className="mx-auto" size={"lg"}>
                 Back to home
               </Button>
