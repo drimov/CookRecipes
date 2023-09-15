@@ -13,7 +13,8 @@
     "cy:open": "cypress open",
     "e2e:run": "start-server-and-test 'pnpm dev:cli' 5173 'pnpm cy:run'",
     "e2e:open": "start-server-and-test 'pnpm dev:cli' 5173 'pnpm cy:open'",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "generate:types": "pnpm dlx supabase gen types typescript --project-id tpyyaxuyruokfwnkqidu --schema public > src/types/supabase.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.3.1",
@@ -67,6 +68,7 @@
     "postcss": "^8.4.29",
     "prettier": "^3.0.3",
     "prettier-plugin-tailwindcss": "^0.5.4",
+    "supabase": ">=1.8.1",
     "tailwindcss": "^3.3.3",
     "typescript": "^5.0.2",
     "vite": "^4.4.5",
