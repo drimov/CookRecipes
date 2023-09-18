@@ -6,15 +6,11 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form"
-import { createUser, loginUser } from "@/commons/api/clients/auth"
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { RouteAuthKeys } from "@/types/app"
-import { getError } from "@/helpers"
-import { toastMessage } from "../toast-message"
 import { useForm } from "react-hook-form"
-import { useNavigate } from "react-router-dom"
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 
@@ -27,49 +23,13 @@ const authSchema = z.object({
     .min(6, { message: "Password need to be at least have 6 characters" }),
 })
 
-type ValidationAuthSchema = z.infer<typeof authSchema>
+export type ValidationAuthSchema = z.infer<typeof authSchema>
 
 type AuthFormProps = {
-  typeForm: RouteAuthKeys
+  authForm: RouteAuthKeys
+  onSubmit: (values: ValidationAuthSchema) => Promise<void>
 }
-const AuthForm = ({ typeForm }: AuthFormProps) => {
-  const navigate = useNavigate()
-
-  async function onSubmit(values: ValidationAuthSchema) {
-    if (typeForm === "signup") {
-      await createUser(values.email, values.password)
-        .then(() => {
-          navigate("/profile")
-        })
-        .catch((error: unknown) => {
-          const newError = getError(error, {
-            message: "Error when create user",
-          })
-          toastMessage({
-            title: newError.name,
-            message: newError.message,
-            variant: "error",
-          })
-        })
-    }
-    if (typeForm === "login") {
-      await loginUser(values.email, values.password)
-        .then(() => {
-          navigate("/profile")
-        })
-        .catch((error: unknown) => {
-          const newError = getError(error, {
-            message: "Error when login user",
-          })
-          toastMessage({
-            title: newError.name,
-            message: newError.message,
-            variant: "error",
-          })
-        })
-    }
-  }
-
+const AuthForm = ({ authForm, onSubmit }: AuthFormProps) => {
   const form = useForm<z.infer<typeof authSchema>>({
     resolver: zodResolver(authSchema),
     defaultValues: {
@@ -120,7 +80,7 @@ const AuthForm = ({ typeForm }: AuthFormProps) => {
           )}
         />
         <Button type="submit" className="w-full">
-          {typeForm === "login" ? "Log in" : "Create account"}
+          {authForm === "login" ? "Log in" : "Create account"}
         </Button>
       </form>
     </Form>
