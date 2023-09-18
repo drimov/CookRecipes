@@ -23,7 +23,7 @@ const LoginForm = () => {
         })
       })
   }
-  return <AuthForm authForm="signup" onSubmit={onSubmit} />
+  return <AuthForm authForm="login" onSubmit={onSubmit} />
 }
 
 export default LoginForm
