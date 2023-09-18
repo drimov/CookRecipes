@@ -1,4 +1,3 @@
-import { COLOR_ACCENT, links } from "@/commons/constants"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -8,11 +7,23 @@ import {
 import { Menu, Moon, Sun } from "lucide-react"
 
 import { Button } from "../ui/button"
+import { COLOR_ACCENT } from "@/commons/constants"
 import { NavLink } from "../ui/navlink"
+import { RouteKeys } from "@/types/app"
+import { getTitle } from "@/helpers"
 import { useTheme } from "@/hooks/useTheme"
 
 export function NavbarToggle() {
   const { theme, setTheme } = useTheme()
+
+  const routesBasic: RouteKeys[] = [
+    "home",
+    "produit",
+    "profile",
+    "search",
+    "login",
+    "signup",
+  ]
 
   return (
     <div className="flex md:hidden">
@@ -35,17 +46,10 @@ export function NavbarToggle() {
               </>
             </DropdownMenuItem>
           )}
-          <DropdownMenuItem>
-            <NavLink to={"/"} className={"w-full"} border="left">
-              <p className="px-2">Home</p>
-            </NavLink>
-          </DropdownMenuItem>
-          {links.map((link, index) => (
+          {routesBasic.map((route, index) => (
             <DropdownMenuItem key={index}>
-              <NavLink to={`/${link}`} className={"w-full"} border="left">
-                <p className="px-2">
-                  {link.charAt(0).toUpperCase() + link.slice(1)}
-                </p>
+              <NavLink to={route} className={"w-full"} border="left">
+                <p className="px-2">{getTitle(route)}</p>
               </NavLink>
             </DropdownMenuItem>
           ))}

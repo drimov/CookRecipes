@@ -7,9 +7,10 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 
-import { AuthPath } from "@/types/app"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import { Loader2 } from "lucide-react"
+import { RouteAuthKeys } from "@/types/app"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -23,17 +24,14 @@ const authSchema = z.object({
     .min(6, { message: "Password need to be at least have 6 characters" }),
 })
 
-type ValidationAuthSchema = z.infer<typeof authSchema>
+export type ValidationAuthSchema = z.infer<typeof authSchema>
 
 type AuthFormProps = {
-  typeForm: AuthPath
+  authForm: RouteAuthKeys
+  onSubmit: (values: ValidationAuthSchema) => Promise<void>
+  isLoading: boolean
 }
-const AuthForm = ({ typeForm }: AuthFormProps) => {
-  function onSubmit(values: ValidationAuthSchema) {
-    // do something
-    console.log(values)
-  }
-
+const AuthForm = ({ authForm, onSubmit, isLoading }: AuthFormProps) => {
   const form = useForm<z.infer<typeof authSchema>>({
     resolver: zodResolver(authSchema),
     defaultValues: {
@@ -59,6 +57,7 @@ const AuthForm = ({ typeForm }: AuthFormProps) => {
                   placeholder="johnDoe@example.com"
                   {...field}
                   className="text-muted-foreground"
+                  autoComplete="email"
                 />
               </FormControl>
               <FormMessage />
@@ -72,14 +71,21 @@ const AuthForm = ({ typeForm }: AuthFormProps) => {
             <FormItem>
               <FormLabel>Password</FormLabel>
               <FormControl>
-                <Input {...field} />
+                <Input
+                  {...field}
+                  type="password"
+                  autoComplete="current-password"
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
-        <Button type="submit" className="w-full">
-          {typeForm !== "login" ? "Log in" : "Create account"}
+        <Button type="submit" className="w-full" disabled={isLoading}>
+          {authForm === "login" ? "Log in" : "Create account"}
+          {isLoading ? (
+            <Loader2 className="ml-4 animate-spin" size={"24px"} />
+          ) : null}
         </Button>
       </form>
     </Form>

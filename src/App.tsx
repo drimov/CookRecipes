@@ -1,11 +1,14 @@
 import "./App.css"
 
-import { Authentification, Home, Produit, Profil, Search } from "./pages"
+import { Authentification, Home, Produit, Search } from "./pages"
 import { RouterProvider, createBrowserRouter } from "react-router-dom"
 
 import { AppWrapper } from "./context"
-import RootLayout from "./pages/RootLayout"
 import Error404 from "./pages/Error404"
+import Favorite from "./pages/profile/Favorite"
+import Profile from "./pages/profile/Profile"
+import ProfileLayout from "./pages/profile"
+import RootLayout from "./pages/RootLayout"
 
 const router = createBrowserRouter([
   {
@@ -22,8 +25,12 @@ const router = createBrowserRouter([
         element: <Search />,
       },
       {
-        path: "profil",
-        element: <Profil />,
+        path: "profile",
+        element: <ProfileLayout />,
+        children: [
+          { index: true, element: <Profile /> },
+          { path: "favorite", element: <Favorite /> },
+        ],
       },
       {
         path: "produit",

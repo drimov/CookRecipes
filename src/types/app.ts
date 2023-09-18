@@ -1,9 +1,7 @@
-import { authLinks, links } from "@/commons/constants"
+import { routes } from "@/commons/constants"
 
-type GenericLinks<T extends string> = `/${T}`
-export type Links =
-  | GenericLinks<(typeof links)[number]>
-  | GenericLinks<(typeof authLinks)[number]>
-  | "/"
-export type AuthLinks = GenericLinks<(typeof authLinks)[number]>
-export type AuthPath = (typeof authLinks)[number]
+type Route = typeof routes
+export type RouteKeys = keyof Route
+export type RouteAuthKeys = keyof Pick<Route, "signup" | "login">
+export type RouteProfileKeys = keyof Pick<Route, "profile" | "favorite">
+export type AppRouteKeys = RouteKeys | RouteAuthKeys | RouteProfileKeys

@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button"
+import Footer from "@/components/footer"
 import { Link } from "@/components/ui/link"
 import Navbar from "@/components/navbar"
 
@@ -15,17 +16,18 @@ export default function Error404() {
             <p className="py-2 text-center text-lg md:py-4 md:text-xl">
               The page you are looking for does not exist.
             </p>
-            <Link to={"/"} className="flex">
+            <Link to={"home"} className="flex">
               <Button className="mx-auto" size={"lg"}>
                 Back to home
               </Button>
             </Link>
           </div>
           <div className="w-full py-2">
-            <img src="/error-404.jpeg" alt="Error 404" className="mx-auto" />
+            <img src="/error_404.svg" alt="Error 404" className="mx-auto" />
           </div>
         </div>
       </div>
+      <Footer />
     </div>
   )
 }

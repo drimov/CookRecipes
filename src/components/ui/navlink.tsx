@@ -3,14 +3,15 @@ import {
   NavLink as NavLinkRouter,
 } from "react-router-dom"
 
-import { Links } from "@/types/app"
+import { AppRouteKeys } from "@/types/app"
 import { cn } from "@/lib/utils"
 import { cva } from "class-variance-authority"
+import { getRoute } from "@/helpers"
 
 const navlinkVariants = cva("lg:text-xl")
 
 type NavLinkProps = Omit<NavLinkPropsRouter, "to"> & {
-  to: Links
+  to: AppRouteKeys
   border?: "left" | "bottom"
   className?: string
 }
@@ -32,12 +33,12 @@ function NavLink({ className, to, border, ...props }: NavLinkProps) {
 
   return (
     <NavLinkRouter
-      to={to}
+      to={getRoute(to)}
       className={({ isActive }) =>
         cn(
           navlinkVariants(),
           `${
-            isActive ? "border-primary" : "border-none"
+            isActive ? "border-primary" : "border-transparent"
           }  ${borderValue} ${className}`
         )
       }
