@@ -27,10 +27,20 @@ async function loginUser(email: string, password: string) {
     email,
     password,
   })
+
   if (error) {
     throw error
   }
+
   return data
 }
 
-export { createUser, loginUser }
+async function logoutUser() {
+  const { error } = await supabase.auth.signOut()
+
+  if (error) {
+    throw error
+  }
+}
+
+export { createUser, loginUser, logoutUser }
