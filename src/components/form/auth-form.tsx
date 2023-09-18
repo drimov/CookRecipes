@@ -6,11 +6,13 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form"
+import { createUser, loginUser } from "@/commons/api/clients/auth"
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { RouteAuthKeys } from "@/types/app"
-import { useCreateUser } from "@/commons/api/hooks/auth"
+import { getError } from "@/helpers"
+import { toastMessage } from "../toast-message"
 import { useForm } from "react-hook-form"
 import { useNavigate } from "react-router-dom"
 import { z } from "zod"
@@ -32,15 +34,39 @@ type AuthFormProps = {
 }
 const AuthForm = ({ typeForm }: AuthFormProps) => {
   const navigate = useNavigate()
-  const { mutateAsync } = useCreateUser()
+
   async function onSubmit(values: ValidationAuthSchema) {
     if (typeForm === "signup") {
-      await mutateAsync({
-        email: values.email,
-        password: values.password,
-      }).then((res) => {
-        if (!res.error.emailIsTaken) navigate("/profile")
-      })
+      await createUser(values.email, values.password)
+        .then(() => {
+          navigate("/profile")
+        })
+        .catch((error: unknown) => {
+          const newError = getError(error, {
+            message: "Error when create user",
+          })
+          toastMessage({
+            title: newError.name,
+            message: newError.message,
+            variant: "error",
+          })
+        })
+    }
+    if (typeForm === "login") {
+      await loginUser(values.email, values.password)
+        .then(() => {
+          navigate("/profile")
+        })
+        .catch((error: unknown) => {
+          const newError = getError(error, {
+            message: "Error when login user",
+          })
+          toastMessage({
+            title: newError.name,
+            message: newError.message,
+            variant: "error",
+          })
+        })
     }
   }
 
