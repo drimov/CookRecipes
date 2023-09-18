@@ -9,31 +9,37 @@ export type Json =
 export interface Database {
   public: {
     Tables: {
-      users: {
+      profiles: {
         Row: {
+          avatar_url: string | null
           bio: string | null
-          email: string
+          favourites: string[] | null
           id: string
-          recipes: string[] | null
-          username: string
+          recipes: Json[] | null
+          updated_at: string | null
+          username: string | null
         }
         Insert: {
+          avatar_url?: string | null
           bio?: string | null
-          email: string
+          favourites?: string[] | null
           id: string
-          recipes?: string[] | null
-          username: string
+          recipes?: Json[] | null
+          updated_at?: string | null
+          username?: string | null
         }
         Update: {
+          avatar_url?: string | null
           bio?: string | null
-          email?: string
+          favourites?: string[] | null
           id?: string
-          recipes?: string[] | null
-          username?: string
+          recipes?: Json[] | null
+          updated_at?: string | null
+          username?: string | null
         }
         Relationships: [
           {
-            foreignKeyName: "users_id_fkey"
+            foreignKeyName: "profiles_id_fkey"
             columns: ["id"]
             referencedRelation: "users"
             referencedColumns: ["id"]
