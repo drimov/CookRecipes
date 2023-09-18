@@ -1,22 +1,18 @@
-import { supabase } from "./client"
+import { supabase } from "@/lib/supabase/client"
 
-async function signUp(email: string, password: string) {
-  const { data, error } = await supabase.auth.signUp({
+async function createUser(email: string, password: string) {
+  const { data, error: errorSignUp } = await supabase.auth.signUp({
     email,
     password,
-    options: {
-      data: {
-        name: "user",
-        bio: "",
-        receipes: [],
-      },
-    },
   })
+  const emailIsTaken = data.user?.identities?.length === 0
 
-  if (error) {
-    throw new Error(`${error.name} : ${error.message}`)
+  const error = {
+    errorAuth: errorSignUp,
+    emailIsTaken,
   }
-  return data
+
+  return { data, error }
 }
 
-export { signUp }
+export { createUser }
