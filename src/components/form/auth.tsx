@@ -9,6 +9,7 @@ import {
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import { Loader2 } from "lucide-react"
 import { RouteAuthKeys } from "@/types/app"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
@@ -28,8 +29,9 @@ export type ValidationAuthSchema = z.infer<typeof authSchema>
 type AuthFormProps = {
   authForm: RouteAuthKeys
   onSubmit: (values: ValidationAuthSchema) => Promise<void>
+  isLoading: boolean
 }
-const AuthForm = ({ authForm, onSubmit }: AuthFormProps) => {
+const AuthForm = ({ authForm, onSubmit, isLoading }: AuthFormProps) => {
   const form = useForm<z.infer<typeof authSchema>>({
     resolver: zodResolver(authSchema),
     defaultValues: {
@@ -79,8 +81,11 @@ const AuthForm = ({ authForm, onSubmit }: AuthFormProps) => {
             </FormItem>
           )}
         />
-        <Button type="submit" className="w-full">
+        <Button type="submit" className="w-full" disabled={isLoading}>
           {authForm === "login" ? "Log in" : "Create account"}
+          {isLoading ? (
+            <Loader2 className="ml-4 animate-spin" size={"24px"} />
+          ) : null}
         </Button>
       </form>
     </Form>
