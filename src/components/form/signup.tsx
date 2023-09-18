@@ -1,29 +1,23 @@
 import AuthForm, { ValidationAuthSchema } from "./auth"
 
-import { createUser } from "@/commons/api/clients/auth"
-import { getError } from "@/helpers"
-import { toastMessage } from "../toast-message"
-import { useNavigate } from "react-router-dom"
+import { useCreateUser } from "@/commons/api/hooks/auth"
 
 const SignUpForm = () => {
-  const navigate = useNavigate()
+  const mutation = useCreateUser()
+
   const onSubmit = async (values: ValidationAuthSchema) => {
-    await createUser(values.email, values.password)
-      .then(() => {
-        navigate("/profile")
-      })
-      .catch((error: unknown) => {
-        const newError = getError(error, {
-          message: "Error when create user",
-        })
-        toastMessage({
-          title: newError.name,
-          message: newError.message,
-          variant: "error",
-        })
-      })
+    await mutation.mutateAsync({
+      email: values.email,
+      password: values.password,
+    })
   }
-  return <AuthForm authForm="signup" onSubmit={onSubmit} />
+  return (
+    <AuthForm
+      authForm="signup"
+      onSubmit={onSubmit}
+      isLoading={mutation.isLoading}
+    />
+  )
 }
 
 export default SignUpForm
