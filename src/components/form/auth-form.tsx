@@ -8,13 +8,11 @@ import {
 } from "@/components/ui/form"
 
 import { Button } from "@/components/ui/button"
-import { CheckIcon } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { RouteAuthKeys } from "@/types/app"
-import { signUp } from "@/lib/supabase/auth"
+import { useCreateUser } from "@/commons/api/hooks/auth"
 import { useForm } from "react-hook-form"
 import { useNavigate } from "react-router-dom"
-import { useToast } from "../ui/use-toast"
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 
@@ -33,30 +31,15 @@ type AuthFormProps = {
   typeForm: RouteAuthKeys
 }
 const AuthForm = ({ typeForm }: AuthFormProps) => {
-  const { toast } = useToast()
   const navigate = useNavigate()
+  const { mutateAsync } = useCreateUser()
   async function onSubmit(values: ValidationAuthSchema) {
     if (typeForm === "signup") {
-      await signUp(values.email, values.password).then((data) => {
-        toast({
-          action: (
-            <div className="flex w-full items-center justify-start gap-2">
-              <CheckIcon />
-              <div className="flex flex-col">
-                <span className="font-semibold first-letter:capitalize">
-                  your account has been created
-                </span>
-                <span className="first-letter:capitalize">
-                  confirm your email address
-                </span>
-              </div>
-            </div>
-          ),
-          className: "bg-green-500 text-primary-foreground",
-        })
-        if (data.user) {
-          navigate("/profile")
-        }
+      await mutateAsync({
+        email: values.email,
+        password: values.password,
+      }).then((res) => {
+        if (!res.error.emailIsTaken) navigate("/profile")
       })
     }
   }
