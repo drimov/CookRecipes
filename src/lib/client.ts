@@ -31,15 +31,16 @@ export async function client<T>(
     signal,
     ...customConfig,
   }
-
+  /* eslint-disable @typescript-eslint/no-unsafe-return */
   return fetch(url, config).then(async (response) => {
     if (response.status === 401) {
       return Promise.reject(new Error("Your are not authenticated"))
     }
 
-    let result: null | T
+    let result = null
     try {
-      result = (await response.json()) as T
+      /* eslint-disable @typescript-eslint/no-unsafe-assignment */
+      result = response.status === 204 ? null : await response.json()
     } catch (error: unknown) {
       return Promise.reject(error)
     }
