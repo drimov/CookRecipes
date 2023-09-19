@@ -43,4 +43,15 @@ async function logoutUser() {
   }
 }
 
-export { createUser, loginUser, logoutUser }
+async function getSessionUser() {
+  const {
+    data: { session },
+    error,
+  } = await supabase.auth.getSession()
+  if (error) {
+    throw error
+  }
+  return session
+}
+
+export { createUser, loginUser, logoutUser, getSessionUser }

@@ -1,5 +1,6 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 
+import { AuthContextProvider } from "./AuthContext"
 import { NODE_ENV } from "@/commons/constants"
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools"
 import { ThemeProvider } from "./ThemeContext"
@@ -19,7 +20,9 @@ type AppWrapperProps = {
 const AppWrapper = ({ children }: AppWrapperProps) => {
   return (
     <QueryClientProvider client={queryClient}>
-      <ThemeProvider defaultTheme="dark">{children}</ThemeProvider>
+      <ThemeProvider defaultTheme="dark">
+        <AuthContextProvider>{children}</AuthContextProvider>
+      </ThemeProvider>
       {NODE_ENV === true && <ReactQueryDevtools initialIsOpen={false} />}
     </QueryClientProvider>
   )
