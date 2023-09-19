@@ -1,6 +1,12 @@
-import { createUser, loginUser, logoutUser } from "../clients/auth"
+import {
+  createUser,
+  getSessionUser,
+  loginUser,
+  logoutUser,
+} from "../clients/auth"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 
+import { Session } from "@supabase/supabase-js"
 import { getError } from "@/helpers"
 import { toastMessage } from "@/components/toast-message"
 import { useNavigate } from "react-router-dom"
@@ -66,4 +72,27 @@ const useLogoutUser = () => {
     },
   })
 }
-export { useCreateUser, useLoginUser, useLogoutUser }
+
+type useGetSessionUserProps = {
+  onSuccess: (session: Session | null) => void
+}
+const useGetSessionUser = ({ onSuccess }: useGetSessionUserProps) => {
+  return useMutation(() => getSessionUser(), {
+    onError: (error: unknown) => {
+      const newError = getError(error, {
+        message: "Error when get session user",
+        name: "Error when get session user",
+      })
+      toastMessage({
+        title: newError.name,
+        message: newError.message,
+        variant: "error",
+      })
+    },
+    onSuccess: (data) => {
+      onSuccess(data)
+    },
+  })
+}
+
+export { useCreateUser, useGetSessionUser, useLoginUser, useLogoutUser }
