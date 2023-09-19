@@ -1,7 +1,8 @@
-import { Authentification, Home, Produit, Profile, Search } from "@/pages"
+import { Authentification, Home, Produit, Search } from "@/pages"
 
 import Error404 from "@/pages/Error404"
 import Favorite from "@/pages/profile/Favorite"
+import Profile from "@/pages/profile/Profile"
 import ProfileLayout from "@/pages/profile"
 import ProtectedRoute from "./ProtectedRoute"
 import RootLayout from "@/pages/RootLayout"
