@@ -8,6 +8,7 @@ export const routes = {
   search: "/search",
   signup: "/signup",
   login: "/login",
+  logout: "/",
   favorite: "/profile/favorite",
 } as const
 
