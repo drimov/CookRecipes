@@ -1,6 +1,6 @@
 import "./App.css"
 
-import { Authentification, Home, Produit, Search } from "./pages"
+import { Authentification, Home, Produit } from "./pages"
 import { RouterProvider, createBrowserRouter } from "react-router-dom"
 
 import { AppWrapper } from "./context"
@@ -9,7 +9,6 @@ import Favorite from "./pages/profile/Favorite"
 import Profile from "./pages/profile/Profile"
 import ProfileLayout from "./pages/profile"
 import RootLayout from "./pages/RootLayout"
-// import Test from "./pages/Test"
 
 const router = createBrowserRouter([
   {
@@ -20,11 +19,6 @@ const router = createBrowserRouter([
       {
         index: true,
         element: <Home />,
-        // element: <Test />,
-      },
-      {
-        path: "search",
-        element: <Search onSearch={""} />,
       },
       {
         path: "profile",
