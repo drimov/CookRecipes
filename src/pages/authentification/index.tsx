@@ -1,7 +1,8 @@
-import AuthForm from "@/components/form/auth-form"
 import AuthHeader from "./AuthHeader"
 import { Link } from "@/components/ui/link"
+import LoginForm from "@/components/form/login"
 import { RouteAuthKeys } from "@/types/app"
+import SignUpForm from "@/components/form/signup"
 
 type AuthTemplate = {
   title: string
@@ -30,14 +31,25 @@ type AuthentificationProps = {
   type: RouteAuthKeys
 }
 const Authentification = ({ type }: AuthentificationProps) => {
-  const template = type === "login" ? LoginText : SignupText
+  let template: AuthTemplate
+  let AuthForm: JSX.Element
+
+  switch (type) {
+    case "login":
+      template = LoginText
+      AuthForm = <LoginForm />
+      break
+    case "signup":
+      template = SignupText
+      AuthForm = <SignUpForm />
+  }
   return (
     <div className="flex h-screen flex-col items-center justify-around py-16 md:py-28">
       <img src="/logo.svg" alt="logo" className="mx-auto my-4 w-60 md:w-72" />
       <div className="w-auto px-4 py-2 md:w-[500px] md:px-8">
         <div className="mx-auto w-[300px] py-4 md:w-[400px]">
           <AuthHeader subheading={template.subheading} title={template.title} />
-          <AuthForm typeForm={type} />
+          {AuthForm}
           <p className="mt-4 px-4 text-muted-foreground">
             {template.text}{" "}
             <Link

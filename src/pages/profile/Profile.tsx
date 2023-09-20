@@ -1,4 +1,4 @@
-import { ProfileForm } from "@/components/form/profile-form"
+import { ProfileForm } from "@/components/form/profile"
 import { Separator } from "@radix-ui/react-separator"
 
 export default function Profile() {

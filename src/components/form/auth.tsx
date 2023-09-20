@@ -8,13 +8,10 @@ import {
 } from "@/components/ui/form"
 
 import { Button } from "@/components/ui/button"
-import { CheckIcon } from "lucide-react"
 import { Input } from "@/components/ui/input"
+import { Loader2 } from "lucide-react"
 import { RouteAuthKeys } from "@/types/app"
-import { signUp } from "@/lib/supabase/auth"
 import { useForm } from "react-hook-form"
-import { useNavigate } from "react-router-dom"
-import { useToast } from "../ui/use-toast"
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 
@@ -27,40 +24,14 @@ const authSchema = z.object({
     .min(6, { message: "Password need to be at least have 6 characters" }),
 })
 
-type ValidationAuthSchema = z.infer<typeof authSchema>
+export type ValidationAuthSchema = z.infer<typeof authSchema>
 
 type AuthFormProps = {
-  typeForm: RouteAuthKeys
+  authForm: RouteAuthKeys
+  onSubmit: (values: ValidationAuthSchema) => Promise<void>
+  isLoading: boolean
 }
-const AuthForm = ({ typeForm }: AuthFormProps) => {
-  const { toast } = useToast()
-  const navigate = useNavigate()
-  async function onSubmit(values: ValidationAuthSchema) {
-    if (typeForm === "signup") {
-      await signUp(values.email, values.password).then((data) => {
-        toast({
-          action: (
-            <div className="flex w-full items-center justify-start gap-2">
-              <CheckIcon />
-              <div className="flex flex-col">
-                <span className="font-semibold first-letter:capitalize">
-                  your account has been created
-                </span>
-                <span className="first-letter:capitalize">
-                  confirm your email address
-                </span>
-              </div>
-            </div>
-          ),
-          className: "bg-green-500 text-primary-foreground",
-        })
-        if (data.user) {
-          navigate("/profile")
-        }
-      })
-    }
-  }
-
+const AuthForm = ({ authForm, onSubmit, isLoading }: AuthFormProps) => {
   const form = useForm<z.infer<typeof authSchema>>({
     resolver: zodResolver(authSchema),
     defaultValues: {
@@ -110,8 +81,11 @@ const AuthForm = ({ typeForm }: AuthFormProps) => {
             </FormItem>
           )}
         />
-        <Button type="submit" className="w-full">
-          {typeForm === "login" ? "Log in" : "Create account"}
+        <Button type="submit" className="w-full" disabled={isLoading}>
+          {authForm === "login" ? "Log in" : "Create account"}
+          {isLoading ? (
+            <Loader2 className="ml-4 animate-spin" size={"24px"} />
+          ) : null}
         </Button>
       </form>
     </Form>

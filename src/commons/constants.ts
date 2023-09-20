@@ -9,5 +9,8 @@ export const routes = {
   search: "/search",
   signup: "/signup",
   login: "/login",
+  logout: "/",
   favorite: "/profile/favorite",
 } as const
+
+export const API_URL = import.meta.env.VITE_API_URL

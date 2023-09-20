@@ -1,14 +1,18 @@
-import { RouteAuthKeys, RouteKeys } from "@/types/app"
+import { RegistredNav, UnregistredNav } from "./user"
 
-import { Button } from "../ui/button"
 import { ModeToggle } from "../mode-toggle"
 import { NavLink } from "../ui/navlink"
 import { NavbarToggle } from "./toggle"
+import { RouteKeys } from "@/types/app"
 import { getTitle } from "@/helpers"
+import { useAuthContext } from "@/hooks/useAuthContext"
+import { useLogoutUser } from "@/commons/api/hooks/auth"
 
 const Navbar = () => {
+  const { user } = useAuthContext()
+  const mutation = useLogoutUser()
   const routesNav: RouteKeys[] = ["home", "produit", "search"]
-  const routesNavButton: RouteAuthKeys[] = ["login", "signup"]
+
   return (
     <div className="flex h-20 flex-row items-center justify-between">
       <img src="/logo.svg" alt="logo" width={"100px"} />
@@ -25,16 +29,14 @@ const Navbar = () => {
       </nav>
       <div className="hidden gap-2 md:flex">
         <ModeToggle />
-        {routesNavButton.map((route, index) => (
-          <NavLink to={route} key={index}>
-            <Button
-              variant={route === "login" ? "ghost" : "default"}
-              className="lg:text-lg"
-            >
-              {getTitle(route)}
-            </Button>
-          </NavLink>
-        ))}
+        {user ? (
+          <RegistredNav
+            logout={mutation.mutateAsync}
+            isLoading={mutation.isLoading}
+          />
+        ) : (
+          <UnregistredNav />
+        )}
       </div>
       <NavbarToggle />
     </div>
