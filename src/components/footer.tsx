@@ -87,9 +87,13 @@ const SiteMap = ({ routesArray, user }: SiteMapProps) => {
         >
           <NavLink
             to={route}
-            border="left"
+            border={route !== "logout" ? "left" : undefined}
             className=" px-2"
-            onClick={user ? () => mutation.mutateAsync() : undefined}
+            onClick={
+              user && route === "logout"
+                ? () => mutation.mutateAsync()
+                : undefined
+            }
           >
             {getTitle(route)}
           </NavLink>
