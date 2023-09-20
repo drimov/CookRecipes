@@ -1,29 +1,17 @@
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { Menu, Moon, Sun } from "lucide-react"
+import { LogoutItem, RoutesItem, ThemeItem } from "./items"
 
-import { Button } from "../ui/button"
+import { Button } from "@/components/ui/button"
 import { COLOR_ACCENT } from "@/commons/constants"
-import { NavLink } from "../ui/navlink"
-import { RouteKeys } from "@/types/app"
-import { getTitle } from "@/helpers"
-import { useTheme } from "@/hooks/useTheme"
+import { Menu } from "lucide-react"
+import { useAuthContext } from "@/hooks/useAuthContext"
 
 export function NavbarToggle() {
-  const { theme, setTheme } = useTheme()
-
-  const routesBasic: RouteKeys[] = [
-    "home",
-    "produit",
-    "profile",
-    "search",
-    "login",
-    "signup",
-  ]
+  const { user } = useAuthContext()
 
   return (
     <div className="flex md:hidden">
@@ -35,24 +23,9 @@ export function NavbarToggle() {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
-          {theme === "dark" ? (
-            <DropdownMenuItem onClick={() => setTheme("light")}>
-              <Sun /> <p className="pl-2">Light</p>
-            </DropdownMenuItem>
-          ) : (
-            <DropdownMenuItem onClick={() => setTheme("dark")}>
-              <>
-                <Moon /> <p className="pl-2">Dark</p>
-              </>
-            </DropdownMenuItem>
-          )}
-          {routesBasic.map((route, index) => (
-            <DropdownMenuItem key={index}>
-              <NavLink to={route} className={"w-full"} border="left">
-                <p className="px-2">{getTitle(route)}</p>
-              </NavLink>
-            </DropdownMenuItem>
-          ))}
+          <ThemeItem />
+          <RoutesItem user={user} />
+          {user ? <LogoutItem /> : null}
         </DropdownMenuContent>
       </DropdownMenu>
     </div>
