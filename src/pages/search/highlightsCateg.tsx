@@ -1,6 +1,7 @@
 import { useState } from "react"
-import { useCategories } from "./searchItems.tsx"
+
 import { Button } from "@/components/ui/button"
+import { useCategories } from "@/commons/api/hooks/categories"
 
 const HighlightsCateg = () => {
   const { data, error, status } = useCategories()

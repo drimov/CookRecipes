@@ -1,9 +1,4 @@
-import { useQuery } from "@tanstack/react-query"
-import axios from "axios"
-
 import { z } from "zod"
-// Query the API
-const urlCategories = "https://www.themealdb.com/api/json/v1/1/categories.php"
 
 //------------ Schema zod pour categories
 
@@ -13,35 +8,13 @@ const CategorySchema = z.object({
   strCategoryThumb: z.string(),
   strCategoryDescription: z.string(),
 })
-const CategoriesSchema = z.object({
+export const CategoriesSchema = z.object({
   categories: z.array(CategorySchema),
 })
 
 // type Category = z.infer<typeof CategorySchema>
 
-export const useCategories = () => {
-  const { data, error, status } = useQuery({
-    queryKey: ["categories"],
-    queryFn: async () => {
-      const result = await axios.get(urlCategories).then((res) => {
-        const data = CategoriesSchema.safeParse(res.data)
-        if (!data.success) {
-          throw new Error(data.error.message)
-        }
-        return data.data
-        // res.data
-      })
-      return result
-    },
-  })
-  return { data, error, status }
-  // console.log(response)
-  //   const categories = response.data
-}
-
 //---------- Schema zod pour Meals
-
-const urlMeals = `https://www.themealdb.com/api/json/v1/1`
 
 const MealSchema = z.object({
   idMeal: z.string()?.nullable(),
@@ -100,26 +73,6 @@ const MealSchema = z.object({
   dateModified: z.string()?.nullable(),
 })
 
-const MealsSchema = z.object({
+export const MealsSchema = z.object({
   meals: z.array(MealSchema),
 })
-
-export const useMeals = ({ searchTerm }: { searchTerm: string }) => {
-  const { data, error, status } = useQuery({
-    queryKey: ["meals", searchTerm],
-    queryFn: async () => {
-      const result = await axios
-        .get(`${urlMeals}/search.php?s=${searchTerm}`)
-        .then((res) => {
-          const data = MealsSchema.safeParse(res.data)
-          if (!data.success) {
-            throw new Error(data.error.message)
-          }
-          return data.data
-          // res.data
-        })
-      return result
-    },
-  })
-  return { data, error, status }
-}

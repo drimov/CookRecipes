@@ -1,5 +1,5 @@
+import { useMeals } from "@/commons/api/hooks/categories"
 import { AlarmCheck, Star, UtensilsCrossed } from "lucide-react"
-import { useMeals } from "./searchItems.tsx"
 
 const Card = ({ searchTerm }: { searchTerm: string }) => {
   const { data, error, status } = useMeals({ searchTerm })
