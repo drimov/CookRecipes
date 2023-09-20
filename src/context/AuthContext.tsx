@@ -18,9 +18,13 @@ type AuthContextProvider = {
 }
 const AuthContextProvider = ({ children }: AuthContextProvider) => {
   const [user, setUser] = useState<User | null>(null)
+  const [loading, setLoading] = useState<boolean>(true)
 
-  const { mutateAsync, isLoading } = useGetSessionUser({
-    onSuccess: (session) => setUser(session?.user ?? null),
+  const { mutateAsync } = useGetSessionUser({
+    onSuccess: (session) => {
+      setUser(session?.user ?? null)
+      setLoading(false)
+    },
   })
 
   useEffect(() => {
@@ -35,7 +39,7 @@ const AuthContextProvider = ({ children }: AuthContextProvider) => {
     })
   }, [mutateAsync])
   return (
-    <AuthContext.Provider value={{ user, isLoading }}>
+    <AuthContext.Provider value={{ user, isLoading: loading }}>
       {children}
     </AuthContext.Provider>
   )
