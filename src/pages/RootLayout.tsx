@@ -16,14 +16,14 @@ const RootLayout = () => {
       {isLoading ? (
         <Loading />
       ) : (
-        <>
-          <div className="container bg-inherit px-4 md:px-8 lg:px-16">
+        <div className="flex min-h-screen flex-col">
+          <div className="container flex-grow bg-inherit px-4 md:px-8 lg:px-16">
             {!pathForbidden.includes(pathname) ? <Navbar /> : null}
             <Outlet />
             <Toaster />
           </div>
           {!pathForbidden.includes(pathname) ? <Footer /> : null}
-        </>
+        </div>
       )}
     </>
   )
