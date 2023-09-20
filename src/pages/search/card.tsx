@@ -1,24 +1,30 @@
 import { AlarmCheck, Star, UtensilsCrossed } from "lucide-react"
-import { dataCategories } from "./searchItems"
+import { useMeals } from "./searchItems.tsx"
 
-// console.log(dataCategories.categories)
+const Card = ({ searchTerm }: { searchTerm: string }) => {
+  const { data, error, status } = useMeals({ searchTerm })
 
-const Card = () => {
+  if (status === "loading") {
+    return <div>Loading...</div>
+  }
+
+  if (status === "error" && error instanceof Error) {
+    return <div>Error: {error.message}</div>
+  }
+
   return (
     <>
-      {dataCategories.categories.map((category) => {
+      {data?.meals.map((meal) => {
         return (
-          <div key={category.idCategory} className="">
+          <div key={meal.idMeal} className="">
             <div className="relative m-10 flex h-60 w-48 flex-col items-center   rounded-md bg-gradient-to-r from-green-400 to-blue-500 hover:from-pink-500 hover:to-yellow-500">
               <img
-                src={category.strCategoryThumb}
-                alt={category.strCategory}
+                src={meal.strMealThumb}
+                alt={meal.strMeal}
                 className="absolute  -top-10   w-28 rounded-full"
               />
               <div className="absolute inset-0 mt-10 flex flex-col items-center justify-center gap-2">
-                <h3 className="text-2xl font-semibold">
-                  {category.strCategory}
-                </h3>
+                <h3 className="text-2xl font-semibold">{meal.strMeal}</h3>
                 <div className="flex flex-row items-center gap-4">
                   <div className="flex flex-col items-center gap-2">
                     <AlarmCheck />

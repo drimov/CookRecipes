@@ -1,24 +1,11 @@
-import { Button } from "@/components/ui/button"
 import Card from "./card.tsx"
-import { Input } from "@/components/ui/input"
+import HighlightsCateg from "./highlightsCateg.tsx"
 
-import React, { useState } from "react"
-import { Search } from "lucide-react"
+import SearchForm from "./searchForm.tsx"
+import { useState } from "react"
 
-// import ButtonCateg from "./buttonCateg.tsx"
-
-type SearchPageProps = {
-  onSearch: (query: string) => void
-}
-
-const SearchPage: React.FC<SearchPageProps> = ({ onSearch }) => {
-  const [searchQuery, setSearchQuery] = useState("")
-
-  const handleSearch = () => {
-    // Perform search logic here using the searchQuery state
-    onSearch(searchQuery)
-  }
-
+const SearchPage = () => {
+  const [searchTerm, setSearchTerm] = useState("")
   return (
     <div className="place-content-center items-center justify-center p-2">
       <header className="flex items-center justify-center">
@@ -34,19 +21,7 @@ const SearchPage: React.FC<SearchPageProps> = ({ onSearch }) => {
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Quae,
               debitis.
             </p>
-            <div className="my-4 flex flex-row justify-center gap-1 space-x-1.5">
-              <Input
-                className="md:w-80"
-                id="name"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search here ..."
-              />
-              <Search className="my-auto justify-center md:hidden" />
-              <Button onClick={handleSearch} className="hidden md:block">
-                Search
-              </Button>
-            </div>
+            <SearchForm handleSearch={setSearchTerm} />
           </div>
           <div className="">
             <img
@@ -61,17 +36,12 @@ const SearchPage: React.FC<SearchPageProps> = ({ onSearch }) => {
       <div className="mb-10  flex flex-col items-center gap-6">
         <h3>Highlights</h3>
         <div className="grid grid-cols-1 items-center gap-4 md:flex md:flex-row">
-          {/* <ButtonCateg /> */}
-          <Button>Category 1</Button>
-          <Button variant="ghost">Category 2</Button>
-          <Button variant="ghost">Category 3</Button>
-          <Button variant="ghost">Category 4</Button>
-          <Button variant="ghost">Category 5</Button>
+          <HighlightsCateg />
         </div>
       </div>
       <div className="mb-16 mt-4 items-center border-t-2"></div>
       <div className="mb-4 grid grid-cols-1 place-content-center items-center border-2 p-2 sm:grid-cols-2  md:p-6 lg:grid-cols-3 lg:p-6">
-        <Card />
+        <Card searchTerm={searchTerm} />
       </div>
     </div>
   )

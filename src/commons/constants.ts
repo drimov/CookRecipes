@@ -1,4 +1,5 @@
 export const NODE_ENV = import.meta.env.DEV
+
 export const COLOR_ACCENT = "#FA7C16" // orange
 
 export const routes = {
@@ -10,3 +11,6 @@ export const routes = {
   login: "/login",
   favorite: "/profile/favorite",
 } as const
+
+// import API
+export const API_URL = import.meta.env.VITE_API_URL
