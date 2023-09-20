@@ -3,7 +3,7 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { LogoutItem, RoutesItem, ThemeItem } from "./items"
+import { RoutesItem, ThemeItem } from "./items"
 
 import { Button } from "@/components/ui/button"
 import { COLOR_ACCENT } from "@/commons/constants"
@@ -25,7 +25,6 @@ export function NavbarToggle() {
         <DropdownMenuContent align="end">
           <ThemeItem />
           <RoutesItem user={user} />
-          {user ? <LogoutItem /> : null}
         </DropdownMenuContent>
       </DropdownMenu>
     </div>

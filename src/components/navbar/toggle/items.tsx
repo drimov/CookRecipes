@@ -8,18 +8,6 @@ import { getTitle } from "@/helpers"
 import { useLogoutUser } from "@/commons/api/hooks/auth"
 import { useTheme } from "@/hooks/useTheme"
 
-export const LogoutItem = () => {
-  const mutation = useLogoutUser()
-
-  return (
-    <DropdownMenuItem onClick={() => mutation.mutateAsync()}>
-      <NavLink to={"home"} className={"w-full"}>
-        <p className="px-2">Logout</p>
-      </NavLink>
-    </DropdownMenuItem>
-  )
-}
-
 export const ThemeItem = () => {
   const { theme, setTheme } = useTheme()
 
@@ -38,6 +26,8 @@ type RoutesItemProps = {
 }
 
 export const RoutesItem = ({ user }: RoutesItemProps) => {
+  const mutation = useLogoutUser()
+
   const unRegistredRoutes: RouteKeys[] = [
     "home",
     "produit",
@@ -45,13 +35,30 @@ export const RoutesItem = ({ user }: RoutesItemProps) => {
     "login",
     "signup",
   ]
-  const registredRoutes: RouteKeys[] = ["home", "produit", "search", "profile"]
+  const registredRoutes: RouteKeys[] = [
+    "home",
+    "produit",
+    "search",
+    "profile",
+    "logout",
+  ]
   const routes = user ? registredRoutes : unRegistredRoutes
   return (
     <>
       {routes.map((route, index) => (
-        <DropdownMenuItem key={index}>
-          <NavLink to={route} className={"w-full"} border="left">
+        <DropdownMenuItem
+          key={index}
+          onClick={
+            user && route === "logout"
+              ? () => mutation.mutateAsync()
+              : undefined
+          }
+        >
+          <NavLink
+            to={route}
+            className={"w-full"}
+            border={route !== "logout" ? "left" : undefined}
+          >
             <p className="px-2">{getTitle(route)}</p>
           </NavLink>
         </DropdownMenuItem>

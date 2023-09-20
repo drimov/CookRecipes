@@ -1,7 +1,7 @@
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar"
 
 import { Button } from "@/components/ui/button"
-import { NavLink } from "react-router-dom"
+import { NavLink } from "../ui/navlink"
 import { RouteAuthKeys } from "@/types/app"
 import { getTitle } from "@/helpers"
 
@@ -37,9 +37,9 @@ export const RegistredNav = ({ logout }: RegistredNavProps) => {
         </Avatar>
       </NavLink>
 
-      <NavLink to={"home"}>
+      <NavLink to={"logout"}>
         <Button className="lg:text-lg" onClick={() => logout()}>
-          Logout
+          {getTitle("logout")}
         </Button>
       </NavLink>
     </>
