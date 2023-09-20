@@ -1,6 +1,7 @@
+import { getProfile, updateProfile } from "../clients/profile"
+
 import { Profile } from "@/types/database"
 import { getError } from "@/helpers"
-import { getProfile } from "../clients/profile"
 import { toastMessage } from "@/components/toast-message"
 import { useMutation } from "@tanstack/react-query"
 
@@ -26,4 +27,8 @@ const useGetProfile = ({ onSuccess }: useGetProfileUserProps) => {
   })
 }
 
-export { useGetProfile }
+const useUpdateProfile = () => {
+  return useMutation((profile: Partial<Profile>) => updateProfile(profile))
+}
+
+export { useGetProfile, useUpdateProfile }
