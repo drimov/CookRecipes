@@ -30,7 +30,10 @@ const Navbar = () => {
       <div className="hidden gap-2 md:flex">
         <ModeToggle />
         {user ? (
-          <RegistredNav logout={mutation.mutateAsync} />
+          <RegistredNav
+            logout={mutation.mutateAsync}
+            isLoading={mutation.isLoading}
+          />
         ) : (
           <UnregistredNav />
         )}

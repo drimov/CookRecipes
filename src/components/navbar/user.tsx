@@ -1,6 +1,7 @@
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar"
 
 import { Button } from "@/components/ui/button"
+import { LogOut } from "lucide-react"
 import { NavLink } from "../ui/navlink"
 import { RouteAuthKeys } from "@/types/app"
 import { getTitle } from "@/helpers"
@@ -25,9 +26,10 @@ export const UnregistredNav = () => {
 
 type RegistredNavProps = {
   logout: () => void
+  isLoading: boolean
 }
 
-export const RegistredNav = ({ logout }: RegistredNavProps) => {
+export const RegistredNav = ({ logout, isLoading }: RegistredNavProps) => {
   return (
     <>
       <NavLink to={"profile"}>
@@ -40,6 +42,10 @@ export const RegistredNav = ({ logout }: RegistredNavProps) => {
       <NavLink to={"logout"}>
         <Button className="lg:text-lg" onClick={() => logout()}>
           {getTitle("logout")}
+          <LogOut
+            className={`ml-4 ${isLoading ? `animate-ping` : `animate-none`}`}
+            size={"24px"}
+          />
         </Button>
       </NavLink>
     </>
