@@ -1,3 +1,4 @@
+import { Profile } from "@/types/database"
 import { supabase } from "@/lib/supabase/client"
 
 async function getProfile(id: string) {
@@ -13,4 +14,17 @@ async function getProfile(id: string) {
   return profile
 }
 
-export { getProfile }
+async function updateProfile(profile: Partial<Profile>) {
+  const updates = {
+    ...profile,
+    id: profile.id!,
+    updated_at: new Date().toDateString(),
+  }
+
+  const { error } = await supabase.from("profiles").upsert(updates)
+
+  if (error) {
+    throw error
+  }
+}
+export { getProfile, updateProfile }

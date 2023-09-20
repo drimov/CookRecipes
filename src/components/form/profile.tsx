@@ -10,9 +10,15 @@ import {
 
 import { Button } from "@/components/ui/button/index"
 import { Input } from "@/components/ui/input"
+import { Loader2 } from "lucide-react"
+import { Profile } from "@/types/database"
 import { Textarea } from "@/components/ui/textarea"
+import { toastMessage } from "../toast-message"
 import { useAuthContext } from "@/hooks/useAuthContext"
 import { useForm } from "react-hook-form"
+import { useState } from "react"
+import { useUpdateProfile } from "@/commons/api/hooks/profile"
+import { useUpdateUser } from "@/commons/api/hooks/auth"
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 
@@ -20,7 +26,7 @@ const profileFormSchema = z.object({
   username: z
     .string()
     .min(2, {
-      message: "Username must be at least 2 characters.",
+      message: "Username must be at least 6 characters.",
     })
     .max(30, {
       message: "Username must not be longer than 30 characters.",
@@ -30,17 +36,24 @@ const profileFormSchema = z.object({
       required_error: "Please select an email to display.",
     })
     .email(),
+  password: z
+    .string()
+    .min(6, { message: "Password need to be at least have 6 characters" }),
   bio: z.string().max(160).min(4),
 })
 
 type ProfileFormValues = z.infer<typeof profileFormSchema>
 
 export function ProfileForm() {
+  const [isLoading, setIsLoading] = useState(false)
   const { profile, user } = useAuthContext()
+  const mutationProfile = useUpdateProfile()
+  const mutationUser = useUpdateUser()
 
   const defaultValues: ProfileFormValues = {
     username: profile?.username ?? "",
     email: user?.email ?? "",
+    password: "******",
     bio: profile?.bio ?? "",
   }
 
@@ -50,8 +63,44 @@ export function ProfileForm() {
     mode: "onChange",
   })
 
-  function onSubmit(data: ProfileFormValues) {
-    console.log(data)
+  async function onSubmit(data: ProfileFormValues) {
+    setIsLoading(true)
+
+    // Check if nothing to update
+    if (JSON.stringify(data) === JSON.stringify(defaultValues)) {
+      setIsLoading(false)
+      return toastMessage({
+        title: "Nothing to update",
+        message: "",
+        variant: "error",
+      })
+    }
+
+    const updateProfile: Profile = {
+      ...profile!,
+      username: data.username,
+      bio: data.bio,
+    }
+    const isUserEmailUpdate = data.email !== user?.email
+    const isUserPasswordUpdate = data.password !== defaultValues.password
+
+    // Update profile
+    await mutationProfile.mutateAsync(updateProfile)
+
+    // Update user
+    if (isUserEmailUpdate || isUserPasswordUpdate) {
+      await mutationUser.mutateAsync({
+        email: data.email,
+        password:
+          data.password !== defaultValues.password ? data.password : undefined,
+      })
+    }
+    setIsLoading(false)
+
+    toastMessage({
+      title: "New setting up!",
+      message: "Profile is update",
+    })
   }
 
   return (
@@ -84,8 +133,30 @@ export function ProfileForm() {
                 <Input placeholder="your@email.com" {...field} />
               </FormControl>
               <FormDescription>
-                You can manage verified email addresses in your{" "}
-                <a href="/examples/forms">email settings</a>.
+                If you change your email, you need to go to the older one and
+                confirm the change. After you need to follow the link in the new
+                one.
+              </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="password"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Password</FormLabel>
+              <FormControl>
+                <Input
+                  placeholder="******"
+                  {...field}
+                  type="password"
+                  autoComplete="current-password"
+                />
+              </FormControl>
+              <FormDescription>
+                You need to re-logging after change your password
               </FormDescription>
               <FormMessage />
             </FormItem>
@@ -105,14 +176,19 @@ export function ProfileForm() {
                 />
               </FormControl>
               <FormDescription>
-                You can <span>@mention</span> other users and organizations to
-                link to them.
+                You can add a little bit of fantasy. Don&apos;t worry about
+                being too shine.
               </FormDescription>
               <FormMessage />
             </FormItem>
           )}
         />
-        <Button type="submit">Update profile</Button>
+        <Button type="submit">
+          Update profile{" "}
+          {isLoading ? (
+            <Loader2 className="ml-4 animate-spin" size={"24px"} />
+          ) : null}
+        </Button>
       </form>
     </Form>
   )
