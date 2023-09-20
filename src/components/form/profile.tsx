@@ -87,11 +87,12 @@ export function ProfileForm() {
     // Update profile
     await mutationProfile.mutateAsync(updateProfile)
 
-    // // Update user
+    // Update user
     if (isUserEmailUpdate || isUserPasswordUpdate) {
       await mutationUser.mutateAsync({
         email: data.email,
-        password: data.password,
+        password:
+          data.password !== defaultValues.password ? data.password : undefined,
       })
     }
     setIsLoading(false)
