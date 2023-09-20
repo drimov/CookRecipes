@@ -3,11 +3,17 @@ import { Facebook, Instagram, Twitter } from "lucide-react"
 import { Button } from "./ui/button"
 import { NavLink } from "./ui/navlink"
 import { RouteKeys } from "@/types/app"
+import { User } from "@supabase/supabase-js"
 import { getTitle } from "@/helpers"
+import { useAuthContext } from "@/hooks/useAuthContext"
+import { useLogoutUser } from "@/commons/api/hooks/auth"
 
 const Footer = () => {
+  const { user } = useAuthContext()
   const routesRight: RouteKeys[] = ["home", "produit", "search"]
-  const routesleft: RouteKeys[] = ["profile", "login", "signup"]
+  const routesUnregistred: RouteKeys[] = ["login", "signup"]
+  const routesRegistred: RouteKeys[] = ["profile", "logout"]
+  const routesleft = user ? routesRegistred : routesUnregistred
 
   return (
     <div className="flex flex-col items-center bg-primary-foreground px-4 py-2">
@@ -45,8 +51,8 @@ const Footer = () => {
           <div className="flex h-full flex-col items-center md:col-span-1 md:text-lg">
             <h1 className="my-2 text-lg text-primary md:text-2xl">Site map</h1>
             <div className="my-2 flex flex-row md:leading-8 lg:my-4">
-              <SiteMap routesArray={routesRight} />
-              <SiteMap routesArray={routesleft} />
+              <SiteMap routesArray={routesRight} user={user} />
+              <SiteMap routesArray={routesleft} user={user} />
             </div>
           </div>
         </div>
@@ -68,8 +74,10 @@ const Footer = () => {
 
 type SiteMapProps = {
   routesArray: RouteKeys[]
+  user: User | null
 }
-const SiteMap = ({ routesArray }: SiteMapProps) => {
+const SiteMap = ({ routesArray, user }: SiteMapProps) => {
+  const mutation = useLogoutUser()
   return (
     <ul>
       {routesArray.map((route, index) => (
@@ -77,7 +85,12 @@ const SiteMap = ({ routesArray }: SiteMapProps) => {
           key={index}
           className="border-2 border-transparent font-semibold text-muted-foreground"
         >
-          <NavLink to={route} border="left" className=" px-2">
+          <NavLink
+            to={route}
+            border="left"
+            className=" px-2"
+            onClick={user ? () => mutation.mutateAsync() : undefined}
+          >
             {getTitle(route)}
           </NavLink>
         </li>
