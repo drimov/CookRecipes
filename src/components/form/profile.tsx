@@ -1,8 +1,3 @@
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import * as z from "zod"
-
-import { Button } from "@/components/ui/button/index"
 import {
   Form,
   FormControl,
@@ -12,9 +7,14 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form"
+
+import { Button } from "@/components/ui/button/index"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
-import { toast } from "@/components/ui/use-toast"
+import { useAuthContext } from "@/hooks/useAuthContext"
+import { useForm } from "react-hook-form"
+import { z } from "zod"
+import { zodResolver } from "@hookform/resolvers/zod"
 
 const profileFormSchema = z.object({
   username: z
@@ -31,23 +31,19 @@ const profileFormSchema = z.object({
     })
     .email(),
   bio: z.string().max(160).min(4),
-  urls: z
-    .array(
-      z.object({
-        value: z.string().url({ message: "Please enter a valid URL." }),
-      })
-    )
-    .optional(),
 })
 
 type ProfileFormValues = z.infer<typeof profileFormSchema>
 
-// This can come from your database or API.
-const defaultValues: Partial<ProfileFormValues> = {
-  bio: "I own a computer.",
-}
-
 export function ProfileForm() {
+  const { profile, user } = useAuthContext()
+
+  const defaultValues: ProfileFormValues = {
+    username: profile?.username ?? "",
+    email: user?.email ?? "",
+    bio: profile?.bio ?? "",
+  }
+
   const form = useForm<ProfileFormValues>({
     resolver: zodResolver(profileFormSchema),
     defaultValues,
@@ -55,14 +51,7 @@ export function ProfileForm() {
   })
 
   function onSubmit(data: ProfileFormValues) {
-    toast({
-      title: "You submitted the following values:",
-      description: (
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-        </pre>
-      ),
-    })
+    console.log(data)
   }
 
   return (
@@ -79,7 +68,7 @@ export function ProfileForm() {
               </FormControl>
               <FormDescription>
                 This is your public display name. It can be your real name or a
-                pseudonym. You can only change this once every 30 days.
+                pseudonym.
               </FormDescription>
               <FormMessage />
             </FormItem>
