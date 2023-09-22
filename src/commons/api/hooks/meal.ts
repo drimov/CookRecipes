@@ -1,4 +1,8 @@
-import { CategoriesSchema, MealsSchema } from "@/types/meal"
+import {
+  CategoriesSchema,
+  MealsPerCategorySchema,
+  MealsSchema,
+} from "@/types/meal"
 
 import { API_URL } from "@/commons/constants"
 import { client } from "@/lib/client"
@@ -16,17 +20,32 @@ export const useMealCategories = () => {
   return { data, error, isLoading }
 }
 
-type useSearchMealNameProps = {
+type useSearchMealProps = {
   searchTerm: string
+  searchType: "category" | "name"
 }
-export const useSearchMealName = ({ searchTerm }: useSearchMealNameProps) => {
+export const useSearchMeal = ({
+  searchTerm,
+  searchType,
+}: useSearchMealProps) => {
+  const newSearchTerm =
+    searchTerm === "All" && searchType === "category" ? "" : searchTerm
+  const newSearchType =
+    searchTerm === "All" && searchType === "category" ? "name" : searchType
   const { data, error, isLoading } = useQuery({
-    queryKey: ["meals", searchTerm],
+    queryKey: ["meals", newSearchType, newSearchTerm],
     queryFn: async () => {
-      return await client(`${API_URL}/search.php?s=${searchTerm}`, {
-        zodSchema: MealsSchema,
-      })
+      if (searchType === "category") {
+        return await client(`${API_URL}/filter.php?c=${newSearchTerm}`, {
+          zodSchema: MealsPerCategorySchema,
+        })
+      } else if (searchType === "name") {
+        return await client(`${API_URL}/search.php?s=${newSearchTerm}`, {
+          zodSchema: MealsSchema,
+        })
+      }
     },
   })
+
   return { data, error, isLoading }
 }
