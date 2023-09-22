@@ -1,31 +1,59 @@
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { useState } from "react"
+import { Form, FormControl, FormField, FormItem } from "../ui/form"
+
+import { Input } from "../ui/input"
+import { Search } from "lucide-react"
+import { useForm } from "react-hook-form"
 
 type SearchFormProps = {
   handleSearch: React.Dispatch<React.SetStateAction<string>>
 }
+
+type SearchFormValues = {
+  research: string
+}
 const SearchForm = ({ handleSearch }: SearchFormProps) => {
-  const [searchTerm, setSearchTerm] = useState("")
+  const defaultValues = {
+    research: "",
+  }
+  const form = useForm<SearchFormValues>({
+    defaultValues,
+    mode: "onChange",
+  })
+  let searchTimeoutId: NodeJS.Timeout
+  const onChange = (data: SearchFormValues) => {
+    if (searchTimeoutId) {
+      clearTimeout(searchTimeoutId)
+    }
+    searchTimeoutId = setTimeout(() => {
+      handleSearch(data.research)
+    }, 2000)
+  }
 
   return (
-    <div className="my-4 flex flex-row justify-center gap-1 space-x-1.5">
-      <Input
-        className="md:w-80"
-        type="text"
-        value={searchTerm}
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-          setSearchTerm(e.target.value)
-        }
-        placeholder="Search here..."
-      />
-      <Button
-        className="hidden md:block"
-        onClick={() => handleSearch(searchTerm)}
+    <Form {...form}>
+      <form
+        className="flex flex-row justify-center lg:my-4"
+        onChange={() => onChange(form.getValues())}
       >
-        Search
-      </Button>
-    </div>
+        <FormField
+          control={form.control}
+          name="research"
+          render={({ field }) => (
+            <FormItem className="w-full max-w-sm">
+              <FormControl>
+                <Input
+                  placeholder="Search here..."
+                  {...field}
+                  className="text-muted-foreground"
+                  autoComplete="off"
+                  icon={<Search className="h-4 w-4" />}
+                />
+              </FormControl>
+            </FormItem>
+          )}
+        />
+      </form>
+    </Form>
   )
 }
 
