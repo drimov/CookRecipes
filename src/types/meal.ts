@@ -1,8 +1,6 @@
 import { z } from "zod"
 
-//------------ Schema zod pour categories
-
-const CategorySchema = z.object({
+export const CategorySchema = z.object({
   idCategory: z.string(),
   strCategory: z.string(),
   strCategoryThumb: z.string(),
@@ -12,11 +10,7 @@ export const CategoriesSchema = z.object({
   categories: z.array(CategorySchema),
 })
 
-// type Category = z.infer<typeof CategorySchema>
-
-//---------- Schema zod pour Meals
-
-const MealSchema = z.object({
+export const MealSchema = z.object({
   idMeal: z.string()?.nullable(),
   // strMeal: z.string()?.nullable(),
   strMeal: z.string(),
@@ -74,5 +68,7 @@ const MealSchema = z.object({
 })
 
 export const MealsSchema = z.object({
-  meals: z.array(MealSchema),
+  meals: z.array(MealSchema).nullable(),
 })
+
+export type Meal = z.infer<typeof MealSchema>
