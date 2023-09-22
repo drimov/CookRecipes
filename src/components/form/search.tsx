@@ -2,10 +2,11 @@ import { Form, FormControl, FormField, FormItem } from "../ui/form"
 
 import { Input } from "../ui/input"
 import { Search } from "lucide-react"
+import { SearchType } from "@/hooks/useSearch"
 import { useForm } from "react-hook-form"
 
 type SearchFormProps = {
-  handleSearch: React.Dispatch<React.SetStateAction<string>>
+  handleSearch: (searchTerm: string, type: SearchType) => void
 }
 
 type SearchFormValues = {
@@ -25,7 +26,7 @@ const SearchForm = ({ handleSearch }: SearchFormProps) => {
       clearTimeout(searchTimeoutId)
     }
     searchTimeoutId = setTimeout(() => {
-      handleSearch(data.research)
+      handleSearch(data.research, "name")
     }, 2000)
   }
 
