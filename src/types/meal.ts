@@ -71,4 +71,17 @@ export const MealsSchema = z.object({
   meals: z.array(MealSchema).nullable(),
 })
 
+export const MealPerCategorySchema = z.object({
+  strMeal: z.string(),
+  strMealThumb: z.string(),
+  idMeal: z.string(),
+})
+
+export const MealsPerCategorySchema = z.object({
+  meals: z.array(MealPerCategorySchema),
+})
 export type Meal = z.infer<typeof MealSchema>
+export type Meals = z.infer<typeof MealsSchema>
+
+export type MealPerCategory = z.infer<typeof MealPerCategorySchema>
+export type MealsPerCategory = z.infer<typeof MealsPerCategorySchema>
