@@ -1,48 +1,32 @@
-import { CategoriesSchema, MealsSchema } from "@/pages/search/searchItems"
+import { CategoriesSchema, MealsSchema } from "@/types/meal"
 
+import { API_URL } from "@/commons/constants"
+import { client } from "@/lib/client"
 import { useQuery } from "@tanstack/react-query"
-// import axios from "axios"
 
-const urlCategories = "https://www.themealdb.com/api/json/v1/1/categories.php"
-
-const urlMeals = `https://www.themealdb.com/api/json/v1/1`
-
-export const useCategories = () => {
-  const { data, error, status } = useQuery({
+export const useMealCategories = () => {
+  const { data, error, isLoading } = useQuery({
     queryKey: ["categories"],
     queryFn: async () => {
-      const result = await fetch(urlCategories).then((res) => {
-        const data = CategoriesSchema.safeParse(res.json())
-        if (!data.success) {
-          throw new Error(data.error.message)
-        }
-        return data.data
-        // res.data
+      return await client(`${API_URL}/categories.php`, {
+        zodSchema: CategoriesSchema,
       })
-      return result
     },
   })
-  return { data, error, status }
-  // console.log(response)
-  //   const categories = response.data
+  return { data, error, isLoading }
 }
 
-export const useMeals = ({ searchTerm }: { searchTerm: string }) => {
-  const { data, error, status } = useQuery({
+type useSearchMealNameProps = {
+  searchTerm: string
+}
+export const useSearchMealName = ({ searchTerm }: useSearchMealNameProps) => {
+  const { data, error, isLoading } = useQuery({
     queryKey: ["meals", searchTerm],
     queryFn: async () => {
-      const result = await fetch(`${urlMeals}/search.php?s=${searchTerm}`).then(
-        (res) => {
-          const data = MealsSchema.safeParse(res.json())
-          if (!data.success) {
-            throw new Error(data.error.message)
-          }
-          return data.data
-          // res.data
-        }
-      )
-      return result
+      return await client(`${API_URL}/search.php?s=${searchTerm}`, {
+        zodSchema: MealsSchema,
+      })
     },
   })
-  return { data, error, status }
+  return { data, error, isLoading }
 }
