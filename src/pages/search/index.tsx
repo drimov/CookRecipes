@@ -1,11 +1,15 @@
+import { SearchType, useSearch } from "@/hooks/useSearch"
+
 import Highlight from "./HighLight"
 import MealCardList from "./MealCardList"
 import SearchForm from "@/components/form/search"
-import { useState } from "react"
 
 const Search = () => {
-  const [searchTerm, setSearchTerm] = useState("")
-  const [category, setCategory] = useState("All")
+  const { setSearch, category, activeSearch, activeValue } = useSearch()
+
+  const handleSearch = (term: string, type: SearchType) => {
+    setSearch(term, type)
+  }
 
   return (
     <div className="items-center justify-center py-2">
@@ -22,7 +26,7 @@ const Search = () => {
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Quae,
               debitis.
             </p>
-            <SearchForm handleSearch={setSearchTerm} />
+            <SearchForm handleSearch={handleSearch} />
           </div>
           <img
             src="./gallery-3.jpg"
@@ -32,8 +36,8 @@ const Search = () => {
         </div>
       </div>
       <div className="flex flex-col">
-        <Highlight setCategory={setCategory} categorySelected={category} />
-        <MealCardList searchTerm={searchTerm} />
+        <Highlight setCategory={handleSearch} categorySelected={category} />
+        <MealCardList searchTerm={activeValue} searchType={activeSearch} />
       </div>
     </div>
   )

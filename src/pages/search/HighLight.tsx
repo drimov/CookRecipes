@@ -1,16 +1,17 @@
 import { Button } from "@/components/ui/button"
 import HighLightSkeleton from "@/components/skeleton/HighLight"
+import { SearchType } from "@/hooks/useSearch"
 import { useMealCategories } from "@/commons/api/hooks/meal"
 
 type HighLightProps = {
   categorySelected: string
-  setCategory: React.Dispatch<React.SetStateAction<string>>
+  setCategory: (category: string, type: SearchType) => void
 }
 const Highlight = ({ categorySelected, setCategory }: HighLightProps) => {
   const { data, isLoading } = useMealCategories()
 
   const onSelectCategory = (category: string) => {
-    setCategory(category)
+    setCategory(category, "category")
   }
 
   return (

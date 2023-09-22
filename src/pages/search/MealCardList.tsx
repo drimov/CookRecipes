@@ -1,9 +1,17 @@
 import MealCard from "./MealCard"
 import MealCardListSkeleton from "@/components/skeleton/MealCardList"
-import { useSearchMealName } from "@/commons/api/hooks/meal"
+import { SearchType } from "@/hooks/useSearch"
+import { useSearchMeal } from "@/commons/api/hooks/meal"
 
-const MealCardList = ({ searchTerm }: { searchTerm: string }) => {
-  const { data, isLoading } = useSearchMealName({ searchTerm })
+type MealCardListProps = {
+  searchTerm: string
+  searchType: SearchType
+}
+const MealCardList = ({ searchTerm, searchType }: MealCardListProps) => {
+  const { data, isLoading } = useSearchMeal({
+    searchTerm,
+    searchType,
+  })
 
   return (
     <div className="grid grid-cols-1 gap-4 py-8 sm:grid-cols-2 md:gap-6 lg:grid-cols-4">
