@@ -1,41 +1,65 @@
-import { useState } from "react"
-
 import { Button } from "@/components/ui/button"
-import { useCategories } from "@/commons/api/hooks/categories"
+import HighLightSkeleton from "@/components/skeleton/HighLight"
+import { useMealCategories } from "@/commons/api/hooks/meal"
 
-const HighlightsCateg = () => {
-  const { data, error, status } = useCategories()
+type HighLightProps = {
+  categorySelected: string
+  setCategory: React.Dispatch<React.SetStateAction<string>>
+}
+const Highlight = ({ categorySelected, setCategory }: HighLightProps) => {
+  const { data, isLoading } = useMealCategories()
 
-  const [isActiveCategory, setIsActiveCategory] = useState(
-    data?.categories[0].strCategory
-  )
-
-  if (status === "loading") {
-    return <div>Loading...</div>
-  }
-
-  if (status === "error" && error instanceof Error) {
-    return <div>Error: {error.message}</div>
+  const onSelectCategory = (category: string) => {
+    setCategory(category)
   }
 
   return (
-    //filtre card onclick button
-    <div>
-      {data?.categories.map((category) => {
-        return (
-          <Button
-            key={category.idCategory}
-            variant={
-              category.strCategory === isActiveCategory ? "default" : "ghost"
-            }
-            onClick={() => setIsActiveCategory(category.strCategory)}
-          >
-            {category.strCategory}
-          </Button>
-        )
-      })}
+    <div className="flex flex-col items-center border-y-2 border-secondary py-4">
+      <h3 className="text-xl font-semibold">Highlights</h3>
+      <div className="m-4 flex flex-wrap justify-center gap-2">
+        {isLoading ? (
+          <HighLightSkeleton />
+        ) : (
+          <>
+            <HighLightButton
+              category="All"
+              selectedCategory={categorySelected}
+              handleSelectCategory={onSelectCategory}
+            />
+            {data?.categories.map((category) => (
+              <HighLightButton
+                key={category.strCategory}
+                category={category.strCategory}
+                selectedCategory={categorySelected}
+                handleSelectCategory={onSelectCategory}
+              />
+            ))}
+          </>
+        )}
+      </div>
     </div>
   )
 }
 
-export default HighlightsCateg
+type HighLightButtonProps = {
+  category: string
+  selectedCategory: string
+  handleSelectCategory: (category: string) => void
+}
+const HighLightButton = ({
+  category,
+  selectedCategory,
+  handleSelectCategory,
+}: HighLightButtonProps) => {
+  return (
+    <Button
+      variant={category === selectedCategory ? "default" : "ghost"}
+      onClick={() => handleSelectCategory(category)}
+      className="rounded-full"
+    >
+      {category}
+    </Button>
+  )
+}
+
+export default Highlight
