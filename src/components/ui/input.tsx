@@ -5,10 +5,12 @@ import { Eye, EyeOff } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 export interface InputProps
-  extends React.InputHTMLAttributes<HTMLInputElement> {}
+  extends React.InputHTMLAttributes<HTMLInputElement> {
+  icon?: React.ReactElement
+}
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
-  ({ className, type, ...props }, ref) => {
+  ({ className, type, icon, ...props }, ref) => {
     const [showPassword, setShowPassword] = React.useState(false)
 
     const togglePasswordVisibility = () => {
@@ -37,6 +39,14 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
             ) : (
               <EyeOff className="h-4 w-4 text-gray-500" />
             )}
+          </button>
+        )}
+        {icon && (
+          <button
+            type="button"
+            className="absolute right-3 top-1/2 -translate-y-1/2 active:bg-transparent"
+          >
+            {icon}
           </button>
         )}
       </div>
