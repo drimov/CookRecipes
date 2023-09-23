@@ -10,7 +10,7 @@ import { useLogoutUser } from "@/commons/api/hooks/auth"
 
 const Footer = () => {
   const { user } = useAuthContext()
-  const routesRight: RouteKeys[] = ["home", "produit", "search"]
+  const routesRight: RouteKeys[] = ["home", "search"]
   const routesUnregistred: RouteKeys[] = ["login", "signup"]
   const routesRegistred: RouteKeys[] = ["profile", "logout"]
   const routesleft = user ? routesRegistred : routesUnregistred

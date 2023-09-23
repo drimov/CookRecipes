@@ -4,7 +4,7 @@ export const COLOR_ACCENT = "#FA7C16" // orange
 
 export const routes = {
   home: "/",
-  produit: "/produit",
+  recipe: "/recipe",
   profile: "/profile",
   search: "/search",
   signup: "/signup",
