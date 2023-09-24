@@ -106,17 +106,13 @@ type UserUpdate = {
   email?: string
   password?: string
 }
-// type useUpdateUserProps = {
-//   onSuccess: (user: User | null) => void
-// }
+
 const useUpdateUser = () => {
   return useMutation(
     (userUpdate: UserUpdate) =>
       updateUser(userUpdate.email, userUpdate.password),
     {
-      onSuccess: () => {
-        // onSuccess(data.user)
-      },
+      onSuccess: () => {},
     }
   )
 }

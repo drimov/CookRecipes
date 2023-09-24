@@ -40,6 +40,7 @@ const profileFormSchema = z.object({
     .string()
     .min(6, { message: "Password need to be at least have 6 characters" }),
   bio: z.string().max(160).min(4),
+  avatar_url: z.string(),
 })
 
 type ProfileFormValues = z.infer<typeof profileFormSchema>
@@ -55,6 +56,7 @@ export function ProfileForm() {
     email: user?.email ?? "",
     password: "******",
     bio: profile?.bio ?? "",
+    avatar_url: profile?.avatar_url ?? "",
   }
 
   const form = useForm<ProfileFormValues>({
@@ -80,6 +82,7 @@ export function ProfileForm() {
       ...profile!,
       username: data.username,
       bio: data.bio,
+      // avatar_url: data.avatar_url,
     }
     const isUserEmailUpdate = data.email !== user?.email
     const isUserPasswordUpdate = data.password !== defaultValues.password
@@ -106,6 +109,25 @@ export function ProfileForm() {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        <FormField
+          control={form.control}
+          name="avatar_url"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Avatar</FormLabel>
+              <FormControl>
+                {/* A debug */}
+                <Input
+                  type="file"
+                  accept="image/*"
+                  placeholder="Photo"
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
         <FormField
           control={form.control}
           name="username"

@@ -1,4 +1,9 @@
-import { getProfile, updateProfile } from "../clients/profile"
+import {
+  getProfile,
+  updateProfile,
+  downloadImage,
+  uploadAvatar,
+} from "../clients/profile"
 
 import { Profile } from "@/types/database"
 import { getError } from "@/helpers"
@@ -31,4 +36,58 @@ const useUpdateProfile = () => {
   return useMutation((profile: Partial<Profile>) => updateProfile(profile))
 }
 
-export { useGetProfile, useUpdateProfile }
+type useGetAvatarProps = {
+  onSuccess: (url: string) => void
+}
+const useGetAvatar = ({ onSuccess }: useGetAvatarProps) => {
+  return useMutation((path: string) => downloadImage(path), {
+    onError: (error: unknown) => {
+      const newError = getError(error, {
+        message: "Error when upload avatar",
+        name: "Error when upload avatar",
+      })
+      toastMessage({
+        title: newError.name,
+        message: newError.message,
+        variant: "error",
+      })
+    },
+    onSuccess: (data) => {
+      onSuccess(data)
+    },
+  })
+}
+
+type useUploadAvatarProps = {
+  onSuccess: () => void
+}
+
+type uploadAvatarProps = {
+  filePath: string
+  file: File
+}
+
+const useUploadAvatar = ({ onSuccess }: useUploadAvatarProps) => {
+  return useMutation(
+    (uploadVariable: uploadAvatarProps) =>
+      uploadAvatar(uploadVariable.filePath, uploadVariable.file),
+    {
+      onError: (error: unknown) => {
+        const newError = getError(error, {
+          message: "Error when upload avatar",
+          name: "Error when upload avatar",
+        })
+        toastMessage({
+          title: newError.name,
+          message: newError.message,
+          variant: "error",
+        })
+      },
+      onSuccess: () => {
+        onSuccess()
+      },
+    }
+  )
+}
+
+export { useGetProfile, useUpdateProfile, useGetAvatar, useUploadAvatar }
