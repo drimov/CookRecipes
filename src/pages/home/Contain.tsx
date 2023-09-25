@@ -21,22 +21,22 @@ const Contain = () => {
       </div>
       <div className="flex flex-col gap-4 md:grid md:grid-cols-2">
         <img
-          src="./gallery-8.jpg"
+          src="./gallery-4.svg"
           alt="image"
           className=" w-64 rounded-bl-3xl border-2 border-orange-300"
         />
         <img
-          src="./gallery-10.jpg"
+          src="./gallery-10.svg"
           alt="image"
           className=" w-64 rounded-bl-3xl border-2 border-orange-300"
         />
         <img
-          src="./gallery-11.jpg"
+          src="./gallery-11.svg"
           alt="image"
           className=" w-64 rounded-bl-3xl border-2 border-orange-300"
         />
         <img
-          src="./gallery-12.jpg"
+          src="./gallery-12.svg"
           alt="image"
           className=" w-64 rounded-bl-3xl border-2 border-orange-300"
         />
