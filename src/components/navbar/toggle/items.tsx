@@ -28,20 +28,8 @@ type RoutesItemProps = {
 export const RoutesItem = ({ user }: RoutesItemProps) => {
   const mutation = useLogoutUser()
 
-  const unRegistredRoutes: RouteKeys[] = [
-    "home",
-    "produit",
-    "search",
-    "login",
-    "signup",
-  ]
-  const registredRoutes: RouteKeys[] = [
-    "home",
-    "produit",
-    "search",
-    "profile",
-    "logout",
-  ]
+  const unRegistredRoutes: RouteKeys[] = ["home", "search", "login", "signup"]
+  const registredRoutes: RouteKeys[] = ["home", "search", "profile", "logout"]
   const routes = user ? registredRoutes : unRegistredRoutes
   return (
     <>
