@@ -107,12 +107,29 @@ type UserUpdate = {
   password?: string
 }
 
-const useUpdateUser = () => {
+type useUpdateUserProps = {
+  onError: () => void
+}
+const useUpdateUser = ({ onError }: useUpdateUserProps) => {
   return useMutation(
     (userUpdate: UserUpdate) =>
       updateUser(userUpdate.email, userUpdate.password),
     {
-      onSuccess: () => {},
+      onSuccess: () => {
+        // onSuccess(data.user)
+      },
+      onError: (error: unknown) => {
+        const newError = getError(error, {
+          message: "when update user",
+          name: "Unexpected error",
+        })
+        toastMessage({
+          title: newError.name,
+          message: newError.message,
+          variant: "error",
+        })
+        onError()
+      },
     }
   )
 }

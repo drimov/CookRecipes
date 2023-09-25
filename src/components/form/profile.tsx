@@ -48,8 +48,16 @@ type ProfileFormValues = z.infer<typeof profileFormSchema>
 export function ProfileForm() {
   const [isLoading, setIsLoading] = useState(false)
   const { profile, user } = useAuthContext()
-  const mutationProfile = useUpdateProfile()
-  const mutationUser = useUpdateUser()
+  const mutationProfile = useUpdateProfile({
+    onError: () => {
+      setIsLoading(false)
+    },
+  })
+  const mutationUser = useUpdateUser({
+    onError: () => {
+      setIsLoading(false)
+    },
+  })
 
   const defaultValues: ProfileFormValues = {
     username: profile?.username ?? "",

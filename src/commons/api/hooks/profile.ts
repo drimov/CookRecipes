@@ -32,8 +32,24 @@ const useGetProfile = ({ onSuccess }: useGetProfileUserProps) => {
   })
 }
 
-const useUpdateProfile = () => {
-  return useMutation((profile: Partial<Profile>) => updateProfile(profile))
+type useUpdateProfileProps = {
+  onError: () => void
+}
+const useUpdateProfile = ({ onError }: useUpdateProfileProps) => {
+  return useMutation((profile: Partial<Profile>) => updateProfile(profile), {
+    onError: (error: unknown) => {
+      const newError = getError(error, {
+        message: "when update profile",
+        name: "Unexpected error",
+      })
+      toastMessage({
+        title: newError.name,
+        message: newError.message,
+        variant: "error",
+      })
+      onError()
+    },
+  })
 }
 
 type useGetAvatarProps = {

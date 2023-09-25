@@ -9,15 +9,20 @@ import {
 } from "@/components/ui/card"
 import { Meal, MealPerCategory } from "@/types/meal"
 
+import { useNavigate } from "react-router-dom"
+
 type MealCardProps = {
   meal: Meal | MealPerCategory
 }
 
 const MealCard = ({ meal }: MealCardProps) => {
+  const navigate = useNavigate()
   return (
     <Card
       className="mx-auto my-4 h-60 w-48 border-2 hover:cursor-pointer hover:border-primary dark:bg-muted"
-      onClick={() => {} /*relier avec la page recette*/}
+      onClick={() => {
+        navigate(`/recipe/${meal.idMeal}`)
+      }}
     >
       <CardHeader className="h-1/3">
         <CardTitle className="relative inset-0 flex flex-col items-center">

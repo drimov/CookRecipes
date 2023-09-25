@@ -85,3 +85,8 @@ export type Meals = z.infer<typeof MealsSchema>
 
 export type MealPerCategory = z.infer<typeof MealPerCategorySchema>
 export type MealsPerCategory = z.infer<typeof MealsPerCategorySchema>
+
+export type Ingredient = {
+  ingredient: string
+  measure: string
+}
