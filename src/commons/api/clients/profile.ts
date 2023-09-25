@@ -35,17 +35,18 @@ async function downloadImage(path: string) {
   }
   const url = URL.createObjectURL(data)
 
-  return url
+  return url ?? null
 }
 
 async function uploadAvatar(filePath: string, file: File) {
-  const { error: uploadError } = await supabase.storage
+  const { data, error: uploadError } = await supabase.storage
     .from("avatars")
     .upload(filePath, file)
 
   if (uploadError) {
     throw uploadError
   }
+  return data
 }
 
 export { getProfile, updateProfile, downloadImage, uploadAvatar }

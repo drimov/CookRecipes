@@ -1,7 +1,7 @@
 import {
+  downloadImage,
   getProfile,
   updateProfile,
-  downloadImage,
   uploadAvatar,
 } from "../clients/profile"
 
@@ -75,7 +75,7 @@ const useGetAvatar = ({ onSuccess }: useGetAvatarProps) => {
 }
 
 type useUploadAvatarProps = {
-  onSuccess: () => void
+  onSuccess: (path: string) => void
 }
 
 type uploadAvatarProps = {
@@ -99,8 +99,8 @@ const useUploadAvatar = ({ onSuccess }: useUploadAvatarProps) => {
           variant: "error",
         })
       },
-      onSuccess: () => {
-        onSuccess()
+      onSuccess: (data) => {
+        onSuccess(data.path)
       },
     }
   )
