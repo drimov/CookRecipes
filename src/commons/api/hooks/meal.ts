@@ -49,3 +49,18 @@ export const useSearchMeal = ({
 
   return { data, error, isLoading }
 }
+
+type useRecipeProps = {
+  id?: string
+}
+export const useRecipe = ({ id }: useRecipeProps) => {
+  const { data, error, isLoading } = useQuery({
+    queryKey: ["recipe", id],
+    queryFn: async () => {
+      return await client(`${API_URL}/lookup.php?i=${id}`, {
+        zodSchema: MealsSchema,
+      })
+    },
+  })
+  return { data: data?.meals?.[0], error, isLoading }
+}

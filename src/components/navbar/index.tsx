@@ -11,7 +11,7 @@ import { useLogoutUser } from "@/commons/api/hooks/auth"
 const Navbar = () => {
   const { user } = useAuthContext()
   const mutation = useLogoutUser()
-  const routesNav: RouteKeys[] = ["home", "produit", "search"]
+  const routesNav: RouteKeys[] = ["home", "search"]
 
   return (
     <div className="flex h-20 flex-row items-center justify-between">
