@@ -1,5 +1,5 @@
 export { default as Home } from "./home"
 export { default as Search } from "./search"
 export { default as Profile } from "./profile"
-export { default as Produit } from "./Produit"
+export { default as Recipe } from "./recipe"
 export { default as Authentification } from "./authentification/index"

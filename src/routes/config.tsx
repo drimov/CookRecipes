@@ -1,10 +1,11 @@
-import { Authentification, Home, Produit, Search } from "@/pages"
+import { Authentification, Home, Search } from "@/pages"
 
 import Error404 from "@/pages/Error404"
 import Favorite from "@/pages/profile/Favorite"
 import Profile from "@/pages/profile/Profile"
 import ProfileLayout from "@/pages/profile"
 import ProtectedRoute from "./ProtectedRoute"
+import Recipe from "@/pages/recipe"
 import RootLayout from "@/pages/RootLayout"
 import { createBrowserRouter } from "react-router-dom"
 
@@ -35,8 +36,8 @@ export const router = createBrowserRouter([
         ],
       },
       {
-        path: "produit",
-        element: <Produit />,
+        path: "recipe/:id",
+        element: <Recipe />,
       },
       {
         path: "login",
