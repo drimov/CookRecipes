@@ -43,4 +43,26 @@ async function logoutUser() {
   }
 }
 
-export { createUser, loginUser, logoutUser }
+async function getSessionUser() {
+  const {
+    data: { session },
+    error,
+  } = await supabase.auth.getSession()
+  if (error) {
+    throw error
+  }
+  return session
+}
+
+async function updateUser(email?: string, password?: string) {
+  const { data, error } = await supabase.auth.updateUser({
+    email,
+    password,
+  })
+  if (error) {
+    throw error
+  }
+  return data
+}
+
+export { createUser, loginUser, logoutUser, getSessionUser, updateUser }
