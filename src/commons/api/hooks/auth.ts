@@ -106,6 +106,7 @@ type UserUpdate = {
   email?: string
   password?: string
 }
+
 type useUpdateUserProps = {
   onError: () => void
 }
