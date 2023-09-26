@@ -7,6 +7,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form"
+import { useUpdateProfile, useUploadAvatar } from "@/commons/api/hooks/profile"
 
 import { Button } from "@/components/ui/button/index"
 import { Input } from "@/components/ui/input"
@@ -17,7 +18,6 @@ import { toastMessage } from "../toast-message"
 import { useAuthContext } from "@/hooks/useAuthContext"
 import { useForm } from "react-hook-form"
 import { useState } from "react"
-import { useUpdateProfile } from "@/commons/api/hooks/profile"
 import { useUpdateUser } from "@/commons/api/hooks/auth"
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -47,7 +47,7 @@ type ProfileFormValues = z.infer<typeof profileFormSchema>
 
 export function ProfileForm() {
   const [isLoading, setIsLoading] = useState(false)
-  const { profile, user } = useAuthContext()
+  const { profile, user, setProfile } = useAuthContext()
   const mutationProfile = useUpdateProfile({
     onError: () => {
       setIsLoading(false)
@@ -58,6 +58,7 @@ export function ProfileForm() {
       setIsLoading(false)
     },
   })
+  const mutationAvatar = useUploadAvatar()
 
   const defaultValues: ProfileFormValues = {
     username: profile?.username ?? "",
@@ -72,6 +73,24 @@ export function ProfileForm() {
     defaultValues,
     mode: "onChange",
   })
+
+  async function onChangeAvatar(event: React.ChangeEvent<HTMLInputElement>) {
+    if (!event.target.files || event.target.files.length === 0) {
+      return toastMessage({
+        title: "Uploading avatar",
+        message: "You must select an image to upload.",
+        variant: "error",
+      })
+    }
+
+    const file = event.target.files[0]
+    const fileExt = file.name.split(".").pop()
+    const fileName = `${Math.random()}.${fileExt}`
+    const filePath = `${fileName}`
+
+    const data = await mutationAvatar.mutateAsync({ filePath, file })
+    return data.path
+  }
 
   async function onSubmit(data: ProfileFormValues) {
     setIsLoading(true)
@@ -90,7 +109,7 @@ export function ProfileForm() {
       ...profile!,
       username: data.username,
       bio: data.bio,
-      // avatar_url: data.avatar_url,
+      avatar_url: data.avatar_url,
     }
     const isUserEmailUpdate = data.email !== user?.email
     const isUserPasswordUpdate = data.password !== defaultValues.password
@@ -107,7 +126,7 @@ export function ProfileForm() {
       })
     }
     setIsLoading(false)
-
+    setProfile(updateProfile)
     toastMessage({
       title: "New setting up!",
       message: "Profile is update",
@@ -120,16 +139,23 @@ export function ProfileForm() {
         <FormField
           control={form.control}
           name="avatar_url"
-          render={({ field }) => (
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
+          render={({ field: { value, ...field } }) => (
             <FormItem>
               <FormLabel>Avatar</FormLabel>
               <FormControl>
-                {/* A debug */}
                 <Input
                   type="file"
                   accept="image/*"
-                  placeholder="Photo"
+                  placeholder="Avatar"
                   {...field}
+                  onChange={async (
+                    event: React.ChangeEvent<HTMLInputElement>
+                  ) => {
+                    const changeValue = await onChangeAvatar(event)
+                    field.onChange(changeValue)
+                  }}
+                  disabled={mutationAvatar.isLoading}
                 />
               </FormControl>
               <FormMessage />
@@ -143,7 +169,11 @@ export function ProfileForm() {
             <FormItem>
               <FormLabel>Username</FormLabel>
               <FormControl>
-                <Input placeholder="Username" {...field} />
+                <Input
+                  placeholder="Username"
+                  {...field}
+                  autoComplete="username"
+                />
               </FormControl>
               <FormDescription>
                 This is your public display name. It can be your real name or a
