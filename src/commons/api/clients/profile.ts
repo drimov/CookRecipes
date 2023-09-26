@@ -46,7 +46,7 @@ async function uploadAvatar(filePath: string, file: File) {
   if (uploadError) {
     throw uploadError
   }
-  return data
+  return data ?? null
 }
 
 export { getProfile, updateProfile, downloadImage, uploadAvatar }
