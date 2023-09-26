@@ -52,10 +52,7 @@ const useUpdateProfile = ({ onError }: useUpdateProfileProps) => {
   })
 }
 
-type useGetAvatarProps = {
-  onSuccess: (url: string) => void
-}
-const useGetAvatar = ({ onSuccess }: useGetAvatarProps) => {
+const useGetAvatar = () => {
   return useMutation((path: string) => downloadImage(path), {
     onError: (error: unknown) => {
       const newError = getError(error, {
@@ -68,14 +65,7 @@ const useGetAvatar = ({ onSuccess }: useGetAvatarProps) => {
         variant: "error",
       })
     },
-    onSuccess: (data) => {
-      onSuccess(data)
-    },
   })
-}
-
-type useUploadAvatarProps = {
-  onSuccess: (path: string) => void
 }
 
 type uploadAvatarProps = {
@@ -83,7 +73,7 @@ type uploadAvatarProps = {
   file: File
 }
 
-const useUploadAvatar = ({ onSuccess }: useUploadAvatarProps) => {
+const useUploadAvatar = () => {
   return useMutation(
     (uploadVariable: uploadAvatarProps) =>
       uploadAvatar(uploadVariable.filePath, uploadVariable.file),
@@ -98,9 +88,6 @@ const useUploadAvatar = ({ onSuccess }: useUploadAvatarProps) => {
           message: newError.message,
           variant: "error",
         })
-      },
-      onSuccess: (data) => {
-        onSuccess(data.path)
       },
     }
   )
