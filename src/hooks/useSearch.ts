@@ -6,7 +6,6 @@ type ActionType = SearchType
 type State = {
   activeSearch: SearchType
   activeValue: string
-  searchTerm: string
   category: string
 }
 
@@ -17,7 +16,6 @@ type Action =
 const initialState: State = {
   activeSearch: "name",
   activeValue: "",
-  searchTerm: "",
   category: "All",
 }
 
@@ -49,6 +47,6 @@ export const useSearch = () => {
     dispatch({ type, payload: search })
   }
 
-  const { activeSearch, searchTerm, category, activeValue } = state
-  return { activeSearch, searchTerm, category, activeValue, setSearch }
+  const { activeSearch, category, activeValue } = state
+  return { activeSearch, category, activeValue, setSearch }
 }
