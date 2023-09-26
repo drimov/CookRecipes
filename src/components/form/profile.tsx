@@ -10,6 +10,7 @@ import {
 import { useUpdateProfile, useUploadAvatar } from "@/commons/api/hooks/profile"
 
 import { Button } from "@/components/ui/button/index"
+import { ERROR } from "@/commons/constants"
 import { Input } from "@/components/ui/input"
 import { Loader2 } from "lucide-react"
 import { Profile } from "@/types/database"
@@ -26,19 +27,13 @@ const profileFormSchema = z.object({
   username: z
     .string()
     .min(2, {
-      message: "Username must be at least 6 characters.",
+      message: ERROR.INVALID_MIN_CHARACTERS_USERNAME,
     })
     .max(30, {
-      message: "Username must not be longer than 30 characters.",
+      message: ERROR.INVALID_MAX_CHARACTERS_USERNAME,
     }),
-  email: z
-    .string({
-      required_error: "Please select an email to display.",
-    })
-    .email(),
-  password: z
-    .string()
-    .min(6, { message: "Password need to be at least have 6 characters" }),
+  email: z.string().email(),
+  password: z.string().min(6, { message: ERROR.INVALID_PASSWORD }),
   bio: z.string().max(160).min(4),
   avatar_url: z.string(),
 })

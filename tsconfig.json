@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "types": ["@testing-library/jest-dom/vitest", "vitest/globals"],
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]
@@ -28,6 +29,7 @@
   "include": [
     "src",
     "vite.config.ts",
+    "vitest.config.ts",
     ".eslintrc.cjs",
     "tailwind.config.ts",
     "cypress.config.ts",
