@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button"
+import { NavLink } from "@/components/ui/navlink"
 
-const Contain = () => {
+const Content = () => {
   return (
     <div className="flex flex-col items-center md:flex-row">
       <div className="my-4 flex flex-col">
@@ -8,16 +9,18 @@ const Contain = () => {
         <h3 className="my-4 text-3xl font-bold">from around the world</h3>
 
         <h3 className="my-4 pr-4 text-base">
-          the recipes are written from the place the food comes from ti maintain
+          The recipes are written from the place the food comes from ti maintain
           the authenticity of the food.
         </h3>
-        <Button
-          variant="secondary"
-          className="mx-auto my-4 w-40 rounded-full border-2 border-orange-200 font-semibold md:block"
-          size={"lg"}
-        >
-          Learn More
-        </Button>
+        <NavLink to={"search"} className={"mx-auto"}>
+          <Button
+            variant="secondary"
+            className="mx-auto my-4 w-40 rounded-full border-2 border-orange-200 font-semibold md:block"
+            size={"lg"}
+          >
+            Learn More
+          </Button>
+        </NavLink>
       </div>
       <div className="flex flex-col gap-4 md:grid md:grid-cols-2">
         <img
@@ -45,4 +48,4 @@ const Contain = () => {
   )
 }
 
-export default Contain
+export default Content

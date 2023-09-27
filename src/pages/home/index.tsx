@@ -1,6 +1,6 @@
 import { Separator } from "@/components/ui/separator"
 import HeaderHome from "./Header"
-import Contain from "./Contain"
+import Content from "./Content"
 
 const Home = () => {
   return (
@@ -16,19 +16,19 @@ const Home = () => {
 
         <div className="flex flex-col gap-4 md:flex-row ">
           <img
-            src="./gallery-9.jpg"
+            src="./gallery-9.svg"
             alt="image"
             className=" w-60 rounded-bl-3xl border-2 border-orange-300"
           />
           <img
-            src="./gallery-5.jpg"
+            src="./gallery-5.svg"
             alt="image"
             className=" w-60 rounded-bl-3xl border-2 border-orange-300"
           />
         </div>
       </div>
       <Separator className="my-4" />
-      <Contain />
+      <Content />
     </div>
   )
 }
