@@ -29,7 +29,7 @@ const Search = () => {
             <SearchForm handleSearch={handleSearch} />
           </div>
           <img
-            src="./gallery-3.jpg"
+            src="./gallery-3.svg"
             alt="photo"
             className="hidden h-auto rounded-full md:block md:w-60 lg:w-80"
           />
