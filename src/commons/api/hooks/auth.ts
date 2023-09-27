@@ -43,18 +43,16 @@ const useCreateUser = () => {
     }
   )
 }
-const useLoginUser = () => {
-  const navigate = useNavigate()
 
+type useLoginUserProps = {
+  onSuccess: (id: string) => void
+}
+const useLoginUser = ({ onSuccess }: useLoginUserProps) => {
   return useMutation(
     (user: UserProps) => loginUser(user.email, user.password),
     {
-      onSuccess: () => {
-        toastMessage({
-          title: "Welcome back",
-          message: "",
-        })
-        navigate("/profile")
+      onSuccess: (data) => {
+        onSuccess(data.user.id)
       },
       onError: (error) => {
         const newError = getError(error, {
