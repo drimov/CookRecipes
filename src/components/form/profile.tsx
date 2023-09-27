@@ -151,6 +151,7 @@ export function ProfileForm() {
                     field.onChange(changeValue)
                   }}
                   disabled={mutationAvatar.isLoading}
+                  className="text-muted-foreground dark:file:text-secondary-foreground"
                 />
               </FormControl>
               <FormMessage />
