@@ -10,11 +10,13 @@ type AuthContextType = {
   user: User | null
   isLoading: boolean
   profile: Profile | null
+  setProfile: React.Dispatch<React.SetStateAction<Profile | null>>
 }
 const AuthContext = createContext<AuthContextType>({
   user: null,
   isLoading: true,
   profile: null,
+  setProfile: () => null,
 })
 
 type AuthContextProvider = {
@@ -54,7 +56,9 @@ const AuthContextProvider = ({ children }: AuthContextProvider) => {
     })
   }, [mutateAsync])
   return (
-    <AuthContext.Provider value={{ user, isLoading: loading, profile }}>
+    <AuthContext.Provider
+      value={{ user, isLoading: loading, profile, setProfile }}
+    >
       {children}
     </AuthContext.Provider>
   )

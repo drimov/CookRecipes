@@ -1,4 +1,9 @@
-import { getProfile, updateProfile } from "../clients/profile"
+import {
+  downloadImage,
+  getProfile,
+  updateProfile,
+  uploadAvatar,
+} from "../clients/profile"
 
 import { Profile } from "@/types/database"
 import { getError } from "@/helpers"
@@ -47,4 +52,45 @@ const useUpdateProfile = ({ onError }: useUpdateProfileProps) => {
   })
 }
 
-export { useGetProfile, useUpdateProfile }
+const useGetAvatar = () => {
+  return useMutation((path: string) => downloadImage(path), {
+    onError: (error: unknown) => {
+      const newError = getError(error, {
+        message: "Error when upload avatar",
+        name: "Error when upload avatar",
+      })
+      toastMessage({
+        title: newError.name,
+        message: newError.message,
+        variant: "error",
+      })
+    },
+  })
+}
+
+type uploadAvatarProps = {
+  filePath: string
+  file: File
+}
+
+const useUploadAvatar = () => {
+  return useMutation(
+    (uploadVariable: uploadAvatarProps) =>
+      uploadAvatar(uploadVariable.filePath, uploadVariable.file),
+    {
+      onError: (error: unknown) => {
+        const newError = getError(error, {
+          message: "Error when upload avatar",
+          name: "Error when upload avatar",
+        })
+        toastMessage({
+          title: newError.name,
+          message: newError.message,
+          variant: "error",
+        })
+      },
+    }
+  )
+}
+
+export { useGetProfile, useUpdateProfile, useGetAvatar, useUploadAvatar }

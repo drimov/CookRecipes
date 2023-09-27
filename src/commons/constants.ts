@@ -15,3 +15,19 @@ export const routes = {
 
 export const API_URL = import.meta.env.VITE_API_URL
 export const API_IMAGE = import.meta.env.VITE_API_IMAGE
+
+const INVALID_PASSWORD = "Password need to be at least have 6 characters."
+const INVALID_EMAIL = "Must be a valid email."
+const EMPTY_EMAIL = "Need to enter an email."
+const INVALID_MIN_CHARACTERS_USERNAME =
+  "Username must be at least 6 characters."
+const INVALID_MAX_CHARACTERS_USERNAME =
+  "Username must not be longer than 30 characters.."
+
+export const ERROR = {
+  INVALID_EMAIL,
+  EMPTY_EMAIL,
+  INVALID_PASSWORD,
+  INVALID_MIN_CHARACTERS_USERNAME,
+  INVALID_MAX_CHARACTERS_USERNAME,
+}

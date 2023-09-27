@@ -12,20 +12,20 @@ type AuthTemplate = {
   route: RouteAuthKeys
 }
 
-const LoginText: AuthTemplate = {
+export const LoginText: AuthTemplate = {
   title: "Welcome back,",
   subheading: "Sign in to continue",
   text: "New User?",
   linkText: "Sign up",
   route: "signup",
-}
-const SignupText: AuthTemplate = {
+} as const
+export const SignupText: AuthTemplate = {
   title: "Create an account",
   subheading: "Enter your email below to create your account.",
   text: "Already have an account?",
   linkText: "Log in",
   route: "login",
-}
+} as const
 
 type AuthentificationProps = {
   type: RouteAuthKeys
