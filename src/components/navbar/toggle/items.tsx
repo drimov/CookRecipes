@@ -11,12 +11,17 @@ import { useTheme } from "@/hooks/useTheme"
 export const ThemeItem = () => {
   const { theme, setTheme } = useTheme()
 
+  const oppositeTheme = theme === "dark" ? "light" : "dark"
+
   return (
     <DropdownMenuItem
       onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+      className="hover:cursor-pointer"
     >
       {theme === "dark" ? <Sun /> : <Moon />}
-      <p className="pl-2">{theme.charAt(0).toUpperCase() + theme.slice(1)}</p>
+      <p className="pl-2">
+        {oppositeTheme.charAt(0).toUpperCase() + oppositeTheme.slice(1)}
+      </p>
     </DropdownMenuItem>
   )
 }
@@ -34,22 +39,18 @@ export const RoutesItem = ({ user }: RoutesItemProps) => {
   return (
     <>
       {routes.map((route, index) => (
-        <DropdownMenuItem
-          key={index}
-          onClick={
-            user && route === "logout"
-              ? () => mutation.mutateAsync()
-              : undefined
-          }
-        >
-          <NavLink
-            to={route}
-            className={"w-full"}
-            border={route !== "logout" ? "left" : undefined}
+        <NavLink to={route} key={index}>
+          <DropdownMenuItem
+            onClick={
+              user && route === "logout"
+                ? () => mutation.mutateAsync()
+                : undefined
+            }
+            className="rounded-l-none hover:cursor-pointer hover:border-l-2 hover:border-primary"
           >
             <p className="px-2">{getTitle(route)}</p>
-          </NavLink>
-        </DropdownMenuItem>
+          </DropdownMenuItem>
+        </NavLink>
       ))}
     </>
   )
