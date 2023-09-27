@@ -59,7 +59,11 @@ const Recipe = () => {
             disabled={mutationProfile.isLoading}
           >
             <Heart
-              className={isFavourite ? "text-secondary" : "text-primary"}
+              className={
+                isFavourite
+                  ? "text-secondary dark:text-secondary-foreground"
+                  : "text-primary"
+              }
             />
           </Button>
         ) : null}
