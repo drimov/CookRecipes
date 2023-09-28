@@ -1,20 +1,16 @@
 import {
-  CategoriesSchema,
-  MealsPerCategorySchema,
-  MealsSchema,
-} from "@/types/meal"
+  getCategories,
+  getMealByCategory,
+  getMealByName,
+  getRecipe,
+} from "../clients/meal"
 import { useQueries, useQuery } from "@tanstack/react-query"
-
-import { API_URL } from "@/commons/constants"
-import { client } from "@/lib/client"
 
 export const useMealCategories = () => {
   const { data, error, isLoading } = useQuery({
     queryKey: ["categories"],
     queryFn: async () => {
-      return await client(`${API_URL}/categories.php`, {
-        zodSchema: CategoriesSchema,
-      })
+      return await getCategories()
     },
   })
   return { data, error, isLoading }
@@ -36,13 +32,9 @@ export const useSearchMeal = ({
     queryKey: ["meals", newSearchType, newSearchTerm],
     queryFn: async () => {
       if (searchType === "category") {
-        return await client(`${API_URL}/filter.php?c=${newSearchTerm}`, {
-          zodSchema: MealsPerCategorySchema,
-        })
+        return await getMealByCategory(newSearchTerm)
       } else if (searchType === "name") {
-        return await client(`${API_URL}/search.php?s=${newSearchTerm}`, {
-          zodSchema: MealsSchema,
-        })
+        return await getMealByName(newSearchTerm)
       }
     },
   })
@@ -57,9 +49,8 @@ export const useRecipe = ({ id }: useRecipeProps) => {
   const { data, error, isLoading } = useQuery({
     queryKey: ["recipe", id],
     queryFn: async () => {
-      return await client(`${API_URL}/lookup.php?i=${id}`, {
-        zodSchema: MealsSchema,
-      })
+      if (!id) throw new Error("No recipe id")
+      return await getRecipe(id)
     },
   })
   return { data: data?.meals?.[0], error, isLoading }
@@ -73,9 +64,7 @@ export const useRecipeList = ({ ids }: useRecipeListProps) => {
     queries: ids.map((id) => ({
       queryKey: ["recipe", id],
       queryFn: async () => {
-        return await client(`${API_URL}/lookup.php?i=${id}`, {
-          zodSchema: MealsSchema,
-        })
+        return getRecipe(id)
       },
     })),
   })
