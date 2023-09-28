@@ -3,12 +3,20 @@ import { Heart } from "lucide-react"
 import IngredientList from "./ingredient/IngredientList"
 import InstructionList from "./instruction/InstructionList"
 import Loading from "@/components/loading"
+import { Profile } from "@/types/database"
 import { useAuthContext } from "@/hooks/useAuthContext"
 import { useParams } from "react-router-dom"
 import { useRecipe } from "@/commons/api/hooks/meal"
 import { useState } from "react"
 import { useUpdateProfile } from "@/commons/api/hooks/profile"
 
+const getFavourites = (profile: Profile, idFavourite: string) => {
+  const isExistFavourite = profile?.favourites?.includes(idFavourite) ?? false
+  const newFarouvites: string[] = isExistFavourite
+    ? profile.favourites?.filter((id) => id !== idFavourite) ?? []
+    : [...(profile?.favourites ?? []), idFavourite]
+  return newFarouvites
+}
 const Recipe = () => {
   const { id } = useParams()
   const { data: recipe, isLoading } = useRecipe({ id })
@@ -19,29 +27,24 @@ const Recipe = () => {
 
   const mutationProfile = useUpdateProfile({
     onError: () => {},
+    onSuccess: () => {
+      setIsFavourite(!isFavourite)
+      const newFarouvites = getFavourites(profile!, id!)
+      setProfile({
+        ...profile!,
+        favourites: newFarouvites,
+      })
+    },
   })
 
   const handleFavourite = async (idMeal: string) => {
-    setIsFavourite(!isFavourite)
-    const isNewFavourite = !profile?.favourites?.includes(idMeal) ?? true
-    const newFarouvites: string[] = isNewFavourite
-      ? [...(profile?.favourites ?? []), idMeal]
-      : profile!.favourites!.filter((idFavourite) => idFavourite !== idMeal)
+    const newFarouvites = getFavourites(profile!, idMeal)
 
     // add or remove from favourites
     await mutationProfile.mutateAsync({
       ...profile,
       favourites: newFarouvites,
     })
-
-    if (mutationProfile.isSuccess) {
-      setProfile({
-        ...profile!,
-        favourites: newFarouvites,
-      })
-    } else {
-      setIsFavourite(!isFavourite)
-    }
   }
 
   return isLoading ? (

@@ -47,6 +47,7 @@ export function ProfileForm() {
     onError: () => {
       setIsLoading(false)
     },
+    onSuccess: () => {},
   })
   const mutationUser = useUpdateUser({
     onError: () => {
