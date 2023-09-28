@@ -148,3 +148,5 @@ export const testUserEmailTakenCreate = {
   user: testUserEmailTaken,
   session: testUserSession,
 }
+
+export const testFakeUrlImage = "url_test.png"
