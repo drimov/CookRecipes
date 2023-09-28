@@ -113,23 +113,30 @@ describe("Auth function: uploadAvatar", () => {
 
   test("uploadAvatar: error", async () => {
     server.use(
-      rest.post(`${SUPABASE_URL}/rest/v1/profiles`, async (_req, res, ctx) => {
-        return res(
-          ctx.status(400),
-          ctx.json({ message: "API error when update profile" })
-        )
-      })
+      rest.post(
+        `${SUPABASE_URL}/storage/v1/object/${SUPABASE_BUCKET}/${testFakeUrlImage}`,
+        async (_req, res, ctx) => {
+          return res(
+            ctx.status(400),
+            ctx.json({ message: "API error when upload image" })
+          )
+        }
+      )
     )
     const file = new File([testFakeUrlImage], testFakeUrlImage)
 
-    const mockUpdateProfile = vi.fn(
+    const mockUploadAvatar = vi.fn(
       async () => await uploadAvatar(testFakeUrlImage, file)
     )
 
     try {
-      await mockUpdateProfile()
+      await mockUploadAvatar()
     } catch (error) {
-      expect(error).toMatchInlineSnapshot()
+      expect(error).toMatchInlineSnapshot(`
+        {
+          "message": "API error when upload image",
+        }
+      `)
     }
   })
 })
