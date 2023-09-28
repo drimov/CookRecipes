@@ -34,8 +34,9 @@ const useGetProfile = ({ onSuccess }: useGetProfileUserProps) => {
 
 type useUpdateProfileProps = {
   onError: () => void
+  onSuccess: () => void
 }
-const useUpdateProfile = ({ onError }: useUpdateProfileProps) => {
+const useUpdateProfile = ({ onError, onSuccess }: useUpdateProfileProps) => {
   return useMutation((profile: Partial<Profile>) => updateProfile(profile), {
     onError: (error: unknown) => {
       const newError = getError(error, {
@@ -48,6 +49,9 @@ const useUpdateProfile = ({ onError }: useUpdateProfileProps) => {
         variant: "error",
       })
       onError()
+    },
+    onSuccess: () => {
+      onSuccess()
     },
   })
 }
