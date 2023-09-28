@@ -1,43 +1,42 @@
+import { Meal } from "@/types/meal"
 import { Separator } from "@radix-ui/react-separator"
+import { useAuthContext } from "@/hooks/useAuthContext"
+import { useNavigate } from "react-router-dom"
+import { useRecipeList } from "@/commons/api/hooks/meal"
 
 export default function Favorite() {
+  const navigate = useNavigate()
+  const { profile } = useAuthContext()
+  const data = useRecipeList({
+    ids: profile?.favourites ?? [],
+  })
+
+  const favouritesList: Meal[] = []
+  data.map((recipe) => {
+    if (recipe.data && recipe.data?.meals?.[0]) {
+      favouritesList.push(recipe.data?.meals?.[0])
+    }
+  })
+
   return (
     <div className="space-y-6">
       <div>
-        <h3 className="text-lg font-medium">Favorite</h3>
+        <h3 className="text-lg font-medium">Favourites</h3>
         <p className="text-sm text-muted-foreground">
-          Liste de vos recettes favorites.
+          Your list of favourites recipes!
         </p>
       </div>
       <Separator />
       <ul>
-        <li>
-          <strong>Recette 1</strong>
-          <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusantium
-            ipsa, eaque quasi omnis provident temporibus tenetur reprehenderit
-            nam. Deserunt quo earum porro facere odit, quod rerum eum
-            perferendis blanditiis repudiandae.
-          </p>
-        </li>
-        <li>
-          <strong>Recette 2</strong>
-          <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusantium
-            ipsa, eaque quasi omnis provident temporibus tenetur reprehenderit
-            nam. Deserunt quo earum porro facere odit, quod rerum eum
-            perferendis blanditiis repudiandae.
-          </p>
-        </li>
-        <li>
-          <strong>Recette 3</strong>
-          <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusantium
-            ipsa, eaque quasi omnis provident temporibus tenetur reprehenderit
-            nam. Deserunt quo earum porro facere odit, quod rerum eum
-            perferendis blanditiis repudiandae.
-          </p>
-        </li>
+        {favouritesList?.map((recipe) => (
+          <li
+            key={recipe.idMeal}
+            onClick={() => navigate(`/recipe/${recipe.idMeal}`)}
+          >
+            {recipe.strMeal}
+          </li>
+        ))}
+        {profile?.favourites?.length === 0 && <li>No favourites</li>}
       </ul>
     </div>
   )

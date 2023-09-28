@@ -3,10 +3,10 @@ import {
   MealsPerCategorySchema,
   MealsSchema,
 } from "@/types/meal"
+import { useQueries, useQuery } from "@tanstack/react-query"
 
 import { API_URL } from "@/commons/constants"
 import { client } from "@/lib/client"
-import { useQuery } from "@tanstack/react-query"
 
 export const useMealCategories = () => {
   const { data, error, isLoading } = useQuery({
@@ -63,4 +63,21 @@ export const useRecipe = ({ id }: useRecipeProps) => {
     },
   })
   return { data: data?.meals?.[0], error, isLoading }
+}
+
+type useRecipeListProps = {
+  ids: string[]
+}
+export const useRecipeList = ({ ids }: useRecipeListProps) => {
+  const recipeList = useQueries({
+    queries: ids.map((id) => ({
+      queryKey: ["recipe", id],
+      queryFn: async () => {
+        return await client(`${API_URL}/lookup.php?i=${id}`, {
+          zodSchema: MealsSchema,
+        })
+      },
+    })),
+  })
+  return recipeList
 }
