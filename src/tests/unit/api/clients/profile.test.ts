@@ -7,28 +7,27 @@ import {
 } from "@/commons/api/clients/profile"
 import { testFakeUrlImage, testUserProfile } from "@/mocks/data"
 
+import { URLS_DB } from "@/mocks/handlers"
 import { rest } from "msw"
 import { server } from "@/mocks/data/server"
 
-const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL
-const SUPABASE_BUCKET = import.meta.env.VITE_STORAGE_BUCKET
-
 describe("Auth function: getProfile", () => {
+  const testId = "1234"
   test("getProfile: success", async () => {
-    const profile = await getProfile("123")
+    const profile = await getProfile(testId)
     expect(profile).toEqual({ ...testUserProfile })
   })
 
   test("getProfile: error", async () => {
     server.use(
-      rest.get(`${SUPABASE_URL}/rest/v1/profiles`, async (_req, res, ctx) => {
+      rest.get(URLS_DB.PROFILES, async (_req, res, ctx) => {
         return res(
           ctx.status(400),
           ctx.json({ message: "API error when get profile" })
         )
       })
     )
-    const mockGetProfile = vi.fn(async () => await getProfile("1234"))
+    const mockGetProfile = vi.fn(async () => await getProfile(testId))
 
     try {
       await mockGetProfile()
@@ -48,7 +47,7 @@ describe("Auth function: updateProfile", () => {
 
   test("updateProfile: error", async () => {
     server.use(
-      rest.post(`${SUPABASE_URL}/rest/v1/profiles`, async (_req, res, ctx) => {
+      rest.post(URLS_DB.PROFILES, async (_req, res, ctx) => {
         return res(
           ctx.status(400),
           ctx.json({ message: "API error when update profile" })
@@ -82,15 +81,12 @@ describe("Auth function: downloadImage", () => {
 
   test("downloadImage: error", async () => {
     server.use(
-      rest.get(
-        `${SUPABASE_URL}/storage/v1/object/${SUPABASE_BUCKET}/path`,
-        async (_req, res, ctx) => {
-          return res(
-            ctx.status(400),
-            ctx.json({ message: "API error when upload image" })
-          )
-        }
-      )
+      rest.get(URLS_DB.STORAGES, async (_req, res, ctx) => {
+        return res(
+          ctx.status(400),
+          ctx.json({ message: "API error when upload image" })
+        )
+      })
     )
     const mockDownloadImage = vi.fn(async () => await downloadImage("path"))
 
@@ -104,26 +100,22 @@ describe("Auth function: downloadImage", () => {
   })
 })
 describe("Auth function: uploadAvatar", () => {
-  test("uploadAvatar: success", async () => {
-    const file = new File([testFakeUrlImage], testFakeUrlImage)
+  const file = new File([testFakeUrlImage], testFakeUrlImage)
 
+  test("uploadAvatar: success", async () => {
     const result = await uploadAvatar(testFakeUrlImage, file)
     expect(result.path).toEqual(testFakeUrlImage)
   })
 
   test("uploadAvatar: error", async () => {
     server.use(
-      rest.post(
-        `${SUPABASE_URL}/storage/v1/object/${SUPABASE_BUCKET}/${testFakeUrlImage}`,
-        async (_req, res, ctx) => {
-          return res(
-            ctx.status(400),
-            ctx.json({ message: "API error when upload image" })
-          )
-        }
-      )
+      rest.post(URLS_DB.STORAGES, async (_req, res, ctx) => {
+        return res(
+          ctx.status(400),
+          ctx.json({ message: "API error when upload image" })
+        )
+      })
     )
-    const file = new File([testFakeUrlImage], testFakeUrlImage)
 
     const mockUploadAvatar = vi.fn(
       async () => await uploadAvatar(testFakeUrlImage, file)
