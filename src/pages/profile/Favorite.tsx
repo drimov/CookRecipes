@@ -1,11 +1,11 @@
 import { Meal } from "@/types/meal"
+import MealCard from "../search/MealCard"
+import MealCardListSkeleton from "@/components/skeleton/MealCardList"
 import { Separator } from "@radix-ui/react-separator"
 import { useAuthContext } from "@/hooks/useAuthContext"
-import { useNavigate } from "react-router-dom"
 import { useRecipeList } from "@/commons/api/hooks/meal"
 
 export default function Favorite() {
-  const navigate = useNavigate()
   const { profile } = useAuthContext()
   const data = useRecipeList({
     ids: profile?.favourites ?? [],
@@ -19,7 +19,7 @@ export default function Favorite() {
   })
 
   return (
-    <div className="space-y-6">
+    <div className="w-full space-y-6">
       <div>
         <h3 className="text-lg font-medium">Favourites</h3>
         <p className="text-sm text-muted-foreground">
@@ -27,17 +27,16 @@ export default function Favorite() {
         </p>
       </div>
       <Separator />
-      <ul>
-        {favouritesList?.map((recipe) => (
-          <li
-            key={recipe.idMeal}
-            onClick={() => navigate(`/recipe/${recipe.idMeal}`)}
-          >
-            {recipe.strMeal}
-          </li>
-        ))}
-        {profile?.favourites?.length === 0 && <li>No favourites</li>}
-      </ul>
+      {profile?.favourites?.length === 0 && <p>No favourites</p>}
+      <div className="grid grid-cols-1 gap-4 py-8 sm:grid-cols-2 md:gap-6 lg:grid-cols-4">
+        {!data ? (
+          <MealCardListSkeleton />
+        ) : (
+          favouritesList.map((meal) => (
+            <MealCard meal={meal} key={meal.idMeal} />
+          ))
+        )}
+      </div>
     </div>
   )
 }
