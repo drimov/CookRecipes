@@ -2,8 +2,8 @@ import { Button } from "@/components/ui/button"
 import { Heart } from "lucide-react"
 import IngredientList from "./ingredient/IngredientList"
 import InstructionList from "./instruction/InstructionList"
-import Loading from "@/components/loading"
 import { Profile } from "@/types/database"
+import RecipeSkeleton from "@/components/skeleton/recipe"
 import { useAuthContext } from "@/hooks/useAuthContext"
 import { useParams } from "react-router-dom"
 import { useRecipe } from "@/commons/api/hooks/meal"
@@ -48,7 +48,7 @@ const Recipe = () => {
   }
 
   return isLoading ? (
-    <Loading />
+    <RecipeSkeleton />
   ) : (
     <div className="flex flex-col px-4 md:my-8 lg:my-16">
       <div className="flex w-full flex-row items-center justify-between bg-primary p-4 md:p-8">
