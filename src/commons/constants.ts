@@ -31,3 +31,10 @@ export const ERROR = {
   INVALID_MIN_CHARACTERS_USERNAME,
   INVALID_MAX_CHARACTERS_USERNAME,
 }
+
+export const URL_API = {
+  CATEGORY: `${API_URL}/filter.php?c`,
+  CATEGORIES: `${API_URL}/categories.php`,
+  NAME: `${API_URL}/search.php?s`,
+  RECIPE: `${API_URL}/lookup.php?i`,
+}
