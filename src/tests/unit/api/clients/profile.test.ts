@@ -7,7 +7,7 @@ import {
 } from "@/commons/api/clients/profile"
 import { testFakeUrlImage, testUserProfile } from "@/mocks/data"
 
-import { URLS_DB } from "@/mocks/handlers"
+import { URL_DB } from "@/mocks/handlers"
 import { rest } from "msw"
 import { server } from "@/mocks/data/server"
 
@@ -20,7 +20,7 @@ describe("Auth function: getProfile", () => {
 
   test("getProfile: error", async () => {
     server.use(
-      rest.get(URLS_DB.PROFILES, async (_req, res, ctx) => {
+      rest.get(URL_DB.PROFILES, async (_req, res, ctx) => {
         return res(
           ctx.status(400),
           ctx.json({ message: "API error when get profile" })
@@ -47,7 +47,7 @@ describe("Auth function: updateProfile", () => {
 
   test("updateProfile: error", async () => {
     server.use(
-      rest.post(URLS_DB.PROFILES, async (_req, res, ctx) => {
+      rest.post(URL_DB.PROFILES, async (_req, res, ctx) => {
         return res(
           ctx.status(400),
           ctx.json({ message: "API error when update profile" })
@@ -81,7 +81,7 @@ describe("Auth function: downloadImage", () => {
 
   test("downloadImage: error", async () => {
     server.use(
-      rest.get(URLS_DB.STORAGES, async (_req, res, ctx) => {
+      rest.get(URL_DB.STORAGES, async (_req, res, ctx) => {
         return res(
           ctx.status(400),
           ctx.json({ message: "API error when upload image" })
@@ -109,7 +109,7 @@ describe("Auth function: uploadAvatar", () => {
 
   test("uploadAvatar: error", async () => {
     server.use(
-      rest.post(URLS_DB.STORAGES, async (_req, res, ctx) => {
+      rest.post(URL_DB.STORAGES, async (_req, res, ctx) => {
         return res(
           ctx.status(400),
           ctx.json({ message: "API error when upload image" })
