@@ -20,7 +20,7 @@ const getFavourites = (profile: Profile, idFavourite: string) => {
 const Recipe = () => {
   const { id } = useParams()
   const { data: recipe, isLoading } = useRecipe({ id })
-  const { profile, setProfile } = useAuthContext()
+  const { profile, setProfile, user } = useAuthContext()
   const [isFavourite, setIsFavourite] = useState(
     profile?.favourites?.includes(id!) ?? false
   )
@@ -55,7 +55,7 @@ const Recipe = () => {
         <h1 className="text-center text-3xl font-semibold text-secondary dark:text-secondary-foreground lg:text-5xl">
           {recipe?.strMeal}
         </h1>
-        {profile ? (
+        {user ? (
           <Button
             variant={isFavourite ? "destructive" : "outline"}
             onClick={() => handleFavourite(recipe?.idMeal ?? "")}
