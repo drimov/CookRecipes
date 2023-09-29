@@ -1,7 +1,9 @@
 import { Skeleton } from "../ui/skeleton"
 
-const HighLightSkeleton = () => {
-  const nbHighLight = 10
+type HighLightProps = {
+  nbHighLight?: number
+}
+const HighLightSkeleton = ({ nbHighLight = 10 }: HighLightProps) => {
   const list = []
   for (let i = 0; i < nbHighLight; i++) {
     list.push(i)
