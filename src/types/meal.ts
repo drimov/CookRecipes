@@ -80,6 +80,8 @@ export const MealPerCategorySchema = z.object({
 export const MealsPerCategorySchema = z.object({
   meals: z.array(MealPerCategorySchema),
 })
+export type MealCategory = z.infer<typeof CategorySchema>
+export type MealCategories = z.infer<typeof CategoriesSchema>
 export type Meal = z.infer<typeof MealSchema>
 export type Meals = z.infer<typeof MealsSchema>
 
