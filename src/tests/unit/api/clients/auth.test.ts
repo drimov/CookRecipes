@@ -7,9 +7,9 @@ import {
 } from "@/commons/api/clients/auth"
 import { describe, expect, test } from "vitest"
 import {
-  testUserCreate,
-  testUserEmailTakenCreate,
-  testUserSession,
+  fakeUserCreate,
+  fakeUserEmailTakenCreate,
+  fakeUserSession,
 } from "@/mocks/data"
 
 import { faker } from "@faker-js/faker"
@@ -18,7 +18,7 @@ import { supabase } from "@/lib/supabase/client"
 describe("Auth function: createUser", () => {
   test("createUser: success", async () => {
     const mockSignUp = vi.spyOn(supabase.auth, "signUp").mockResolvedValue({
-      data: testUserCreate,
+      data: fakeUserCreate,
       error: null,
     })
     const email = faker.internet.email()
@@ -26,7 +26,7 @@ describe("Auth function: createUser", () => {
 
     const result = await createUser(email, password)
 
-    expect(result).toEqual(testUserCreate)
+    expect(result).toEqual(fakeUserCreate)
     expect(mockSignUp).toHaveBeenCalled()
   })
   test("createUser: API error", () => {
@@ -44,7 +44,7 @@ describe("Auth function: createUser", () => {
 
   test("createUser: email already taken", async () => {
     const mockSignUp = vi.spyOn(supabase.auth, "signUp").mockResolvedValue({
-      data: testUserEmailTakenCreate,
+      data: fakeUserEmailTakenCreate,
       error: null,
     })
 
@@ -68,7 +68,7 @@ describe("Auth function: loginUser", () => {
     const mockSignIn = vi
       .spyOn(supabase.auth, "signInWithPassword")
       .mockResolvedValue({
-        data: testUserCreate,
+        data: fakeUserCreate,
         error: null,
       })
     const email = faker.internet.email()
@@ -76,7 +76,7 @@ describe("Auth function: loginUser", () => {
 
     const result = await loginUser(email, password)
 
-    expect(result).toEqual(testUserCreate)
+    expect(result).toEqual(fakeUserCreate)
     expect(mockSignIn).toHaveBeenCalled()
   })
 
@@ -124,13 +124,13 @@ describe("Auth function: getSessionUser", () => {
     const mockGetSessionUser = vi
       .spyOn(supabase.auth, "getSession")
       .mockResolvedValue({
-        data: { session: testUserSession },
+        data: { session: fakeUserSession },
         error: null,
       })
 
     const result = await getSessionUser()
 
-    expect(result).toEqual(testUserSession)
+    expect(result).toEqual(fakeUserSession)
     expect(mockGetSessionUser).toHaveBeenCalled()
   })
 
@@ -153,7 +153,7 @@ describe("Auth function: updateUser", () => {
     const mockUpdateUser = vi
       .spyOn(supabase.auth, "updateUser")
       .mockResolvedValue({
-        data: testUserCreate,
+        data: fakeUserCreate,
         error: null,
       })
 
@@ -162,7 +162,7 @@ describe("Auth function: updateUser", () => {
 
     const result = await updateUser(email, password)
 
-    expect(result).toEqual(testUserCreate)
+    expect(result).toEqual(fakeUserCreate)
     expect(mockUpdateUser).toHaveBeenCalled()
   })
 

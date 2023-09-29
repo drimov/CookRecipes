@@ -5,7 +5,7 @@ import {
   updateProfile,
   uploadAvatar,
 } from "@/commons/api/clients/profile"
-import { testFakeUrlImage, testUserProfile } from "@/mocks/data"
+import { fakeUrlImage, fakeUserProfile } from "@/mocks/data"
 
 import { URL_DB } from "@/mocks/handlers"
 import { rest } from "msw"
@@ -15,7 +15,7 @@ describe("Auth function: getProfile", () => {
   const testId = "1234"
   test("getProfile: success", async () => {
     const profile = await getProfile(testId)
-    expect(profile).toEqual({ ...testUserProfile })
+    expect(profile).toEqual(fakeUserProfile)
   })
 
   test("getProfile: error", async () => {
@@ -42,7 +42,7 @@ describe("Auth function: getProfile", () => {
 })
 describe("Auth function: updateProfile", () => {
   test("updateProfile: success", async () => {
-    expect(await updateProfile(testUserProfile)).toBeUndefined()
+    expect(await updateProfile(fakeUserProfile)).toBeUndefined()
   })
 
   test("updateProfile: error", async () => {
@@ -55,7 +55,7 @@ describe("Auth function: updateProfile", () => {
       })
     )
     const mockUpdateProfile = vi.fn(
-      async () => await updateProfile(testUserProfile)
+      async () => await updateProfile(fakeUserProfile)
     )
 
     try {
@@ -100,11 +100,11 @@ describe("Auth function: downloadImage", () => {
   })
 })
 describe("Auth function: uploadAvatar", () => {
-  const file = new File([testFakeUrlImage], testFakeUrlImage)
+  const file = new File([fakeUrlImage], fakeUrlImage)
 
   test("uploadAvatar: success", async () => {
-    const result = await uploadAvatar(testFakeUrlImage, file)
-    expect(result.path).toEqual(testFakeUrlImage)
+    const result = await uploadAvatar(fakeUrlImage, file)
+    expect(result.path).toEqual(fakeUrlImage)
   })
 
   test("uploadAvatar: error", async () => {
@@ -118,7 +118,7 @@ describe("Auth function: uploadAvatar", () => {
     )
 
     const mockUploadAvatar = vi.fn(
-      async () => await uploadAvatar(testFakeUrlImage, file)
+      async () => await uploadAvatar(fakeUrlImage, file)
     )
 
     try {
