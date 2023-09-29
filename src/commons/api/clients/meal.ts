@@ -4,22 +4,22 @@ import {
   MealsSchema,
 } from "@/types/meal"
 
-import { URL_API } from "@/commons/constants"
+import { API_MEAL } from "@/commons/constants"
 import { client } from "@/lib/client"
 
 const getCategories = async () => {
-  return await client(URL_API.CATEGORIES, { zodSchema: CategoriesSchema })
+  return await client(API_MEAL.CATEGORIES, { zodSchema: CategoriesSchema })
 }
 const getMealByName = async (name: string) => {
-  return await client(`${URL_API.NAME}=${name}`, { zodSchema: MealsSchema })
+  return await client(`${API_MEAL.NAME}=${name}`, { zodSchema: MealsSchema })
 }
 const getMealByCategory = async (category: string) => {
-  return await client(`${URL_API.CATEGORY}=${category}`, {
+  return await client(`${API_MEAL.CATEGORY}=${category}`, {
     zodSchema: MealsPerCategorySchema,
   })
 }
 const getRecipe = async (id: string) => {
-  return await client(`${URL_API.RECIPE}=${id}`, { zodSchema: MealsSchema })
+  return await client(`${API_MEAL.RECIPE}=${id}`, { zodSchema: MealsSchema })
 }
 
 export { getCategories, getMealByName, getMealByCategory, getRecipe }
