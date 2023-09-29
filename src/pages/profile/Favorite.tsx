@@ -1,7 +1,7 @@
 import { Meal } from "@/types/meal"
 import MealCard from "../search/MealCard"
 import MealCardListSkeleton from "@/components/skeleton/MealCardList"
-import { Separator } from "@radix-ui/react-separator"
+import { Separator } from "@/components/ui/separator"
 import { useAuthContext } from "@/hooks/useAuthContext"
 import { useRecipeList } from "@/commons/api/hooks/meal"
 
