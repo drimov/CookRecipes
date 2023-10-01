@@ -7,8 +7,9 @@ import { faker } from "@faker-js/faker"
 import { render } from "@/tests/utils"
 import userEvent from "@testing-library/user-event"
 
+const mockSubmit = vi.fn()
+
 describe("Auth Form", () => {
-  const mockSubmit = vi.fn()
   let emailInput: HTMLElement
   let passwordInput: HTMLElement
 
@@ -98,5 +99,27 @@ describe("Auth Form", () => {
     expect(errorEmail).not.toBeInTheDocument()
     expect(errorPassword).toBeInTheDocument()
     expect(mockSubmit).not.toBeCalled()
+  })
+})
+
+describe("Auth Form submit button", () => {
+  test("Form: button disabled when isLoading is true", () => {
+    act(() => {
+      render(
+        <AuthForm authForm="login" isLoading={true} onSubmit={mockSubmit} />
+      )
+    })
+    const btnSubmit = screen.getByRole("button", { name: /Log in/ })
+
+    expect(btnSubmit).toHaveAttribute("disabled")
+  })
+  test("Form: button not disabled when isLoading is false", () => {
+    act(() => {
+      render(
+        <AuthForm authForm="login" isLoading={false} onSubmit={mockSubmit} />
+      )
+    })
+    const btnSubmit = screen.getByRole("button", { name: /Log in/ })
+    expect(btnSubmit).not.toHaveAttribute("disabled")
   })
 })
