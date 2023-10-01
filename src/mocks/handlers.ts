@@ -100,8 +100,6 @@ const handlersAuth = [
         }
         return res(ctx.status(200), ctx.json(newFakeUserSession))
       }
-
-      return res(ctx.status(200), ctx.json(fakeUserSession))
     }
   }),
   // LOGOUT
