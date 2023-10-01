@@ -9,6 +9,7 @@ import {
 import { fakeUserProfile } from "@/mocks/data"
 
 const fakeUrlImage = "fake_url.png"
+export const fakeUrlImageNull = "fake_url_null.png"
 const fakeId = "1234"
 const fakeImg = "fake.pnj"
 const fakePath = "fake_path"
@@ -63,7 +64,7 @@ describe("Profile function: downloadImage", () => {
     expect(result).toEqual(fakeImg)
   })
 
-  test("downloadImage: success with null", async () => {
+  test("downloadImage: is null", async () => {
     mockedCreateObjectURL.mockImplementation(() => "")
     const result = await downloadImage(fakePath)
 
@@ -81,10 +82,14 @@ describe("Profile function: downloadImage", () => {
   })
 })
 describe("Profile function: uploadAvatar", () => {
-  test("uploadAvatar: success", async () => {
+  test("uploadAvatar: success with url", async () => {
     const result = await uploadAvatar(fakeUrlImage, file)
 
     expect(result.path).toEqual(fakeUrlImage)
+  })
+  test("uploadAvatar: is null", async () => {
+    const result = await uploadAvatar(fakeUrlImageNull, file)
+    expect(result).toEqual(null)
   })
 
   test("uploadAvatar: error", async () => {
