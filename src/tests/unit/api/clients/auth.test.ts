@@ -1,181 +1,232 @@
 import {
+  API_AUTH_EMAIL_TAKEN,
+  API_AUTH_ERROR_LOGOUT,
+  API_ERROR,
+} from "@/mocks/handlers"
+import { beforeEach, describe, expect, test } from "vitest"
+import {
   createUser,
   getSessionUser,
   loginUser,
   logoutUser,
   updateUser,
 } from "@/commons/api/clients/auth"
-import { describe, expect, test } from "vitest"
-import {
-  fakeUserCreate,
-  fakeUserEmailTakenCreate,
-  fakeUserSession,
-} from "@/mocks/data"
+import { fakeUser, fakeUserSession } from "@/mocks/data"
 
+import { CreateUser } from "@/types/app"
 import { faker } from "@faker-js/faker"
 import { supabase } from "@/lib/supabase/client"
 
+const localStorageName = "sb-tpyyaxuyruokfwnkqidu-auth-token" as const
 describe("Auth function: createUser", () => {
+  const mockSignIn = vi.spyOn(supabase.auth, "signUp")
+
+  afterEach(() => {
+    mockSignIn.mockClear()
+  })
+
   test("createUser: success", async () => {
-    const mockSignUp = vi.spyOn(supabase.auth, "signUp").mockResolvedValue({
-      data: fakeUserCreate,
-      error: null,
-    })
     const email = faker.internet.email()
     const password = faker.internet.password()
-
+    const fakeCustomUser: CreateUser = {
+      user: {
+        ...fakeUser.user,
+        email,
+      },
+      session: null,
+    }
     const result = await createUser(email, password)
-
-    expect(result).toEqual(fakeUserCreate)
-    expect(mockSignUp).toHaveBeenCalled()
+    expect(result).toEqual(fakeCustomUser)
+    expect(mockSignIn).toHaveBeenCalled()
+    expect(mockSignIn).toHaveBeenCalledTimes(1)
+    expect(mockSignIn).toHaveBeenCalledWith({
+      email,
+      password,
+    })
   })
-  test("createUser: API error", () => {
-    const mockSignUp = vi
-      .spyOn(supabase.auth, "signUp")
-      .mockImplementation(() => {
-        throw Error("API error when create user")
-      })
 
-    expect(mockSignUp).toThrowErrorMatchingInlineSnapshot(
-      '"API error when create user"'
-    )
-    expect(mockSignUp).toHaveBeenCalled()
+  test("createUser: API error", async () => {
+    const email = API_ERROR
+    const password = faker.internet.password()
+    try {
+      await createUser(email, password)
+    } catch (error) {
+      expect(error).toMatchInlineSnapshot(
+        "[AuthApiError: API error when create user]"
+      )
+    }
+    expect(mockSignIn).toHaveBeenCalled()
+    expect(mockSignIn).toHaveBeenCalledTimes(1)
+    expect(mockSignIn).toHaveBeenCalledWith({
+      email,
+      password,
+    })
   })
 
   test("createUser: email already taken", async () => {
-    const mockSignUp = vi.spyOn(supabase.auth, "signUp").mockResolvedValue({
-      data: fakeUserEmailTakenCreate,
-      error: null,
-    })
-
-    const email = faker.internet.email()
+    const email = API_AUTH_EMAIL_TAKEN
     const password = faker.internet.password()
-    const mockCreateUser = vi.fn(async () => await createUser(email, password))
-
     try {
-      await mockCreateUser()
+      await createUser(email, password)
     } catch (error) {
       expect(error).toMatchInlineSnapshot(
-        `[Email is already taken: Please use another email]`
+        "[Email is already taken: Please use another email]"
       )
     }
-    expect(mockSignUp).toHaveBeenCalled()
+    expect(mockSignIn).toHaveBeenCalled()
+    expect(mockSignIn).toHaveBeenCalledTimes(1)
+    expect(mockSignIn).toHaveBeenCalledWith({
+      email,
+      password,
+    })
   })
 })
 
 describe("Auth function: loginUser", () => {
+  const mockLogin = vi.spyOn(supabase.auth, "signInWithPassword")
+
+  afterEach(() => {
+    mockLogin.mockClear()
+  })
   test("loginUser: success", async () => {
-    const mockSignIn = vi
-      .spyOn(supabase.auth, "signInWithPassword")
-      .mockResolvedValue({
-        data: fakeUserCreate,
-        error: null,
-      })
     const email = faker.internet.email()
     const password = faker.internet.password()
+    const newFakeUserSession = {
+      ...fakeUserSession,
+      user: {
+        ...fakeUserSession.user,
+        email,
+      },
+    }
 
     const result = await loginUser(email, password)
-
-    expect(result).toEqual(fakeUserCreate)
-    expect(mockSignIn).toHaveBeenCalled()
+    expect(result.user).toStrictEqual(newFakeUserSession.user)
+    expect(mockLogin).toHaveBeenCalled()
+    expect(mockLogin).toHaveBeenCalledTimes(1)
+    expect(mockLogin).toHaveBeenCalledWith({ email, password })
   })
 
-  test("loginUser: API error", () => {
-    const mockLogin = vi
-      .spyOn(supabase.auth, "signInWithPassword")
-      .mockImplementation(() => {
-        throw Error("API error when login user")
-      })
+  test("loginUser: API error", async () => {
+    const email = API_ERROR
+    const password = faker.internet.password()
 
-    expect(mockLogin).toThrowErrorMatchingInlineSnapshot(
-      '"API error when login user"'
-    )
+    try {
+      await loginUser(email, password)
+    } catch (error) {
+      expect(error).toMatchInlineSnapshot(
+        "[AuthApiError: API error when login user]"
+      )
+    }
+
     expect(mockLogin).toHaveBeenCalled()
+    expect(mockLogin).toHaveBeenCalledTimes(1)
+    expect(mockLogin).toHaveBeenCalledWith({ email, password })
   })
 })
 
 describe("Auth function: logoutUser", () => {
-  test("logoutUser: success", async () => {
-    const mockSignOut = vi.spyOn(supabase.auth, "signOut").mockResolvedValue({
-      error: null,
-    })
+  const mockSignOut = vi.spyOn(supabase.auth, "signOut")
 
+  beforeEach(() => {
+    localStorage.setItem(localStorageName, JSON.stringify(fakeUserSession))
+  })
+  afterEach(() => {
+    localStorage.removeItem(API_ERROR)
+    mockSignOut.mockClear()
+  })
+  test("logoutUser: success", async () => {
     await logoutUser()
 
     expect(mockSignOut).toHaveBeenCalled()
+    expect(mockSignOut).toHaveBeenCalledTimes(1)
   })
 
-  test("logoutUser: API error", () => {
-    const mockSignOut = vi
-      .spyOn(supabase.auth, "signOut")
-      .mockImplementation(() => {
-        throw Error("API error when logout user")
-      })
+  test("logoutUser: API error", async () => {
+    localStorage.setItem(API_AUTH_ERROR_LOGOUT, JSON.stringify(null))
+    try {
+      await logoutUser()
+    } catch (error) {
+      expect(error).toMatchInlineSnapshot(
+        "[AuthApiError: API error when logout user]"
+      )
+    }
 
-    expect(mockSignOut).toThrowErrorMatchingInlineSnapshot(
-      '"API error when logout user"'
-    )
     expect(mockSignOut).toHaveBeenCalled()
   })
 })
 
 describe("Auth function: getSessionUser", () => {
+  const mockGetSessionUser = vi.spyOn(supabase.auth, "getSession")
+  beforeEach(() => {
+    localStorage.setItem(localStorageName, JSON.stringify(fakeUserSession))
+  })
+  afterEach(() => {
+    localStorage.removeItem(localStorageName)
+    localStorage.removeItem(API_ERROR)
+    mockGetSessionUser.mockClear()
+  })
   test("getSessionUser: success", async () => {
-    const mockGetSessionUser = vi
-      .spyOn(supabase.auth, "getSession")
-      .mockResolvedValue({
-        data: { session: fakeUserSession },
-        error: null,
-      })
-
     const result = await getSessionUser()
 
     expect(result).toEqual(fakeUserSession)
     expect(mockGetSessionUser).toHaveBeenCalled()
+    expect(mockGetSessionUser).toBeCalledTimes(1)
   })
 
-  test("getSessionUser: API error", () => {
-    const mockGetSessionUser = vi
-      .spyOn(supabase.auth, "getSession")
-      .mockImplementation(() => {
-        throw Error("API error getSession")
-      })
+  test("getSessionUser: API error", async () => {
+    localStorage.setItem(API_ERROR, JSON.stringify(null))
+    try {
+      await getSessionUser()
+    } catch (error) {
+      expect(error).toMatchInlineSnapshot(
+        "[AuthApiError: API error when get session]"
+      )
+    }
 
-    expect(mockGetSessionUser).toThrowErrorMatchingInlineSnapshot(
-      '"API error getSession"'
-    )
     expect(mockGetSessionUser).toHaveBeenCalled()
+    expect(mockGetSessionUser).toBeCalledTimes(1)
   })
 })
 
 describe("Auth function: updateUser", () => {
-  test("updateUser: success", async () => {
-    const mockUpdateUser = vi
-      .spyOn(supabase.auth, "updateUser")
-      .mockResolvedValue({
-        data: fakeUserCreate,
-        error: null,
-      })
+  const mockUpdateUser = vi.spyOn(supabase.auth, "updateUser")
 
+  beforeEach(() => {
+    localStorage.setItem(localStorageName, JSON.stringify(fakeUserSession))
+  })
+  afterEach(() => {
+    localStorage.removeItem(localStorageName)
+    mockUpdateUser.mockClear()
+  })
+  test("updateUser: success", async () => {
     const email = faker.internet.email()
     const password = faker.internet.password()
 
     const result = await updateUser(email, password)
+    const newFakeUser = {
+      ...fakeUser.user,
+      email,
+    }
 
-    expect(result).toEqual(fakeUserCreate)
+    expect(result.user).toEqual(newFakeUser)
     expect(mockUpdateUser).toHaveBeenCalled()
+    expect(mockUpdateUser).toHaveBeenCalledTimes(1)
+    expect(mockUpdateUser).toHaveBeenCalledWith({ email, password })
   })
 
-  test("updateUser: API error", () => {
-    const mockUpdateUser = vi
-      .spyOn(supabase.auth, "updateUser")
-      .mockImplementation(() => {
-        throw Error("API error when update user")
-      })
+  test("updateUser: API error", async () => {
+    const email = API_ERROR
+    const password = faker.internet.password()
 
-    expect(mockUpdateUser).toThrowErrorMatchingInlineSnapshot(
-      '"API error when update user"'
-    )
+    try {
+      await updateUser(email, password)
+    } catch (error) {
+      expect(error).toMatchInlineSnapshot(
+        "[AuthApiError: API error when update user]"
+      )
+    }
     expect(mockUpdateUser).toHaveBeenCalled()
+    expect(mockUpdateUser).toHaveBeenCalledTimes(1)
+    expect(mockUpdateUser).toHaveBeenCalledWith({ email, password })
   })
 })

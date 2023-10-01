@@ -7,10 +7,11 @@ import {
   MealsPerCategory,
 } from "@/types/meal"
 
+import { CreateUser } from "@/types/app"
 import { Profile } from "@/types/database"
 
 // SUPABASE DATA
-export const fakeUser: User = {
+export const fakeAuthUser: User = {
   id: "11111a4-e2cc-1111-2222-111111111ew11",
   aud: "authenticated",
   role: "authenticated",
@@ -145,11 +146,12 @@ export const fakeUserEmailTakenSession: Session = {
     updated_at: "2023-09-26T13:58:07.574434Z",
   },
 }
-export const fakeUserCreate = {
-  user: fakeUser,
+export const fakeUser: CreateUser = {
+  user: fakeAuthUser,
   session: fakeUserSession,
 }
-export const fakeUserEmailTakenCreate = {
+
+export const fakeUserEmailTakenCreate: CreateUser = {
   user: fakeUserEmailTaken,
   session: fakeUserSession,
 }

@@ -3,7 +3,10 @@ import {
   fakeMealCategories,
   fakeMeals,
   fakeRecipe,
+  fakeUser,
+  fakeUserEmailTakenCreate,
   fakeUserProfile,
+  fakeUserSession,
 } from "./data"
 
 import { API_MEAL_ENDPOINTS } from "@/commons/constants"
@@ -12,6 +15,12 @@ import { rest } from "msw"
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL
 const SUPABASE_BUCKET = import.meta.env.VITE_STORAGE_BUCKET
 
+export const URL_AUTH = {
+  SIGNUP: `${SUPABASE_URL}/auth/v1/signup`,
+  SESSION: `${SUPABASE_URL}/auth/v1/token`,
+  LOGOUT: `${SUPABASE_URL}/auth/v1/logout`,
+  USER: `${SUPABASE_URL}/auth/v1/user`,
+}
 export const URL_DB = {
   PROFILES: `${SUPABASE_URL}/rest/v1/profiles`,
   STORAGES: `${SUPABASE_URL}/storage/v1/object/${SUPABASE_BUCKET}/*`,
@@ -23,8 +32,111 @@ export const URL_MEAL = {
   RECIPE: `${API_MEAL_ENDPOINTS.RECIPE}.php*`,
 }
 
-const API_ERROR = "api_error"
-const handlersSUPABASE = [
+export const API_ERROR = "api_error"
+export const API_AUTH_ERROR_LOGOUT = `${API_ERROR}_logout`
+export const API_AUTH_EMAIL_TAKEN = "email_taken"
+
+const handlersAuth = [
+  // SIGNUP
+  rest.post(URL_AUTH.SIGNUP, async (req, res, ctx) => {
+    const body = (await req.json()) as unknown
+    const isObject = typeof body === "object"
+    const isNotNull = body !== null
+    const isInEmail = isObject && isNotNull && "email" in body
+
+    if (isInEmail) {
+      if (body.email === API_ERROR) {
+        return res(
+          ctx.status(400),
+          ctx.json({ message: "API error when create user" })
+        )
+      }
+      if (body.email === "email_taken") {
+        return res(ctx.status(200), ctx.json(fakeUserEmailTakenCreate))
+      }
+      return res(
+        ctx.status(200),
+        ctx.json({
+          ...fakeUser,
+          user: {
+            ...fakeUser.user,
+            email: body.email as string,
+          },
+        })
+      )
+    }
+  }),
+
+  // LOGIN | GET SESSION
+  rest.post(URL_AUTH.SESSION, async (req, res, ctx) => {
+    if (req.url.search === "?grant_type=refresh_token") {
+      if (localStorage.getItem(API_ERROR)) {
+        return res(
+          ctx.status(400),
+          ctx.json({ message: "API error when get session" })
+        )
+      }
+      return res(ctx.status(200), ctx.json(fakeUserSession))
+    }
+    if (req.url.search === "?grant_type=password") {
+      // LOGIN
+      const body = (await req.json()) as unknown
+      const isObject = typeof body === "object"
+      const isNotNull = body !== null
+      const isInEmail = isObject && isNotNull && "email" in body
+      if (isInEmail) {
+        if (body.email === API_ERROR) {
+          return res(
+            ctx.status(400),
+            ctx.json({ message: "API error when login user" })
+          )
+        }
+        const newFakeUserSession: typeof fakeUserSession = {
+          ...fakeUserSession,
+          user: {
+            ...fakeUserSession.user,
+            email: body.email as string,
+          },
+        }
+        return res(ctx.status(200), ctx.json(newFakeUserSession))
+      }
+
+      return res(ctx.status(200), ctx.json(fakeUserSession))
+    }
+  }),
+  // LOGOUT
+  rest.post(URL_AUTH.LOGOUT, async (_req, res, ctx) => {
+    if (localStorage.getItem(API_AUTH_ERROR_LOGOUT)) {
+      return res(
+        ctx.status(400),
+        ctx.json({ message: "API error when logout user" })
+      )
+    }
+    return res(ctx.status(200))
+  }),
+  // UPDATE USER
+  rest.put(URL_AUTH.USER, async (req, res, ctx) => {
+    const body = (await req.json()) as unknown
+    const isNotNull = body !== null
+    const isObject = typeof body === "object"
+    const isEmailInBody = isObject && isNotNull && "email" in body
+    let newFakeUser = fakeUser.user
+    if (isEmailInBody) {
+      newFakeUser = {
+        ...newFakeUser,
+        email: body.email as string,
+      }
+    }
+    if (isEmailInBody && body.email === API_ERROR) {
+      return res(
+        ctx.status(400),
+        ctx.json({ message: "API error when update user" })
+      )
+    }
+    return res(ctx.status(200), ctx.json(newFakeUser))
+  }),
+]
+const handlersProfile = [
   // GET PROFILE
   rest.get(URL_DB.PROFILES, async (req, res, ctx) => {
     const searchTab = req.url.search.split(".")
@@ -40,12 +152,9 @@ const handlersSUPABASE = [
   // UPDATE PROFILE
   rest.post(URL_DB.PROFILES, async (req, res, ctx) => {
     const body = (await req.json()) as unknown
-    if (
-      body &&
-      typeof body === "object" &&
-      "username" in body &&
-      body.username === API_ERROR
-    ) {
+    const isObject = typeof body === "object" && body
+
+    if (isObject && "username" in body && body.username === API_ERROR) {
       return res(
         ctx.status(400),
         ctx.json({ message: "API error when update profile" })
@@ -103,4 +212,4 @@ const handlersAPI = [
   }),
 ]
 
-export const handlers = [...handlersSUPABASE, ...handlersAPI]
+export const handlers = [...handlersAuth, ...handlersProfile, ...handlersAPI]
