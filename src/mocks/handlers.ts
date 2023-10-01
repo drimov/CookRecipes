@@ -77,6 +77,9 @@ const handlersSUPABASE = [
         ctx.json({ message: "API error when upload image" })
       )
     }
+    if (path === "fake_url_null.png") {
+      return res(ctx.status(400), ctx.json(null))
+    }
     return res(ctx.status(200), ctx.json({ path }))
   }),
 ]
