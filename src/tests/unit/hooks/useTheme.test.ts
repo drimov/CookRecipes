@@ -39,4 +39,14 @@ describe("Hook: useTheme", () => {
     })
     expect(result.current.theme).toEqual("light")
   })
+
+  test("useTheme can't work without provider", () => {
+    try {
+      renderHook(() => useTheme())
+    } catch (error) {
+      expect(error).toMatchInlineSnapshot(
+        "[Error: useTheme must be used within a ThemeProvider]"
+      )
+    }
+  })
 })
