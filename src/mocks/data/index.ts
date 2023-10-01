@@ -153,7 +153,6 @@ export const fakeUserEmailTakenCreate = {
   user: fakeUserEmailTaken,
   session: fakeUserSession,
 }
-export const fakeUrlImage = "url_test.png"
 
 // MEAL DATA
 export const fakeMeal: Meal = {
