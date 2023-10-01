@@ -5,32 +5,31 @@ import {
   updateProfile,
   uploadAvatar,
 } from "@/commons/api/clients/profile"
-import { fakeUrlImage, fakeUserProfile } from "@/mocks/data"
 
-import { URL_DB } from "@/mocks/handlers"
-import { rest } from "msw"
-import { server } from "@/mocks/data/server"
+import { fakeUserProfile } from "@/mocks/data"
 
-describe("Auth function: getProfile", () => {
-  const testId = "1234"
+const fakeUrlImage = "fake_url.png"
+const fakeId = "1234"
+const fakeImg = "fake.pnj"
+const fakePath = "fake_path"
+const apiError = "api_error"
+const file = new File([""], fakeUrlImage)
+
+const mockedCreateObjectURL = vi
+  .spyOn(URL, "createObjectURL")
+  .mockImplementation(() => fakeImg)
+
+describe("Profile function: getProfile", () => {
   test("getProfile: success", async () => {
-    const profile = await getProfile(testId)
-    expect(profile).toEqual(fakeUserProfile)
+    const profile = await getProfile(fakeId)
+    const newFakeProfile = { ...fakeUserProfile, id: fakeId }
+
+    expect(profile).toEqual({ ...newFakeProfile })
   })
 
   test("getProfile: error", async () => {
-    server.use(
-      rest.get(URL_DB.PROFILES, async (_req, res, ctx) => {
-        return res(
-          ctx.status(400),
-          ctx.json({ message: "API error when get profile" })
-        )
-      })
-    )
-    const mockGetProfile = vi.fn(async () => await getProfile(testId))
-
     try {
-      await mockGetProfile()
+      await getProfile(apiError)
     } catch (error) {
       expect(error).toMatchInlineSnapshot(`
         {
@@ -40,26 +39,14 @@ describe("Auth function: getProfile", () => {
     }
   })
 })
-describe("Auth function: updateProfile", () => {
+describe("Profile function: updateProfile", () => {
   test("updateProfile: success", async () => {
     expect(await updateProfile(fakeUserProfile)).toBeUndefined()
   })
 
   test("updateProfile: error", async () => {
-    server.use(
-      rest.post(URL_DB.PROFILES, async (_req, res, ctx) => {
-        return res(
-          ctx.status(400),
-          ctx.json({ message: "API error when update profile" })
-        )
-      })
-    )
-    const mockUpdateProfile = vi.fn(
-      async () => await updateProfile(fakeUserProfile)
-    )
-
     try {
-      await mockUpdateProfile()
+      await updateProfile({ ...fakeUserProfile, username: apiError })
     } catch (error) {
       expect(error).toMatchInlineSnapshot(`
         {
@@ -69,60 +56,40 @@ describe("Auth function: updateProfile", () => {
     }
   })
 })
-describe("Auth function: downloadImage", () => {
-  test("downloadImage: success", async () => {
-    const fakeImg = "fake.pnj"
-    const createObjectURLSpy = vi.spyOn(URL, "createObjectURL")
-    createObjectURLSpy.mockReturnValue(fakeImg)
-    const result = await downloadImage("path")
+describe("Profile function: downloadImage", () => {
+  test("downloadImage: success with string", async () => {
+    const result = await downloadImage(fakePath)
 
     expect(result).toEqual(fakeImg)
   })
 
-  test("downloadImage: error", async () => {
-    server.use(
-      rest.get(URL_DB.STORAGES, async (_req, res, ctx) => {
-        return res(
-          ctx.status(400),
-          ctx.json({ message: "API error when upload image" })
-        )
-      })
-    )
-    const mockDownloadImage = vi.fn(async () => await downloadImage("path"))
+  test("downloadImage: success with null", async () => {
+    mockedCreateObjectURL.mockImplementation(() => "")
+    const result = await downloadImage(fakePath)
 
+    expect(result).toEqual("")
+  })
+
+  test("downloadImage: error", async () => {
     try {
-      await mockDownloadImage()
+      await downloadImage(apiError)
     } catch (error) {
       expect(error).toMatchInlineSnapshot(
-        '[StorageUnknownError: {"size":0,"timeout":0}]'
+        "[StorageApiError: API error when download image]"
       )
     }
   })
 })
-describe("Auth function: uploadAvatar", () => {
-  const file = new File([fakeUrlImage], fakeUrlImage)
-
+describe("Profile function: uploadAvatar", () => {
   test("uploadAvatar: success", async () => {
     const result = await uploadAvatar(fakeUrlImage, file)
+
     expect(result.path).toEqual(fakeUrlImage)
   })
 
   test("uploadAvatar: error", async () => {
-    server.use(
-      rest.post(URL_DB.STORAGES, async (_req, res, ctx) => {
-        return res(
-          ctx.status(400),
-          ctx.json({ message: "API error when upload image" })
-        )
-      })
-    )
-
-    const mockUploadAvatar = vi.fn(
-      async () => await uploadAvatar(fakeUrlImage, file)
-    )
-
     try {
-      await mockUploadAvatar()
+      await uploadAvatar(apiError, file)
     } catch (error) {
       expect(error).toMatchInlineSnapshot(`
         {
