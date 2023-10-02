@@ -1,7 +1,9 @@
 import MealCardSkeleton from "./MealCard"
 
-const MealCardListSkeleton = () => {
-  const nbMeals = 10
+type MealCardListSkeletonProps = {
+  nbMeals?: number
+}
+const MealCardListSkeleton = ({ nbMeals = 10 }: MealCardListSkeletonProps) => {
   const list = []
   for (let i = 0; i < nbMeals; i++) {
     list.push(i)

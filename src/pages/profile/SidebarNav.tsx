@@ -2,22 +2,19 @@ import { Link } from "@/components/ui/link"
 import { RouteProfileKeys } from "@/types/app"
 import { buttonVariants } from "@/components/ui/button/variants"
 import { cn } from "@/lib/utils"
-import { useState } from "react"
+import { getRoute } from "@/helpers"
+import { useLocation } from "react-router-dom"
 
 type SidebarNavProps = {
   className?: string
   items: {
-    href: RouteProfileKeys
+    route: RouteProfileKeys
     title: string
   }[]
 }
 
 export function SidebarNav({ className, items }: SidebarNavProps) {
-  const [pathname, setPathname] = useState("Profile")
-
-  const clickHandler = (page: string) => {
-    setPathname(page)
-  }
+  const { pathname } = useLocation()
 
   return (
     <nav
@@ -28,12 +25,11 @@ export function SidebarNav({ className, items }: SidebarNavProps) {
     >
       {items.map((item) => (
         <Link
-          to={item.href}
-          onClick={() => clickHandler(item.title)}
+          to={item.route}
           key={item.title}
           className={cn(
             buttonVariants({ variant: "ghost" }),
-            pathname === item.title
+            pathname === getRoute(item.route)
               ? "bg-muted hover:bg-muted"
               : "hover:bg-transparent hover:underline",
             "justify-start"

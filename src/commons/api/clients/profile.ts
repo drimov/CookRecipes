@@ -27,4 +27,26 @@ async function updateProfile(profile: Partial<Profile>) {
     throw error
   }
 }
-export { getProfile, updateProfile }
+
+async function downloadImage(path: string) {
+  const { data, error } = await supabase.storage.from("avatars").download(path)
+  if (error) {
+    throw error
+  }
+  const url = URL.createObjectURL(data)
+
+  return url ?? null
+}
+
+async function uploadAvatar(filePath: string, file: File) {
+  const { data, error: uploadError } = await supabase.storage
+    .from("avatars")
+    .upload(filePath, file)
+
+  if (uploadError) {
+    throw uploadError
+  }
+  return data ?? null
+}
+
+export { getProfile, updateProfile, downloadImage, uploadAvatar }

@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/form"
 
 import { Button } from "@/components/ui/button"
+import { ERROR } from "@/commons/constants"
 import { Input } from "@/components/ui/input"
 import { Loader2 } from "lucide-react"
 import { RouteAuthKeys } from "@/types/app"
@@ -16,12 +17,10 @@ import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 
 const authSchema = z.object({
-  email: z.string().min(1, { message: "Need to enter an email" }).email({
-    message: "Must be a valid email",
+  email: z.string().min(1, { message: ERROR.EMPTY_EMAIL }).email({
+    message: ERROR.INVALID_EMAIL,
   }),
-  password: z
-    .string()
-    .min(6, { message: "Password need to be at least have 6 characters" }),
+  password: z.string().min(6, { message: ERROR.INVALID_PASSWORD }),
 })
 
 export type ValidationAuthSchema = z.infer<typeof authSchema>
