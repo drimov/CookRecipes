@@ -60,6 +60,7 @@ const Recipe = () => {
             variant={isFavourite ? "destructive" : "outline"}
             onClick={() => handleFavourite(recipe?.idMeal ?? "")}
             disabled={mutationProfile.isLoading}
+            aria-label="Favourite"
           >
             <Heart
               className={

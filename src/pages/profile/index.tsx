@@ -11,7 +11,7 @@ const sidebarNavItems: SidebarNavItemProps = [
     route: "profile",
   },
   {
-    title: "Favorite",
+    title: "Favourite",
     route: "favorite",
   },
 ]

@@ -1,6 +1,7 @@
 /// <reference types="@testing-library/cypress" />
 
 const WAIT_IMAGE_UPLOAD_MILISECONDS = 1000
+
 describe("Profile", () => {
   it("update", () => {
     cy.visit("/")
@@ -8,7 +9,7 @@ describe("Profile", () => {
     cy.login()
     cy.findByLabelText(/avatar/i)
       .should("exist")
-      .selectFile("public/avatar.png", {
+      .selectFile("public/avatar.svg", {
         action: "select",
       })
     cy.findByLabelText(/username/i)
