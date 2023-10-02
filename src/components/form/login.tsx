@@ -19,7 +19,7 @@ const LoginForm = () => {
       setIsLoading(false)
       toastMessage({
         title: "Welcome back",
-        message: `${data.username}`,
+        message: `${data.username ?? "User"}`,
       })
       navigate("/profile")
       navigate("/profile")
