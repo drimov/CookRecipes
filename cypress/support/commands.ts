@@ -35,3 +35,21 @@
 //     }
 //   }
 // }
+const { email, password } = Cypress.env()
+
+const authentication = (email, password) => {
+  cy.findByLabelText(/email/i).type(email as string)
+  cy.findByLabelText(/password/i).type(password as string)
+}
+Cypress.Commands.add("login", () => {
+  cy.visit("/login")
+  authentication(email, password)
+  cy.findByRole("button", { name: /log in/i }).click()
+})
+Cypress.Commands.add("signup", () => {
+  cy.visit("/signup")
+  const email = `test${Math.round(Math.random() * 100)}@gmail.com`
+  const password = "123456"
+  authentication(email, password)
+  cy.findByRole("button", { name: /create account/i }).click()
+})
