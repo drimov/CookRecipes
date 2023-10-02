@@ -41,12 +41,13 @@ describe("Hook: useTheme", () => {
   })
 
   test("useTheme can't work without provider", () => {
-    try {
-      renderHook(() => useTheme())
-    } catch (error) {
-      expect(error).toMatchInlineSnapshot(
-        "[Error: useTheme must be used within a ThemeProvider]"
-      )
-    }
+    const { result } = renderHook(() => useTheme())
+    expect(result.current.theme).toBeDefined()
+    expect(result.current.theme).toBe("system")
+
+    act(() => {
+      result.current.setTheme("light")
+    })
+    expect(result.current.theme).toEqual("system")
   })
 })
