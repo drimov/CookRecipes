@@ -5,10 +5,12 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "dev:cli": "vite --base /",
     "build": "tsc && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "test": "vitest",
+    "test:coverage": "vitest --coverage",
     "cy:run": "cypress run",
     "cy:open": "cypress open",
     "e2e:run": "start-server-and-test 'pnpm dev:cli' 5173 'pnpm cy:run'",
@@ -47,6 +49,7 @@
   },
   "devDependencies": {
     "@faker-js/faker": "^8.1.0",
+    "@testing-library/cypress": "^10.0.1",
     "@testing-library/jest-dom": "^6.1.3",
     "@testing-library/react": "^14.0.0",
     "@testing-library/user-event": "^14.5.1",

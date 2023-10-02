@@ -1,8 +1,6 @@
-import { ThemeProviderState, initialState } from "@/context/ThemeContext"
-import { createContext, useContext } from "react"
+import { ThemeProviderContext } from "@/context/ThemeContext"
+import { useContext } from "react"
 
-export const ThemeProviderContext =
-  createContext<ThemeProviderState>(initialState)
 const useTheme = () => {
   const context = useContext(ThemeProviderContext)
 

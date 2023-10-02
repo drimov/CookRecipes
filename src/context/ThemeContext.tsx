@@ -1,6 +1,4 @@
-import { useEffect, useState } from "react"
-
-import { ThemeProviderContext } from "@/hooks/useTheme"
+import { createContext, useEffect, useState } from "react"
 
 type Theme = "dark" | "light" | "system"
 
@@ -10,15 +8,16 @@ type ThemeProviderProps = {
   storageKey?: string
 }
 
-export type ThemeProviderState = {
+type ThemeProviderState = {
   theme: Theme
   setTheme: (theme: Theme) => void
 }
-// eslint-disable-next-line react-refresh/only-export-components
-export const initialState: ThemeProviderState = {
+const initialState: ThemeProviderState = {
   theme: "system",
   setTheme: () => null,
 }
+export const ThemeProviderContext =
+  createContext<ThemeProviderState>(initialState)
 
 export function ThemeProvider({
   children,
