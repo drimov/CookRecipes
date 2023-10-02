@@ -37,13 +37,13 @@
 // }
 const { email, password } = Cypress.env()
 
-const authentication = (email, password) => {
-  cy.findByLabelText(/email/i).type(email as string)
-  cy.findByLabelText(/password/i).type(password as string)
+const authentication = (email: string, password: string) => {
+  cy.findByLabelText(/email/i).type(email)
+  cy.findByLabelText(/password/i).type(password)
 }
 Cypress.Commands.add("login", () => {
   cy.visit("/login")
-  authentication(email, password)
+  authentication(email as string, password as string)
   cy.findByRole("button", { name: /log in/i }).click()
 })
 Cypress.Commands.add("signup", () => {
