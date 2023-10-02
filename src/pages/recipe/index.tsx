@@ -1,3 +1,5 @@
+import { useEffect, useState } from "react"
+
 import { Button } from "@/components/ui/button"
 import { Heart } from "lucide-react"
 import IngredientList from "./ingredient/IngredientList"
@@ -7,7 +9,6 @@ import RecipeSkeleton from "@/components/skeleton/recipe"
 import { useAuthContext } from "@/hooks/useAuthContext"
 import { useParams } from "react-router-dom"
 import { useRecipe } from "@/commons/api/hooks/meal"
-import { useState } from "react"
 import { useUpdateProfile } from "@/commons/api/hooks/profile"
 
 const getFavourites = (profile: Profile, idFavourite: string) => {
@@ -46,6 +47,13 @@ const Recipe = () => {
       favourites: newFarouvites,
     })
   }
+
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    })
+  }, [])
 
   return isLoading ? (
     <RecipeSkeleton />
