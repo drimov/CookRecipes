@@ -4,7 +4,7 @@ import { beforeEach, expect } from "vitest"
 import AuthForm from "@/components/form/auth"
 import { ERROR } from "@/commons/constants"
 import { faker } from "@faker-js/faker"
-import { render } from "@/tests/utils"
+import { render } from "@/__tests__/utils"
 import userEvent from "@testing-library/user-event"
 
 const mockSubmit = vi.fn()

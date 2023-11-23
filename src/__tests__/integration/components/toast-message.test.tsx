@@ -2,7 +2,7 @@ import { describe, expect, test } from "vitest"
 
 import { Toaster } from "@/components/ui/toaster"
 import { faker } from "@faker-js/faker"
-import { render } from "@/tests/utils"
+import { render } from "../../utils"
 import { screen } from "@testing-library/react"
 import { toastMessage } from "@/components/toast-message"
 
