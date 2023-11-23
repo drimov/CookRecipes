@@ -3,7 +3,7 @@ import { describe, expect } from "vitest"
 
 import { Authentification } from "@/pages"
 import { act } from "react-dom/test-utils"
-import { render } from "@/tests/utils"
+import { render } from "../../utils"
 import { screen } from "@testing-library/react"
 
 describe("Authentication", () => {
