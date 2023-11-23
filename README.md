@@ -49,7 +49,7 @@ The project utilizes the following technologies and concepts:
 ### Preparation project
 
 - **_Pnpm_** : It's faster than regular npm. You need to do some step explain [here](https://pnpm.io/installation).
-- **_Supabase_** : Create a account a follow step by step guidance (in progress).
+- **_Supabase_** : Create a account a follow step by step guidance [here](https://www.notion.so/Supabase-setup-e7c21e08ff52494d9d95d6869eadf3fb?pvs=4).
 - **_Gmail_** : An gmail account to disable supabase limitation for email validation.
 - **_.env_** : Don't forgot to filled up each variables!
 
