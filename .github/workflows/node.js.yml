@@ -11,22 +11,24 @@ jobs:
   build:
     runs-on: ubuntu-latest
     environment: production
+    env:
+      VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
+      VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+      VITE_STORAGE_BUCKET: ${{ secrets.VITE_STORAGE_BUCKET }}
+      VITE_API_URL: ${{ secrets.VITE_API_URL }}
+      VITE_API_IMAGE: ${{ secrets.VITE_API_IMAGE }}
+      CYPRESS_EMAIL: ${{ secrets.CYPRESS_EMAIL }}
+      CYPRESS_PASSWORD: ${{ secrets.CYPRESS_PASSWORD }}
+
     name: Build and Push
-
-    strategy:
-      matrix:
-        node-version: [14.x, 16.x, 18.x]
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
-
     steps:
       - name: git-checkout
         uses: actions/checkout@v3
 
-      - name: Use Node.js ${{ matrix.node-version }}
+      - name: Use Node.js
         uses: pnpm/action-setup@v2
         with:
-          version: 8
-          node-version: ${{ matrix.node-version }}
+          version: "8"
       - name: pnpm install and build
         run: |
           pnpm install
